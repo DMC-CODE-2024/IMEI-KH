@@ -5,10 +5,14 @@ import 'package:retrofit/http.dart';
 import 'eirs_apis.dart';
 part 'eirs_api_client.g.dart';
 
-@RestApi(baseUrl: "https://eirs.gov.kh/services/checkIMEI/")
+//@RestApi(baseUrl: "https://eirs.gov.kh/services/checkIMEI/")
+@RestApi(baseUrl: "https://62eff51c57311485d12b5ca5.mockapi.io/")
 abstract class EirsApiClient {
   factory EirsApiClient(Dio dio, {String baseUrl}) = _EirsApiClient;
 
-  @GET(EirsApis.deviceDetails)
-  Future<DeviceDetailsRes> deviceDetailReq(DeviceDetailsReq deviceDetailsReq);
+  @POST(EirsApis.deviceDetails)
+  Future<DeviceDetailsRes> deviceDetailReq(@Body() DeviceDetailsReq deviceDetailsReq);
+
+  @GET(EirsApis.test)
+  Future<String> getUsers();
 }

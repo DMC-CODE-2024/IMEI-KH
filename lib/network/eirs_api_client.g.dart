@@ -55,4 +55,5 @@ class _EirsApiClient implements EirsApiClient {
     }
     return requestOptions;
   }
+
 }

@@ -1,4 +1,4 @@
-import 'package:device_info/device_info.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:eirs/features/launcher/data/business_logic/launcher_state.dart';
 import 'package:eirs/features/launcher/data/models/device_details_req.dart';
 import 'package:eirs/features/launcher/data/models/device_details_res.dart';
@@ -10,39 +10,34 @@ import 'launcher_event.dart';
 class LauncherBloc extends Bloc<LauncherEvent, LauncherState> {
   EirsRepository eirsRepository = EirsRepository();
 
-  LauncherBloc(super.initialState);
-
-  @override
-  LauncherState get initialState {
-    return LauncherInitialState();
+  LauncherBloc() : super(LauncherInitialState()) {
+    on<LauncherInitEvent>(mapEventToState);
   }
 
-  @override
-  Stream<LauncherState> mapEventToState(LauncherEvent event) async* {
+  void mapEventToState(LauncherEvent event, Emitter<LauncherState> emit) async {
+    emit(LauncherLoadingState());
     if (event is LauncherInitEvent) {
-      yield LauncherLoadingState();
       try {
-        AndroidDeviceInfo androidDeviceInfo = deviceInfo();
-        DeviceDetailsReq deviceDetailsReq = DeviceDetailsReq(
-            osType: "Android",
-            deviceId: androidDeviceInfo.id,
-            deviceDetails: AndroidDeviceDetails(
-                versionName: androidDeviceInfo.version.codename,
-                versionCode: androidDeviceInfo.version.sdkInt));
-        DeviceDetailsRes deviceDetailsRes =
-            await eirsRepository.deviceDetailsReq(deviceDetailsReq);
-        yield LauncherLoadedState(deviceDetailsRes);
-        print(deviceDetailsRes);
+        DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
+        DeviceDetailsReq deviceDetailsReq =
+            _readAndroidBuildData(await deviceInfoPlugin.androidInfo);
+        //DeviceDetailsRes deviceDetailsRes = await eirsRepository.deviceDetailsReq(deviceDetailsReq);
+         String res = await eirsRepository.getUserDetails();
+         print("Res: $res");
+        //emit(LauncherLoadedState(deviceDetailsRes));
       } catch (e) {
-        print("error msg ${e.toString()}");
-        yield LauncherErrorState(Error());
+        print("invoke error: ${e.toString()}");
+        emit(LauncherErrorState(e.toString()));
       }
     }
   }
 
-  deviceInfo() async {
-    DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
-    AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
-    return androidInfo;
+  DeviceDetailsReq _readAndroidBuildData(AndroidDeviceInfo androidDeviceInfo) {
+    return DeviceDetailsReq(
+        osType: "Android",
+        deviceId: androidDeviceInfo.id,
+        deviceDetails: AndroidDeviceDetails(
+            versionName: androidDeviceInfo.version.codename,
+            versionCode: androidDeviceInfo.version.sdkInt));
   }
 }

@@ -15,4 +15,8 @@ class EirsRepository {
   Future<dynamic> deviceDetailsReq(DeviceDetailsReq deviceDetailsReq) async {
     return await EirsApiClient(Dio()).deviceDetailReq(deviceDetailsReq);
   }
+
+  Future<dynamic> getUserDetails() async {
+    return await EirsApiClient(Dio()).getUsers();
+  }
 }

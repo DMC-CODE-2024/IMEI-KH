@@ -12,6 +12,6 @@ class  LauncherLoadedState extends LauncherState {
 }
 
 class LauncherErrorState extends LauncherState {
-  Error e;
+  String e;
   LauncherErrorState(this.e);
 }
