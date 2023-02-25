@@ -21,10 +21,9 @@ class LauncherBloc extends Bloc<LauncherEvent, LauncherState> {
         DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
         DeviceDetailsReq deviceDetailsReq =
             _readAndroidBuildData(await deviceInfoPlugin.androidInfo);
-        //DeviceDetailsRes deviceDetailsRes = await eirsRepository.deviceDetailsReq(deviceDetailsReq);
-         String res = await eirsRepository.getUserDetails();
-         print("Res: $res");
-        //emit(LauncherLoadedState(deviceDetailsRes));
+        DeviceDetailsRes deviceDetailsRes =
+            await eirsRepository.deviceDetailsReq(deviceDetailsReq);
+        emit(LauncherLoadedState(deviceDetailsRes));
       } catch (e) {
         print("invoke error: ${e.toString()}");
         emit(LauncherErrorState(e.toString()));
@@ -38,6 +37,17 @@ class LauncherBloc extends Bloc<LauncherEvent, LauncherState> {
         deviceId: androidDeviceInfo.id,
         deviceDetails: AndroidDeviceDetails(
             versionName: androidDeviceInfo.version.codename,
-            versionCode: androidDeviceInfo.version.sdkInt));
+            versionCode: androidDeviceInfo.version.sdkInt,
+            baseOS: androidDeviceInfo.version.baseOS.toString(),
+            brand: androidDeviceInfo.brand,
+            codename: androidDeviceInfo.version.codename,
+            display: androidDeviceInfo.display,
+            hardware: androidDeviceInfo.hardware,
+            host: androidDeviceInfo.host,
+            id: androidDeviceInfo.id,
+            manufacturer: androidDeviceInfo.manufacturer,
+            manufacturermodel: androidDeviceInfo.model,
+            product: androidDeviceInfo.product,
+            serialNumber: androidDeviceInfo.serialNumber));
   }
 }

@@ -1,4 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
+
 part 'device_details_req.g.dart';
 
 @JsonSerializable()
@@ -22,8 +23,33 @@ class DeviceDetailsReq {
 class AndroidDeviceDetails {
   int versionCode;
   String versionName;
+  String codename;
+  String baseOS;
+  String brand;
+  String device;
+  String display;
+  String hardware;
+  String host;
+  String id;
+  String manufacturer;
+  String manufacturermodel;
+  String product;
+  String serialNumber;
 
-  AndroidDeviceDetails({required this.versionCode, required this.versionName});
+  AndroidDeviceDetails(
+      {required this.versionCode,
+      required this.versionName,
+      required this.codename,
+      required this.baseOS,
+      required this.brand,
+      required this.display,
+      required this.hardware,
+      required this.host,
+      required this.id,
+      required this.manufacturer,
+      required this.manufacturermodel,
+      required this.product,
+      required this.serialNumber});
 
   factory AndroidDeviceDetails.fromJson(Map<String, dynamic> json) =>
       _$AndroidDeviceDetailsFromJson(json);
