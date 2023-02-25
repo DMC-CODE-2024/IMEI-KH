@@ -13,7 +13,7 @@ class _EirsApiClient implements EirsApiClient {
     this._dio, {
     this.baseUrl,
   }) {
-    baseUrl ??= 'https://eirs.gov.kh/services/checkIMEI/';
+    baseUrl ??= 'https://62eff51c57311485d12b5ca5.mockapi.io/';
   }
 
   final Dio _dio;
@@ -26,20 +26,43 @@ class _EirsApiClient implements EirsApiClient {
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
+    _data.addAll(deviceDetailsReq.toJson());
     final _result = await _dio
         .fetch<Map<String, dynamic>>(_setStreamType<DeviceDetailsRes>(Options(
-      method: 'GET',
+      method: 'POST',
       headers: _headers,
       extra: _extra,
     )
             .compose(
               _dio.options,
-              '/users',
+              'users',
               queryParameters: queryParameters,
               data: _data,
             )
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = DeviceDetailsRes.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<String> getUsers() async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<String>(_setStreamType<String>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          'test',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = _result.data!;
     return value;
   }
 
@@ -55,5 +78,4 @@ class _EirsApiClient implements EirsApiClient {
     }
     return requestOptions;
   }
-
 }
