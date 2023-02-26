@@ -13,7 +13,7 @@ class _EirsApiClient implements EirsApiClient {
     this._dio, {
     this.baseUrl,
   }) {
-    baseUrl ??= 'https://62eff51c57311485d12b5ca5.mockapi.io/';
+    baseUrl ??= 'https://eirs.gov.kh/services/';
   }
 
   final Dio _dio;
@@ -58,6 +58,28 @@ class _EirsApiClient implements EirsApiClient {
         .compose(
           _dio.options,
           'test',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = _result.data!;
+    return value;
+  }
+
+  @override
+  Future<String> checkImei() async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<String>(_setStreamType<String>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          'CEIR/services/checkIMEI',
           queryParameters: queryParameters,
           data: _data,
         )

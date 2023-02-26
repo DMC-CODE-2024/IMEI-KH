@@ -1,10 +1,11 @@
 import 'package:eirs/constants/routes.dart';
-import 'package:eirs/features/imei_info/business_logic/imei_info_bloc.dart';
 import 'package:eirs/features/imei_info/presentation/imei_info.dart';
 import 'package:eirs/features/imei_result/business_logic/imei_result_bloc.dart';
 import 'package:eirs/features/imei_result/presentation/imei_result_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../features/imei_info/data/business_logic/imei_info_bloc.dart';
 
 class AppRoutes {
   Route onGenerateRoute(RouteSettings settings) {
