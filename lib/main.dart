@@ -1,14 +1,12 @@
-import 'package:eirs/features/coach_screen/coach_screen.dart';
 import 'package:eirs/features/launcher/data/business_logic/launcher_bloc.dart';
-import 'package:eirs/features/launcher/data/business_logic/launcher_state.dart';
 import 'package:eirs/provider/app_locale.dart';
 import 'package:eirs/routes/app_routes.dart';
-import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:provider/provider.dart';
+
 import 'features/launcher/presentation/launcher_screen.dart';
 
 const String feature1 = 'feature1',
