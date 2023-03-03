@@ -21,8 +21,11 @@ class LauncherBloc extends Bloc<LauncherEvent, LauncherState> {
         DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
         DeviceDetailsReq deviceDetailsReq =
             _readAndroidBuildData(await deviceInfoPlugin.androidInfo);
+        print(deviceDetailsReq.toJson());
+        print(deviceDetailsReq.deviceDetails.toJson());
         DeviceDetailsRes deviceDetailsRes =
             await eirsRepository.deviceDetailsReq(deviceDetailsReq);
+        print(deviceDetailsRes.toJson());
         emit(LauncherLoadedState(deviceDetailsRes));
       } catch (e) {
         print("invoke error: ${e.toString()}");

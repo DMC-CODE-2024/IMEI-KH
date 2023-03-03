@@ -24,13 +24,13 @@ class _LauncherScreenState extends State<LauncherScreen> {
   @override
   void initState() {
     super.initState();
-    // WidgetsBinding.instance.addPostFrameCallback(
-    //   (_) {
-    //     Future.delayed(splashDuration, () {
-    //       Navigator.of(context).pushNamed(Routes.IMEI_INFO);
-    //     });
-    //   },
-    // );
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) {
+        Future.delayed(splashDuration, () {
+          Navigator.of(context).pushNamed(Routes.IMEI_INFO);
+        });
+      },
+    );
   }
 
   @override

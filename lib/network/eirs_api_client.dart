@@ -5,7 +5,7 @@ import 'package:retrofit/http.dart';
 import 'eirs_apis.dart';
 part 'eirs_api_client.g.dart';
 
-@RestApi(baseUrl: "https://eirs.gov.kh/services/")
+@RestApi(baseUrl: "http://159.223.159.153:9504/eirs/")
 //@RestApi(baseUrl: "https://62eff51c57311485d12b5ca5.mockapi.io/")
 abstract class EirsApiClient {
   factory EirsApiClient(Dio dio, {String baseUrl}) = _EirsApiClient;
