@@ -10,6 +10,7 @@ CheckImeiReq _$CheckImeiReqFromJson(Map<String, dynamic> json) => CheckImeiReq(
       imei: json['imei'] as String,
       operator: json['operator'] as String,
       language: json['language'] as String,
+      channel: json['channel'] as String,
     );
 
 Map<String, dynamic> _$CheckImeiReqToJson(CheckImeiReq instance) =>
@@ -17,4 +18,5 @@ Map<String, dynamic> _$CheckImeiReqToJson(CheckImeiReq instance) =>
       'imei': instance.imei,
       'operator': instance.operator,
       'language': instance.language,
+      'channel': instance.channel,
     };
