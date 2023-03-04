@@ -1,10 +1,11 @@
 import 'dart:async';
-import 'dart:ffi';
 
+import 'package:eirs/features/imei_info/presentation/imei_list.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
+import '../component/app_bar_with_title.dart';
 import 'debug_info_widget.dart';
 
 class ScannerPage extends StatefulWidget {
@@ -16,7 +17,12 @@ class ScannerPage extends StatefulWidget {
 
 class _ScannerPageState extends State<ScannerPage> {
   bool isMultiScan = true;
-
+  MobileScannerController cameraController = MobileScannerController(
+    // facing: CameraFacing.back,
+    // torchEnabled: false,
+    formats: [BarcodeFormat.all],
+    returnImage: true,
+  );
   bool showDebugInfo = true;
   int successScans = 0;
   int failedScans = 0;
@@ -24,51 +30,40 @@ class _ScannerPageState extends State<ScannerPage> {
   late Timer _timer;
   int _start = 10;
   bool isTimerStarted = false;
+  bool isNavigateNext = false;
 
   @override
   Widget build(BuildContext context) {
     final isCameraSupported = defaultTargetPlatform == TargetPlatform.iOS ||
         defaultTargetPlatform == TargetPlatform.android;
     return Scaffold(
-        appBar: AppBar(title: const Text("Scan Code")),
-        body: WillPopScope(
-          onWillPop: () {
-            //on Back button press, you can use WillPopScope for another purpose also.
-            Navigator.pop(context, uniqueImei); //return data along with pop
-            return Future(
-                () => false); //onWillPop is Future<bool> so return false
-          },
-          child: Builder(
-            builder: (context) {
-              return Stack(
-                children: [
-                  MobileScanner(
-                    fit: BoxFit.fitHeight,
-                    controller: MobileScannerController(
-                      // facing: CameraFacing.back,
-                      // torchEnabled: false,
-                      formats: [BarcodeFormat.all],
-                      returnImage: true,
-                    ),
-                    onDetect: (capture) {
-                      final List<Barcode> barcodes = capture.barcodes;
-                      final Uint8List? image = capture.image;
-                      for (final barcode in barcodes) {
-                        getScanBarCodeResult(barcode.rawValue);
-                      }
-                    },
-                  ),
-                  if (showDebugInfo)
-                    DebugInfoWidget(
-                      successScans: successScans,
-                      failedScans: failedScans,
-                      onReset: _onReset,
-                    ),
-                ],
-              );
-            },
-          ),
-        ));
+      appBar: const AppBarWithTitleOnly(title: "Scan code"),
+      body: Builder(
+        builder: (context) {
+          return Stack(
+            children: [
+              MobileScanner(
+                fit: BoxFit.fitHeight,
+                controller: cameraController,
+                onDetect: (capture) {
+                  final List<Barcode> barcodes = capture.barcodes;
+                  final Uint8List? image = capture.image;
+                  for (final barcode in barcodes) {
+                    getScanBarCodeResult(barcode.rawValue);
+                  }
+                },
+              ),
+              if (showDebugInfo)
+                DebugInfoWidget(
+                  successScans: successScans,
+                  failedScans: failedScans,
+                  onReset: _onReset,
+                ),
+            ],
+          );
+        },
+      ),
+    );
   }
 
   bool _isNumeric(String str) {
@@ -83,8 +78,7 @@ class _ScannerPageState extends State<ScannerPage> {
       if (uniqueImei.containsKey(code)) {
         var count = uniqueImei[code];
         if (count == 3) {
-          stopTimer();
-          Navigator.pop(context, uniqueImei);
+          navigateNext();
         }
         if (count != null) uniqueImei[code] = count + 1;
       } else {
@@ -95,8 +89,30 @@ class _ScannerPageState extends State<ScannerPage> {
     startTimer();
   }
 
+  void navigateNext() {
+    cameraController.stop();
+    stopTimer();
+    isNavigateNext = true;
+    Navigator.of(context)
+        .push(MaterialPageRoute(
+            builder: (context) => ImeiListPage(data: uniqueImei)))
+        .then((_) {
+      // This block runs when you have come back to the 1st Page from 2nd.
+      setState(() {
+        _start = 10;
+        successScans = 0;
+        failedScans = 0;
+        cameraController.start();
+        isNavigateNext = false;
+        isTimerStarted = false;
+        // Call setState to refresh the page.
+      });
+      uniqueImei.clear();
+    });
+  }
+
   void startTimer() {
-    if (!isTimerStarted) {
+    if (!isTimerStarted && !isNavigateNext) {
       isTimerStarted = true;
       const oneSec = Duration(seconds: 1);
       _timer = Timer.periodic(
@@ -104,8 +120,7 @@ class _ScannerPageState extends State<ScannerPage> {
         (Timer timer) {
           if (_start == 0) {
             setState(() {
-              Navigator.pop(context, uniqueImei);
-              timer.cancel();
+              navigateNext();
             });
           } else {
             setState(() {

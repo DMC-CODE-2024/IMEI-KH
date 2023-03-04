@@ -1,6 +1,7 @@
 class StringConstants {
   const StringConstants._();
 
+  static const String splashTitle = "Equipment Identity Register System App";
   static const String appName = 'EIRS App';
   static const String homeAppBarTitle = 'Notes';
   static const String splashCopyRightText =
@@ -22,7 +23,9 @@ class StringConstants {
   static const String contactUs = 'Contact us';
 
   static const String changeLanguage = 'Change Language';
+  static const String selectImei = 'Select IMEI';
   static const String ok = 'Ok';
+  static const String check = 'Check';
   static const String englishCode = 'en';
   static const String english = 'English';
   static const String khmerCode = 'km';

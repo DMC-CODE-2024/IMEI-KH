@@ -6,13 +6,14 @@ import '../../theme/colors.dart';
 import '../../theme/spacing.dart';
 
 class AppButton extends StatelessWidget {
-  const AppButton({
-    Key? key,
-    required this.child,
-    required this.onPressed,
-    this.isLoading = false,
-  }) : super(key: key);
-
+  const AppButton(
+      {Key? key,
+      required this.child,
+      required this.onPressed,
+      this.isLoading = false,
+      this.width = double.infinity})
+      : super(key: key);
+  final double? width;
   final Widget? child;
   final VoidCallback? onPressed;
   final bool isLoading;
@@ -31,6 +32,7 @@ class AppButton extends StatelessWidget {
             child: child,
           ),
           child: Container(
+            width: width ?? double.infinity,
             padding: const EdgeInsets.all(AppSpacings.m),
             height: 35,
             constraints: const BoxConstraints(minWidth: 40),

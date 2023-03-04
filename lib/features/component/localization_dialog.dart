@@ -104,11 +104,25 @@ class _LocalizationDialogState extends State<LocalizationDialog> {
                                   color: isEnglish
                                       ? AppColors.white
                                       : AppColors.dialogBg),
-                              child: const Align(
+                              child: Align(
                                 alignment: Alignment.center,
                                 child: Padding(
-                                  padding: EdgeInsets.symmetric(vertical: 8),
-                                  child: Text(StringConstants.english),
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 8),
+                                  child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Image.asset(
+                                          ImageConstants.englishLanIcon,
+                                          width: 26,
+                                          height: 13,
+                                        ),
+                                        const Padding(
+                                          padding: EdgeInsets.only(left: 4),
+                                          child: Text(StringConstants.english),
+                                        ),
+                                      ]),
                                 ),
                               ),
                             ),
@@ -130,11 +144,25 @@ class _LocalizationDialogState extends State<LocalizationDialog> {
                                   color: isEnglish
                                       ? AppColors.dialogBg
                                       : AppColors.white),
-                              child: const Align(
+                              child: Align(
                                 alignment: Alignment.center,
                                 child: Padding(
-                                  padding: EdgeInsets.symmetric(vertical: 8),
-                                  child: Text(StringConstants.khmer),
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 8),
+                                  child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Image.asset(
+                                          ImageConstants.khmerLanIcon,
+                                          width: 26,
+                                          height: 15,
+                                        ),
+                                        const Padding(
+                                          padding: EdgeInsets.only(left: 4),
+                                          child: Text(StringConstants.khmer),
+                                        ),
+                                      ]),
                                 ),
                               ),
                             ),

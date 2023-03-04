@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 
 import '../../../constants/routes.dart';
 import '../../../constants/strings.dart';
+import '../../../helper/app_states.dart';
 import '../../../helper/shared_pref.dart';
 import '../../../main.dart';
 import '../../../provider/app_locale.dart';
@@ -34,6 +35,7 @@ class _ImeiInfoScreenState extends State<ImeiInfoScreen> {
   void initState() {
     super.initState();
     //dropdownValue = AppLanguage.languages().first;
+    print("Details is: ${AppStates.getLabelDetails()?.toJson()}");
   }
 
   @override
@@ -90,8 +92,7 @@ class _ImeiInfoScreenState extends State<ImeiInfoScreen> {
               Container(
                 margin: const EdgeInsets.only(top: 15, bottom: 5),
                 child: Text(AppLocalizations.of(context)!.enterImei,
-                    style:
-                    const TextStyle(fontSize: 14, color: Colors.black)),
+                    style: const TextStyle(fontSize: 14, color: Colors.black)),
               ),
               Row(
                 children: [
@@ -105,14 +106,13 @@ class _ImeiInfoScreenState extends State<ImeiInfoScreen> {
                             controller: txtController,
                             decoration: InputDecoration(
                                 border: OutlineInputBorder(
-                                  borderSide:
-                                  BorderSide(color: AppColors.grey),
+                                  borderSide: BorderSide(color: AppColors.grey),
                                   borderRadius: BorderRadius.circular(8.0),
                                 ),
                                 filled: true,
                                 focusedBorder: OutlineInputBorder(
                                     borderSide:
-                                    BorderSide(color: AppColors.grey)),
+                                        BorderSide(color: AppColors.grey)),
                                 hintText: StringConstants.imeiNumberHint,
                                 hintStyle: const TextStyle(fontSize: 10),
                                 fillColor: Colors.white70),
@@ -123,8 +123,7 @@ class _ImeiInfoScreenState extends State<ImeiInfoScreen> {
                           child: Padding(
                             padding: const EdgeInsets.only(top: 5),
                             child: Text(
-                              AppLocalizations.of(context)!
-                                  .imeiNumberLength,
+                              AppLocalizations.of(context)!.imeiNumberLength,
                               style: TextStyle(
                                   fontSize: 10, color: AppColors.grey),
                             ),
@@ -150,8 +149,8 @@ class _ImeiInfoScreenState extends State<ImeiInfoScreen> {
                             children: [
                               InkWell(
                                 onTap: () => _startScanner(),
-                                child: SvgPicture.asset(
-                                    ImageConstants.scanIcon),
+                                child:
+                                    SvgPicture.asset(ImageConstants.scanIcon),
                               ),
                               Padding(
                                 padding: const EdgeInsets.only(top: 6),
@@ -183,8 +182,8 @@ class _ImeiInfoScreenState extends State<ImeiInfoScreen> {
                   padding: const EdgeInsets.symmetric(vertical: 10),
                   child: Text(
                     AppLocalizations.of(context)!.findImei,
-                    style: TextStyle(
-                        color: AppColors.secondary, fontSize: 14.0),
+                    style:
+                        TextStyle(color: AppColors.secondary, fontSize: 14.0),
                   ),
                 ),
               ),
@@ -192,8 +191,8 @@ class _ImeiInfoScreenState extends State<ImeiInfoScreen> {
                 padding: const EdgeInsets.only(top: 15, bottom: 5),
                 child: Text(
                   AppLocalizations.of(context)!.optionA,
-                  style: TextStyle(
-                      color: AppColors.buttonColor, fontSize: 14.0),
+                  style:
+                      TextStyle(color: AppColors.buttonColor, fontSize: 14.0),
                 ),
               ),
               Text(
@@ -216,16 +215,16 @@ class _ImeiInfoScreenState extends State<ImeiInfoScreen> {
                 margin: const EdgeInsets.only(top: 10),
                 child: Text(
                   AppLocalizations.of(context)!.or,
-                  style: TextStyle(
-                      fontSize: 14, color: AppColors.greyTextColor),
+                  style:
+                      TextStyle(fontSize: 14, color: AppColors.greyTextColor),
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 10, bottom: 5),
                 child: Text(
                   AppLocalizations.of(context)!.optionB,
-                  style: TextStyle(
-                      color: AppColors.buttonColor, fontSize: 14.0),
+                  style:
+                      TextStyle(color: AppColors.buttonColor, fontSize: 14.0),
                 ),
               ),
               Text(
@@ -237,23 +236,22 @@ class _ImeiInfoScreenState extends State<ImeiInfoScreen> {
                 padding: EdgeInsets.only(top: 12.0, bottom: 5),
                 child: Text(
                   AppLocalizations.of(context)!.needAnyHelp,
-                  style: TextStyle(
-                      color: AppColors.greyTextColor, fontSize: 14.0),
+                  style:
+                      TextStyle(color: AppColors.greyTextColor, fontSize: 14.0),
                 ),
               ),
               Row(
                 children: [
                   Text(
                     AppLocalizations.of(context)!.contactUs,
-                    style:
-                    TextStyle(color: AppColors.black, fontSize: 14.0),
+                    style: TextStyle(color: AppColors.black, fontSize: 14.0),
                   ),
                   Padding(
                     padding: EdgeInsets.only(left: 10),
                     child: Text(
                       "xyz12@gmail.com",
-                      style: TextStyle(
-                          color: AppColors.secondary, fontSize: 14.0),
+                      style:
+                          TextStyle(color: AppColors.secondary, fontSize: 14.0),
                     ),
                   )
                 ],
@@ -267,7 +265,7 @@ class _ImeiInfoScreenState extends State<ImeiInfoScreen> {
 
   Future<void> _startScanner() async {
     var result =
-    await Navigator.push(context, MaterialPageRoute(builder: (context) {
+        await Navigator.push(context, MaterialPageRoute(builder: (context) {
       return const ScannerPage();
     }));
   }
@@ -286,7 +284,6 @@ class _ImeiInfoScreenState extends State<ImeiInfoScreen> {
   }
 
   void _appBarActions(AppBarActions values) {
-    print("yes invoke here");
     switch (values) {
       case AppBarActions.localization:
         _showLocalizationDialog();
@@ -295,17 +292,18 @@ class _ImeiInfoScreenState extends State<ImeiInfoScreen> {
         break;
       case AppBarActions.info:
         WidgetsBinding.instance.addPostFrameCallback((_) {
-        FeatureDiscovery.discoverFeatures(
-          context,
-          const <String>{
-            feature1,
-            feature2,
-            feature3,
-            feature4,
-            feature6,
-            feature5
-          },
-        );});
+          FeatureDiscovery.discoverFeatures(
+            context,
+            const <String>{
+              feature1,
+              feature2,
+              feature3,
+              feature4,
+              feature6,
+              feature5
+            },
+          );
+        });
         break;
     }
   }
