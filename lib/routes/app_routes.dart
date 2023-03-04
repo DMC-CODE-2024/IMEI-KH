@@ -23,7 +23,7 @@ class AppRoutes {
       case Routes.IMEI_INFO:
         return MaterialPageRoute(
           builder: (_) => BlocProvider.value(
-            value: ImeiInfoBloc(),
+            value: CheckImeiBloc(),
             child: const FeatureDiscovery.withProvider(
               persistenceProvider: NoPersistenceProvider(),
               child: ImeiInfoScreen(title: 'Home Screen'),

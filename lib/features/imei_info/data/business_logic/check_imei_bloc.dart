@@ -18,7 +18,9 @@ class CheckImeiBloc extends Bloc<CheckImeiEvent, CheckImeiState> {
     emit(CheckImeiLoadingState());
     if (event is CheckImeiInitEvent) {
       try {
+        print("yes here");
         CheckImeiReq checkImeiReq = CheckImeiReq(imei: event.inputImei, operator: "smart", language: "en");
+        print(checkImeiReq.toJson());
         CheckImeiRes checkImeiRes =
         await eirsRepository.checkImei(checkImeiReq);
         emit(CheckImeiLoadedState(checkImeiRes));

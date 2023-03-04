@@ -1,12 +1,14 @@
 import 'package:eirs/constants/image_path.dart';
 import 'package:eirs/features/component/localization_dialog.dart';
+import 'package:eirs/features/imei_info/data/business_logic/check_imei_bloc.dart';
+import 'package:eirs/features/imei_info/data/business_logic/check_imei_state.dart';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 
-import '../../../constants/routes.dart';
 import '../../../constants/strings.dart';
 import '../../../helper/app_states.dart';
 import '../../../helper/shared_pref.dart';
@@ -30,6 +32,7 @@ class _ImeiInfoScreenState extends State<ImeiInfoScreen> {
   var _appLocale;
   String _scanBarcode = '';
   final TextEditingController imeiController = TextEditingController();
+
   @override
   void initState() {
     super.initState();
@@ -78,185 +81,189 @@ class _ImeiInfoScreenState extends State<ImeiInfoScreen> {
           _appBarActions(value);
         },
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(25),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Text(
-                AppLocalizations.of(context)!.appName,
-                style: TextStyle(fontSize: 20, color: AppColors.secondary),
-              ),
-              Container(
-                margin: const EdgeInsets.only(top: 15, bottom: 5),
-                child: Text(AppLocalizations.of(context)!.enterImei,
-                    style: const TextStyle(fontSize: 14, color: Colors.black)),
-              ),
-              Row(
-                children: [
-                  Flexible(
-                    flex: 1,
-                    child: Column(
-                      children: [
-                        SizedBox(
-                          height: 40,
-                          child: TextField(
-                            controller: imeiController,
-                            decoration: InputDecoration(
-                                border: OutlineInputBorder(
-                                  borderSide: BorderSide(color: AppColors.grey),
-                                  borderRadius: BorderRadius.circular(8.0),
-                                ),
-                                filled: true,
-                                focusedBorder: OutlineInputBorder(
-                                    borderSide:
-                                        BorderSide(color: AppColors.grey)),
-                                hintText: StringConstants.imeiNumberHint,
-                                hintStyle: const TextStyle(fontSize: 10),
-                                fillColor: Colors.white70),
-                          ),
+      body: BlocConsumer<CheckImeiBloc, CheckImeiState>(
+        builder: (context, state) {
+          return _imeiPageWidget();
+        },
+        listener: (context, state) {},
+      ),
+    );
+  }
+
+  Widget _imeiPageWidget() {
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.all(25),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Text(
+              AppLocalizations.of(context)!.appName,
+              style: TextStyle(fontSize: 20, color: AppColors.secondary),
+            ),
+            Container(
+              margin: const EdgeInsets.only(top: 15, bottom: 5),
+              child: Text(AppLocalizations.of(context)!.enterImei,
+                  style: const TextStyle(fontSize: 14, color: Colors.black)),
+            ),
+            Row(
+              children: [
+                Flexible(
+                  flex: 1,
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: 40,
+                        child: TextField(
+                          controller: imeiController,
+                          decoration: InputDecoration(
+                              border: OutlineInputBorder(
+                                borderSide: BorderSide(color: AppColors.grey),
+                                borderRadius: BorderRadius.circular(8.0),
+                              ),
+                              filled: true,
+                              focusedBorder: OutlineInputBorder(
+                                  borderSide:
+                                      BorderSide(color: AppColors.grey)),
+                              hintText: StringConstants.imeiNumberHint,
+                              hintStyle: const TextStyle(fontSize: 10),
+                              fillColor: Colors.white70),
                         ),
-                        Align(
-                          alignment: Alignment.centerRight,
-                          child: Padding(
-                            padding: const EdgeInsets.only(top: 5),
-                            child: Text(
-                              AppLocalizations.of(context)!.imeiNumberLength,
-                              style: TextStyle(
-                                  fontSize: 10, color: AppColors.grey),
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                  Flexible(
-                    flex: 1,
-                    child: Row(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 20),
+                      ),
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 5),
                           child: Text(
-                            AppLocalizations.of(context)!.or,
-                            style: const TextStyle(fontSize: 14),
+                            AppLocalizations.of(context)!.imeiNumberLength,
+                            style:
+                                TextStyle(fontSize: 10, color: AppColors.grey),
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 30),
-                          child: Column(
-                            children: [
-                              InkWell(
-                                onTap: () => _startScanner(),
-                                child:
-                                    SvgPicture.asset(ImageConstants.scanIcon),
+                      )
+                    ],
+                  ),
+                ),
+                Flexible(
+                  flex: 1,
+                  child: Row(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(left: 20),
+                        child: Text(
+                          AppLocalizations.of(context)!.or,
+                          style: const TextStyle(fontSize: 14),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 30),
+                        child: Column(
+                          children: [
+                            InkWell(
+                              onTap: () => _startScanner(),
+                              child: SvgPicture.asset(ImageConstants.scanIcon),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 6),
+                              child: Text(
+                                AppLocalizations.of(context)!.scanBarcode,
+                                style: const TextStyle(
+                                    fontSize: 14, color: Colors.black),
                               ),
-                              Padding(
-                                padding: const EdgeInsets.only(top: 6),
-                                child: Text(
-                                  AppLocalizations.of(context)!.scanBarcode,
-                                  style: const TextStyle(
-                                      fontSize: 14, color: Colors.black),
-                                ),
-                              ),
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
-                  )
-                ],
+                            ),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                )
+              ],
+            ),
+            Container(
+              margin: const EdgeInsets.only(top: 30),
+              child: AppButton(
+                isLoading: false,
+                child: Text(AppLocalizations.of(context)!.checkImei),
+                onPressed: () => _checkImei(context),
               ),
-              Container(
-                margin: const EdgeInsets.only(top: 30),
-                child: AppButton(
-                  isLoading: false,
-                  child: Text(AppLocalizations.of(context)!.checkImei),
-                  onPressed: () => _checkImei(context),
+            ),
+            Container(
+              margin: const EdgeInsets.only(top: 40.0),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10),
+                child: Text(
+                  AppLocalizations.of(context)!.findImei,
+                  style: TextStyle(color: AppColors.secondary, fontSize: 14.0),
                 ),
               ),
-              Container(
-                margin: const EdgeInsets.only(top: 40.0),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 10),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 15, bottom: 5),
+              child: Text(
+                AppLocalizations.of(context)!.optionA,
+                style: TextStyle(color: AppColors.buttonColor, fontSize: 14.0),
+              ),
+            ),
+            Text(
+              AppLocalizations.of(context)!.optionALabel,
+              style: TextStyle(color: AppColors.black, fontSize: 14.0),
+            ),
+            Row(
+              children: [
+                Flexible(
+                  child: Image.asset(ImageConstants.deviceBox),
+                  flex: 1,
+                ),
+                Flexible(
+                  child: Image.asset(ImageConstants.deviceBox),
+                  flex: 1,
+                )
+              ],
+            ),
+            Container(
+              margin: const EdgeInsets.only(top: 10),
+              child: Text(
+                AppLocalizations.of(context)!.or,
+                style: TextStyle(fontSize: 14, color: AppColors.greyTextColor),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 10, bottom: 5),
+              child: Text(
+                AppLocalizations.of(context)!.optionB,
+                style: TextStyle(color: AppColors.buttonColor, fontSize: 14.0),
+              ),
+            ),
+            Text(
+              AppLocalizations.of(context)!.optionBLabel,
+              style: TextStyle(color: AppColors.black, fontSize: 14.0),
+            ),
+            Image.asset(ImageConstants.deviceInfo),
+            Padding(
+              padding: EdgeInsets.only(top: 12.0, bottom: 5),
+              child: Text(
+                AppLocalizations.of(context)!.needAnyHelp,
+                style:
+                    TextStyle(color: AppColors.greyTextColor, fontSize: 14.0),
+              ),
+            ),
+            Row(
+              children: [
+                Text(
+                  AppLocalizations.of(context)!.contactUs,
+                  style: TextStyle(color: AppColors.black, fontSize: 14.0),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(left: 10),
                   child: Text(
-                    AppLocalizations.of(context)!.findImei,
+                    "xyz12@gmail.com",
                     style:
                         TextStyle(color: AppColors.secondary, fontSize: 14.0),
                   ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 15, bottom: 5),
-                child: Text(
-                  AppLocalizations.of(context)!.optionA,
-                  style:
-                      TextStyle(color: AppColors.buttonColor, fontSize: 14.0),
-                ),
-              ),
-              Text(
-                AppLocalizations.of(context)!.optionALabel,
-                style: TextStyle(color: AppColors.black, fontSize: 14.0),
-              ),
-              Row(
-                children: [
-                  Flexible(
-                    child: Image.asset(ImageConstants.deviceBox),
-                    flex: 1,
-                  ),
-                  Flexible(
-                    child: Image.asset(ImageConstants.deviceBox),
-                    flex: 1,
-                  )
-                ],
-              ),
-              Container(
-                margin: const EdgeInsets.only(top: 10),
-                child: Text(
-                  AppLocalizations.of(context)!.or,
-                  style:
-                      TextStyle(fontSize: 14, color: AppColors.greyTextColor),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 10, bottom: 5),
-                child: Text(
-                  AppLocalizations.of(context)!.optionB,
-                  style:
-                      TextStyle(color: AppColors.buttonColor, fontSize: 14.0),
-                ),
-              ),
-              Text(
-                AppLocalizations.of(context)!.optionBLabel,
-                style: TextStyle(color: AppColors.black, fontSize: 14.0),
-              ),
-              Image.asset(ImageConstants.deviceInfo),
-              Padding(
-                padding: EdgeInsets.only(top: 12.0, bottom: 5),
-                child: Text(
-                  AppLocalizations.of(context)!.needAnyHelp,
-                  style:
-                      TextStyle(color: AppColors.greyTextColor, fontSize: 14.0),
-                ),
-              ),
-              Row(
-                children: [
-                  Text(
-                    AppLocalizations.of(context)!.contactUs,
-                    style: TextStyle(color: AppColors.black, fontSize: 14.0),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(left: 10),
-                    child: Text(
-                      "xyz12@gmail.com",
-                      style:
-                          TextStyle(color: AppColors.secondary, fontSize: 14.0),
-                    ),
-                  )
-                ],
-              )
-            ],
-          ),
+                )
+              ],
+            )
+          ],
         ),
       ),
     );
@@ -280,6 +287,8 @@ class _ImeiInfoScreenState extends State<ImeiInfoScreen> {
 
   void _checkImei(BuildContext context) {
     String inputImei = imeiController.text;
+    CheckImeiBloc bloc = BlocProvider.of<CheckImeiBloc>(context);
+    bloc.add(CheckImeiInitEvent(inputImei: inputImei));
     //Navigator.of(context).pushNamed(Routes.IMEI_RESULT);
   }
 
