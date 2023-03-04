@@ -2,6 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'check_imei_res.g.dart';
 
+@JsonSerializable()
 class CheckImeiRes {
   String? statusCode;
   String? statusMessage;
@@ -16,6 +17,7 @@ class CheckImeiRes {
   Map<String, dynamic> toJson() => _$CheckImeiResToJson(this);
 }
 
+@JsonSerializable()
 class CheckImeiResult {
   String? message;
   ScanImeiDeviceDetail? deviceDetails;
@@ -28,6 +30,7 @@ class CheckImeiResult {
   Map<String, dynamic> toJson() => _$CheckImeiResultToJson(this);
 }
 
+@JsonSerializable()
 class ScanImeiDeviceDetail {
   @JsonKey(name: 'Brand Name')
   String? brandName;

@@ -8,13 +8,13 @@ part of 'check_imei_req.dart';
 
 CheckImeiReq _$CheckImeiReqFromJson(Map<String, dynamic> json) => CheckImeiReq(
       imei: json['imei'] as String,
-      interfaces: json['interfaces'] as String,
+      operator: json['operator'] as String,
       language: json['language'] as String,
     );
 
 Map<String, dynamic> _$CheckImeiReqToJson(CheckImeiReq instance) =>
     <String, dynamic>{
       'imei': instance.imei,
-      'interfaces': instance.interfaces,
+      'operator': instance.operator,
       'language': instance.language,
     };
