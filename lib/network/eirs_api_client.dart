@@ -21,5 +21,6 @@ abstract class EirsApiClient {
   Future<String> getUsers();
 
   @POST(EirsApis.checkImei)
-  Future<CheckImeiRes> checkImei(CheckImeiReq checkImeiReq);
+  Future<CheckImeiRes> checkImei(@Body() CheckImeiReq checkImeiReq,
+      {@Header('Content-Type') String contentType = 'application/json'});
 }

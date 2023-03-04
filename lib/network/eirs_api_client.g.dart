@@ -67,16 +67,22 @@ class _EirsApiClient implements EirsApiClient {
   }
 
   @override
-  Future<CheckImeiRes> checkImei(checkImeiReq) async {
+  Future<CheckImeiRes> checkImei(
+    checkImeiReq, {
+    contentType = 'application/json',
+  }) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
+    final _headers = <String, dynamic>{r'Content-Type': contentType};
+    _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
+    _data.addAll(checkImeiReq.toJson());
     final _result = await _dio
         .fetch<Map<String, dynamic>>(_setStreamType<CheckImeiRes>(Options(
       method: 'POST',
       headers: _headers,
       extra: _extra,
+      contentType: contentType,
     )
             .compose(
               _dio.options,
