@@ -286,6 +286,7 @@ class _ImeiInfoScreenState extends State<ImeiInfoScreen> {
   }
 
   void _appBarActions(AppBarActions values) {
+    print("yes invoke here");
     switch (values) {
       case AppBarActions.localization:
         _showLocalizationDialog();
@@ -293,7 +294,6 @@ class _ImeiInfoScreenState extends State<ImeiInfoScreen> {
       case AppBarActions.history:
         break;
       case AppBarActions.info:
-        print("yes invoke here");
         WidgetsBinding.instance.addPostFrameCallback((_) {
         FeatureDiscovery.discoverFeatures(
           context,

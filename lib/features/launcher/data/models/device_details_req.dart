@@ -24,7 +24,6 @@ class AndroidDeviceDetails {
   int versionCode;
   String versionName;
   String codename;
-  String baseOS;
   String brand;
   String device;
   String display;
@@ -34,12 +33,10 @@ class AndroidDeviceDetails {
   String manufacturer;
   String manufacturermodel;
   String product;
-  String serialNumber;
 
   AndroidDeviceDetails(
       {required this.versionCode,
       required this.versionName,
-      required this.baseOS,
       required this.codename,
       required this.brand,
       required this.device,
@@ -49,8 +46,7 @@ class AndroidDeviceDetails {
       required this.host,
       required this.manufacturer,
       required this.manufacturermodel,
-      required this.product,
-      required this.serialNumber});
+      required this.product});
 
   factory AndroidDeviceDetails.fromJson(Map<String, dynamic> json) =>
       _$AndroidDeviceDetailsFromJson(json);

@@ -26,7 +26,6 @@ AndroidDeviceDetails _$AndroidDeviceDetailsFromJson(
     AndroidDeviceDetails(
       versionCode: json['versionCode'] as int,
       versionName: json['versionName'] as String,
-      baseOS: json['baseOS'] as String,
       codename: json['codename'] as String,
       brand: json['brand'] as String,
       device: json['device'] as String,
@@ -37,7 +36,6 @@ AndroidDeviceDetails _$AndroidDeviceDetailsFromJson(
       manufacturer: json['manufacturer'] as String,
       manufacturermodel: json['manufacturermodel'] as String,
       product: json['product'] as String,
-      serialNumber: json['serialNumber'] as String,
     );
 
 Map<String, dynamic> _$AndroidDeviceDetailsToJson(
@@ -46,7 +44,6 @@ Map<String, dynamic> _$AndroidDeviceDetailsToJson(
       'versionCode': instance.versionCode,
       'versionName': instance.versionName,
       'codename': instance.codename,
-      'baseOS': instance.baseOS,
       'brand': instance.brand,
       'device': instance.device,
       'display': instance.display,
@@ -56,5 +53,4 @@ Map<String, dynamic> _$AndroidDeviceDetailsToJson(
       'manufacturer': instance.manufacturer,
       'manufacturermodel': instance.manufacturermodel,
       'product': instance.product,
-      'serialNumber': instance.serialNumber,
     };

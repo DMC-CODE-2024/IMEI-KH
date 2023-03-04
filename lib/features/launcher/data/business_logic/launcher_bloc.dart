@@ -21,14 +21,12 @@ class LauncherBloc extends Bloc<LauncherEvent, LauncherState> {
         DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
         DeviceDetailsReq deviceDetailsReq =
             _readAndroidBuildData(await deviceInfoPlugin.androidInfo);
-        print(deviceDetailsReq.toJson());
-        print(deviceDetailsReq.deviceDetails.toJson());
         DeviceDetailsRes deviceDetailsRes =
             await eirsRepository.deviceDetailsReq(deviceDetailsReq);
+        print("after response");
         print(deviceDetailsRes.toJson());
         emit(LauncherLoadedState(deviceDetailsRes));
       } catch (e) {
-        print("invoke error: ${e.toString()}");
         emit(LauncherErrorState(e.toString()));
       }
     }
@@ -41,7 +39,6 @@ class LauncherBloc extends Bloc<LauncherEvent, LauncherState> {
         deviceDetails: AndroidDeviceDetails(
             versionCode: androidDeviceInfo.version.sdkInt,
             versionName: androidDeviceInfo.version.codename,
-            baseOS: androidDeviceInfo.version.baseOS.toString(),
             codename: androidDeviceInfo.version.codename,
             brand: androidDeviceInfo.brand,
             device: androidDeviceInfo.device,
@@ -51,7 +48,6 @@ class LauncherBloc extends Bloc<LauncherEvent, LauncherState> {
             host: androidDeviceInfo.host,
             manufacturer: androidDeviceInfo.manufacturer,
             manufacturermodel: androidDeviceInfo.model,
-            product: androidDeviceInfo.product,
-            serialNumber: androidDeviceInfo.serialNumber));
+            product: androidDeviceInfo.product));
   }
 }

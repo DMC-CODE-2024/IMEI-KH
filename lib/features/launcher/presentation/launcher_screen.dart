@@ -1,14 +1,15 @@
 import 'package:eirs/constants/constants.dart';
-import 'package:eirs/constants/image_path.dart';
 import 'package:eirs/constants/routes.dart';
-import 'package:eirs/constants/strings.dart';
 import 'package:eirs/features/launcher/data/business_logic/launcher_bloc.dart';
 import 'package:eirs/features/launcher/data/business_logic/launcher_state.dart';
-import 'package:eirs/theme/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 
+import '../../../constants/image_path.dart';
+import '../../../constants/strings.dart';
+import '../../../theme/colors.dart';
 import '../data/business_logic/launcher_event.dart';
 
 class LauncherScreen extends StatefulWidget {
@@ -24,28 +25,37 @@ class _LauncherScreenState extends State<LauncherScreen> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback(
-      (_) {
-        Future.delayed(splashDuration, () {
-          Navigator.of(context).pushNamed(Routes.IMEI_INFO);
-        });
-      },
-    );
+    /*Future.delayed(splashDuration, () {
+      Navigator.pushNamedAndRemoveUntil(
+          context, Routes.IMEI_INFO, (route) => false);
+    });*/
   }
 
   @override
   Widget build(BuildContext context) {
     LauncherBloc bloc = BlocProvider.of<LauncherBloc>(context);
     bloc.add(LauncherInitEvent());
-    return Scaffold(
-        body: Column(
-      children: <Widget>[
+    return Scaffold(body:
         BlocBuilder<LauncherBloc, LauncherState>(builder: (context, state) {
-          if (state is LauncherLoadingState) {
-            print("invoke 3");
-          }
-          return Container();
-        }),
+      if (state is LauncherLoadingState) {
+        return Center(
+          child: _splashWidget(),
+        );
+      }
+      if (state is LauncherLoadedState) {
+        SchedulerBinding.instance.addPostFrameCallback((_) {
+          Navigator.pushNamedAndRemoveUntil(
+              context, Routes.IMEI_INFO, (route) => false);
+        });
+        return Container();
+      }
+      return Container();
+    }));
+  }
+
+  Widget _splashWidget() {
+    return Column(
+      children: <Widget>[
         Expanded(
           child: Center(
             child: Column(
@@ -74,6 +84,6 @@ class _LauncherScreenState extends State<LauncherScreen> {
               )),
         ),
       ],
-    ));
+    );
   }
 }

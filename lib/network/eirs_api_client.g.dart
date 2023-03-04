@@ -13,7 +13,7 @@ class _EirsApiClient implements EirsApiClient {
     this._dio, {
     this.baseUrl,
   }) {
-    baseUrl ??= 'https://eirs.gov.kh/services/';
+    baseUrl ??= 'http://159.223.159.153:9504/eirs/';
   }
 
   final Dio _dio;
@@ -35,7 +35,7 @@ class _EirsApiClient implements EirsApiClient {
     )
             .compose(
               _dio.options,
-              'users',
+              'MobileDeviceDetails/save',
               queryParameters: queryParameters,
               data: _data,
             )

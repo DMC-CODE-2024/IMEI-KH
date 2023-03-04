@@ -113,7 +113,7 @@ class EirsAppBar extends StatelessWidget with PreferredSizeWidget {
             },
             child: IconButton(
               icon: SvgPicture.asset(ImageConstants.infoIcon),
-              onPressed: callback.call(AppBarActions.info),
+              onPressed: ()=>{},
             )),
         DescribedFeatureOverlay(
           featureId: feature7,
