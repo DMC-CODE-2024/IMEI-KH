@@ -20,7 +20,7 @@ class CheckImeiRes {
 @JsonSerializable()
 class CheckImeiResult {
   String? message;
-  ScanImeiDeviceDetail? deviceDetails;
+  Map<String,dynamic>? deviceDetails;
 
   CheckImeiResult();
 
@@ -28,25 +28,4 @@ class CheckImeiResult {
       _$CheckImeiResultFromJson(json);
 
   Map<String, dynamic> toJson() => _$CheckImeiResultToJson(this);
-}
-
-@JsonSerializable()
-class ScanImeiDeviceDetail {
-  @JsonKey(name: 'Brand Name')
-  String? brandName;
-  @JsonKey(name: 'Model Name')
-  String? modelName;
-  @JsonKey(name: 'Manufacturer')
-  String? manufacturer;
-  @JsonKey(name: 'Marketing Name')
-  String? marketingName;
-  @JsonKey(name: 'Device Type')
-  String? deviceType;
-
-  ScanImeiDeviceDetail();
-
-  factory ScanImeiDeviceDetail.fromJson(Map<String, dynamic> json) =>
-      _$ScanImeiDeviceDetailFromJson(json);
-
-  Map<String, dynamic> toJson() => _$ScanImeiDeviceDetailToJson(this);
 }

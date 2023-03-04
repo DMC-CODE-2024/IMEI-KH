@@ -19,12 +19,12 @@ class CheckImeiBloc extends Bloc<CheckImeiEvent, CheckImeiState> {
     if (event is CheckImeiInitEvent) {
       try {
         print("yes here");
-        CheckImeiReq checkImeiReq = CheckImeiReq(imei: event.inputImei, operator: "smart", language: "en");
+        CheckImeiReq checkImeiReq = CheckImeiReq(imei: event.inputImei, operator: "smart", language: "en",channel: "string");
         print(checkImeiReq.toJson());
-        CheckImeiRes checkImeiRes =
-        await eirsRepository.checkImei(checkImeiReq);
+        CheckImeiRes checkImeiRes = await eirsRepository.checkImei(checkImeiReq);
         emit(CheckImeiLoadedState(checkImeiRes));
       } catch (e) {
+        print("Error: ${e.toString()}");
         emit(CheckImeiErrorState(e.toString()));
       }
     }
