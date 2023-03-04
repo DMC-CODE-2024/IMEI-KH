@@ -6,7 +6,7 @@ import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../features/imei_info/data/business_logic/imei_info_bloc.dart';
+import '../features/imei_info/data/business_logic/check_imei_bloc.dart';
 
 class AppRoutes {
   Route onGenerateRoute(RouteSettings settings) {

@@ -3,11 +3,10 @@ part 'check_imei_req.g.dart';
 @JsonSerializable()
 class CheckImeiReq {
   String imei;
-  String interfaces;
+  String operator;
   String language;
 
-  CheckImeiReq(
-      {required this.imei, required this.interfaces, required this.language});
+  CheckImeiReq({required this.imei, required this.operator, required this.language});
 
   factory CheckImeiReq.fromJson(Map<String, dynamic> json) =>
       _$CheckImeiReqFromJson(json);

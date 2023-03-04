@@ -29,8 +29,7 @@ class _ImeiInfoScreenState extends State<ImeiInfoScreen> {
   int selectedLangIndex = 0;
   var _appLocale;
   String _scanBarcode = '';
-  var txtController = TextEditingController();
-
+  final TextEditingController imeiController = TextEditingController();
   @override
   void initState() {
     super.initState();
@@ -103,7 +102,7 @@ class _ImeiInfoScreenState extends State<ImeiInfoScreen> {
                         SizedBox(
                           height: 40,
                           child: TextField(
-                            controller: txtController,
+                            controller: imeiController,
                             decoration: InputDecoration(
                                 border: OutlineInputBorder(
                                   borderSide: BorderSide(color: AppColors.grey),
@@ -173,7 +172,7 @@ class _ImeiInfoScreenState extends State<ImeiInfoScreen> {
                 child: AppButton(
                   isLoading: false,
                   child: Text(AppLocalizations.of(context)!.checkImei),
-                  onPressed: () => _navigateNext(context),
+                  onPressed: () => _checkImei(context),
                 ),
               ),
               Container(
@@ -279,8 +278,9 @@ class _ImeiInfoScreenState extends State<ImeiInfoScreen> {
         });
   }
 
-  void _navigateNext(BuildContext context) {
-    Navigator.of(context).pushNamed(Routes.IMEI_RESULT);
+  void _checkImei(BuildContext context) {
+    String inputImei = imeiController.text;
+    //Navigator.of(context).pushNamed(Routes.IMEI_RESULT);
   }
 
   void _appBarActions(AppBarActions values) {
