@@ -21,6 +21,7 @@ class CheckImeiRes {
 class CheckImeiResult {
   String? message;
   Map<String,dynamic>? deviceDetails;
+  bool validImei = false;
 
   CheckImeiResult();
 
