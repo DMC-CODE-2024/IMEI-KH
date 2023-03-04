@@ -4,8 +4,8 @@ part 'device_details_res.g.dart';
 
 @JsonSerializable()
 class DeviceDetailsRes {
-  late String languageType;
-  late LabelDetails labelDetails;
+  String? languageType;
+  LabelDetails? labelDetails;
 
   DeviceDetailsRes();
 
@@ -19,15 +19,15 @@ class DeviceDetailsRes {
 @JsonSerializable()
 class LabelDetails{
   @JsonKey(name: 'find_imei')
-  late String findImei;
+  String? findImei;
   @JsonKey(name: 'get_imei_information')
-  late String getImeiInfo;
+  String? getImeiInfo;
   @JsonKey(name: 'imei_details')
-  late String imeiDetails;
+  String? imeiDetails;
   @JsonKey(name: 'enter_imei')
-  late String enterImei;
+  String? enterImei;
   @JsonKey(name: 'option_a')
-  late String optionA;
+  String? optionA;
 
   LabelDetails();
 

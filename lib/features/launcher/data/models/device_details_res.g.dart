@@ -8,9 +8,10 @@ part of 'device_details_res.dart';
 
 DeviceDetailsRes _$DeviceDetailsResFromJson(Map<String, dynamic> json) =>
     DeviceDetailsRes()
-      ..languageType = json['languageType'] as String
-      ..labelDetails =
-          LabelDetails.fromJson(json['labelDetails'] as Map<String, dynamic>);
+      ..languageType = json['languageType'] as String?
+      ..labelDetails = json['labelDetails'] == null
+          ? null
+          : LabelDetails.fromJson(json['labelDetails'] as Map<String, dynamic>);
 
 Map<String, dynamic> _$DeviceDetailsResToJson(DeviceDetailsRes instance) =>
     <String, dynamic>{
@@ -19,11 +20,11 @@ Map<String, dynamic> _$DeviceDetailsResToJson(DeviceDetailsRes instance) =>
     };
 
 LabelDetails _$LabelDetailsFromJson(Map<String, dynamic> json) => LabelDetails()
-  ..findImei = json['find_imei'] as String
-  ..getImeiInfo = json['get_imei_information'] as String
-  ..imeiDetails = json['imei_details'] as String
-  ..enterImei = json['enter_imei'] as String
-  ..optionA = json['option_a'] as String;
+  ..findImei = json['find_imei'] as String?
+  ..getImeiInfo = json['get_imei_information'] as String?
+  ..imeiDetails = json['imei_details'] as String?
+  ..enterImei = json['enter_imei'] as String?
+  ..optionA = json['option_a'] as String?;
 
 Map<String, dynamic> _$LabelDetailsToJson(LabelDetails instance) =>
     <String, dynamic>{
