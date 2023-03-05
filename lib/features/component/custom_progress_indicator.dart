@@ -2,7 +2,9 @@ import 'package:eirs/constants/strings.dart';
 import 'package:flutter/material.dart';
 
 class CustomProgressIndicator extends StatelessWidget {
-  const CustomProgressIndicator({super.key});
+  const CustomProgressIndicator({super.key, required this.textColor});
+
+  final Color textColor;
 
   @override
   Widget build(BuildContext context) {
@@ -10,15 +12,15 @@ class CustomProgressIndicator extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
-        children: const <Widget>[
-          CircularProgressIndicator(
+        children: <Widget>[
+          const CircularProgressIndicator(
             color: Colors.orange,
           ),
           Padding(
-            padding: EdgeInsets.symmetric(vertical: 12),
+            padding: const EdgeInsets.symmetric(vertical: 12),
             child: Text(
               StringConstants.loadingTxt,
-              style: TextStyle(fontSize: 18.0),
+              style: TextStyle(fontSize: 18.0, color: textColor),
             ),
           )
         ],

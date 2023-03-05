@@ -1,8 +1,10 @@
 import 'dart:async';
 
+import 'package:eirs/features/imei_info/data/business_logic/check_imei_bloc.dart';
 import 'package:eirs/features/imei_info/presentation/imei_list.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
 import '../component/app_bar_with_title.dart';
@@ -94,8 +96,14 @@ class _ScannerPageState extends State<ScannerPage> {
     stopTimer();
     isNavigateNext = true;
     Navigator.of(context)
-        .push(MaterialPageRoute(
-            builder: (context) => ImeiListPage(data: uniqueImei)))
+        .push(
+      MaterialPageRoute(
+        builder: (_) => BlocProvider.value(
+          value: CheckImeiBloc(),
+          child: ImeiListPage(data: uniqueImei),
+        ),
+      ),
+    )
         .then((_) {
       // This block runs when you have come back to the 1st Page from 2nd.
       setState(() {

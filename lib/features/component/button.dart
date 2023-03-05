@@ -1,5 +1,6 @@
 import 'package:eirs/constants/strings.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 import '../../constants/constants.dart';
 import '../../theme/colors.dart';
@@ -23,7 +24,7 @@ class AppButton extends StatelessWidget {
     return DefaultTextStyle(
       style: const TextStyle(
           fontWeight: FontWeight.w600, fontSize: 13, color: AppColors.white),
-      child: GestureDetector(
+      child: InkWell(
         onTap: onPressed,
         child: AnimatedSwitcher(
           duration: animationDuration,

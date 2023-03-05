@@ -1,4 +1,5 @@
 import 'package:eirs/features/launcher/data/business_logic/launcher_bloc.dart';
+import 'package:eirs/persistent/database_helper.dart';
 import 'package:eirs/provider/app_locale.dart';
 import 'package:eirs/routes/app_routes.dart';
 import 'package:flutter/material.dart';
@@ -16,8 +17,9 @@ const String feature1 = 'feature1',
     feature5 = 'feature5',
     feature6 = 'feature6',
     feature7 = 'feature7';
-
+final dbHelper = DatabaseHelper();
 Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   //* Update statusbar theme
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
@@ -26,6 +28,8 @@ Future<void> main() async {
     ),
   );
 
+  // initialize the database
+  await dbHelper.init();
   runApp(MyApp());
 }
 

@@ -1,4 +1,5 @@
 import 'package:eirs/features/component/custom_progress_indicator.dart';
+import 'package:eirs/features/history/data/business_logic/device_history_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -11,6 +12,7 @@ import '../../component/button.dart';
 import '../../component/eirs_app_bar.dart';
 import '../../component/localization_dialog.dart';
 import '../../component/need_any_help_widget.dart';
+import '../../history/presentation/device_history_screen.dart';
 import '../../imei_result/presentation/imei_result_screen.dart';
 import '../../scanner/scanner_screen.dart';
 import '../data/business_logic/check_imei_bloc.dart';
@@ -40,23 +42,30 @@ class _CheckImeiScreenState extends State<CheckImeiScreen> {
       body: BlocConsumer<CheckImeiBloc, CheckImeiState>(
         builder: (context, state) {
           if (state is CheckImeiLoadingState) {
-            return const CustomProgressIndicator();
+            return const CustomProgressIndicator(textColor: Colors.black);
           }
           return _imeiPageWidget();
         },
         listener: (context, state) {
           if (state is CheckImeiLoadedState) {
-            Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => ImeiResultScreen(
-                    title: StringConstants.result,
-                    scanImei: imeiController.text,
-                    data: state.checkImeiRes.result?.deviceDetails,
-                    isValidImei:
-                        state.checkImeiRes.result?.validImei ?? false)));
+            _navigateResultScreen(state.checkImeiRes.result?.deviceDetails,
+                state.checkImeiRes.result?.validImei ?? false);
+          }
+          if (state is CheckImeiErrorState) {
+            _navigateResultScreen(null, false);
           }
         },
       ),
     );
+  }
+
+  void _navigateResultScreen(Map<String, dynamic>? data, bool isValidImei) {
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => ImeiResultScreen(
+            title: StringConstants.result,
+            scanImei: imeiController.text,
+            data: data,
+            isValidImei: isValidImei)));
   }
 
   void _appBarActions(AppBarActions values) {
@@ -65,6 +74,14 @@ class _CheckImeiScreenState extends State<CheckImeiScreen> {
         _showLocalizationDialog();
         break;
       case AppBarActions.history:
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (_) => BlocProvider.value(
+              value: DeviceHistoryBloc(),
+              child: const DeviceHistoryScreen(),
+            ),
+          ),
+        );
         break;
       case AppBarActions.info:
         break;

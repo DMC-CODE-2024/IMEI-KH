@@ -26,6 +26,7 @@ class CheckImeiBloc extends Bloc<CheckImeiEvent, CheckImeiState> {
             channel: "phone");
         CheckImeiRes checkImeiRes =
             await eirsRepository.checkImei(checkImeiReq);
+        eirsRepository.insertDeviceDetail(event.inputImei ?? "", checkImeiRes);
         emit(CheckImeiLoadedState(checkImeiRes));
       } catch (e) {
         emit(CheckImeiErrorState(e.toString()));

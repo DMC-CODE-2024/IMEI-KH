@@ -99,7 +99,7 @@ class _ImeiResultScreenState extends State<ImeiResultScreen> {
                       child: AppButton(
                         isLoading: false,
                         child: const Text(StringConstants.checkOtherImei),
-                        onPressed: () => {},
+                        onPressed: () => {Navigator.of(context).pop()},
                       ),
                     )
                   ],
