@@ -13,4 +13,5 @@ class ImageConstants {
   static const String imeiInValidIcon ="assets/images/ic_cross_circle.svg";
   static const String englishLanIcon ="assets/images/ic_english.jpg";
   static const String khmerLanIcon ="assets/images/ic_khmer.jpg";
+  static const String helpIcon ="assets/images/ic_help.svg";
 }

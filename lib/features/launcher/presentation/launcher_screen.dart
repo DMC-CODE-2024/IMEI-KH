@@ -49,7 +49,7 @@ class _LauncherScreenState extends State<LauncherScreen> {
         listener: (context, state) {
           if (state is LauncherLoadedState) {
             Navigator.pushNamedAndRemoveUntil(
-                context, Routes.IMEI_INFO, (route) => false);
+                context, Routes.IMEI_SCREEN, (route) => false);
           }
         },
       ),

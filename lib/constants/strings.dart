@@ -32,4 +32,7 @@ class StringConstants {
   static const String khmer = 'Khmer';
   static const String result = 'Result';
   static const String imeiInfo = 'IMEI Information';
+  static const String loadingTxt = ' Loading-Wait...';
+  static const String checkOtherImei = 'Check other IMEI';
+  static const String imei = 'IMEI';
 }

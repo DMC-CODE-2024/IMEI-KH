@@ -8,7 +8,6 @@ class CheckImeiLoadingState extends CheckImeiState {}
 
 class CheckImeiLoadedState extends CheckImeiState {
   CheckImeiRes checkImeiRes;
-
   CheckImeiLoadedState(this.checkImeiRes);
 }
 

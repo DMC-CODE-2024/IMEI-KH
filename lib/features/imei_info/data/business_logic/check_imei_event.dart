@@ -5,6 +5,6 @@ abstract class CheckImeiEvent {
 }
 
 class CheckImeiInitEvent extends CheckImeiEvent {
-  String inputImei;
-  CheckImeiInitEvent({required this.inputImei});
+  String? inputImei;
+  CheckImeiInitEvent({ this.inputImei});
 }

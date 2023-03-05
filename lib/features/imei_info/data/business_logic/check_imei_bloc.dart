@@ -16,11 +16,11 @@ class CheckImeiBloc extends Bloc<CheckImeiEvent, CheckImeiState> {
 
   void mapEventToState(
       CheckImeiEvent event, Emitter<CheckImeiState> emit) async {
-    emit(CheckImeiLoadingState());
-    if (event is CheckImeiInitEvent) {
+    if (event is CheckImeiInitEvent && event.inputImei != null) {
+      emit(CheckImeiLoadingState());
       try {
         CheckImeiReq checkImeiReq = CheckImeiReq(
-            imei: event.inputImei,
+            imei: event.inputImei ?? "",
             operator: "smart",
             language: "en",
             channel: "phone");
