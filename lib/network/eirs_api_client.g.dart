@@ -50,7 +50,10 @@ class _EirsApiClient implements EirsApiClient {
     language,
   ) async {
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'feature_name': featureName,
+      r'language': language,
+    };
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio
@@ -61,7 +64,7 @@ class _EirsApiClient implements EirsApiClient {
     )
             .compose(
               _dio.options,
-              'dialectRetreiver/${featureName}/${language}',
+              'dialectRetreiver',
               queryParameters: queryParameters,
               data: _data,
             )
