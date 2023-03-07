@@ -4,9 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:provider/provider.dart';
 
 import '../../../constants/image_path.dart';
 import '../../../constants/strings.dart';
+import '../../../helper/shared_pref.dart';
+import '../../../provider/app_locale.dart';
 import '../../../theme/colors.dart';
 import '../../component/button.dart';
 import '../../component/eirs_app_bar.dart';
@@ -29,10 +32,9 @@ class CheckImeiScreen extends StatefulWidget {
 
 class _CheckImeiScreenState extends State<CheckImeiScreen> {
   final TextEditingController imeiController = TextEditingController();
-  late CheckImeiBloc bloc;
+
   @override
   Widget build(BuildContext context) {
-    bloc =  BlocProvider.of<CheckImeiBloc>(context);
     return Scaffold(
       appBar: EirsAppBar(
         title: AppLocalizations.of(context)!.appName,
@@ -96,14 +98,14 @@ class _CheckImeiScreenState extends State<CheckImeiScreen> {
         context: context,
         builder: (context) {
           return LocalizationDialog(callback: (value) {
-            bloc.add(LanguageInitEvent(languageType: value));
+            BlocProvider.of<CheckImeiBloc>(this.context).add(CheckImeiInitEvent(languageType: value));
           });
         });
   }
 
   void _checkImei(BuildContext context) {
     String inputImei = imeiController.text;
-    bloc.add(CheckImeiInitEvent(inputImei: inputImei));
+    BlocProvider.of<CheckImeiBloc>(context).add(CheckImeiInitEvent(inputImei: inputImei));
   }
 
   Future<void> _startScanner() async {

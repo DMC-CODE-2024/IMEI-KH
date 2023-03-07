@@ -40,7 +40,6 @@ class _ImeiInfoScreenState extends State<ImeiInfoScreen> {
   void initState() {
     super.initState();
     //dropdownValue = AppLanguage.languages().first;
-    print("Details is: ${AppStates.getLabelDetails()?.toJson()}");
   }
 
   @override

@@ -17,8 +17,8 @@ abstract class EirsApiClient {
   Future<DeviceDetailsRes> deviceDetailReq(
       @Body() DeviceDetailsReq deviceDetailsReq);
 
-  @GET("${EirsApis.languageRetriever}/{feature_name}/{language}")
-  Future<DeviceDetailsRes> languageRetriever(@Path("feature_name") String featureName,@Path("language") String language);
+  @GET(EirsApis.languageRetriever)
+  Future<DeviceDetailsRes> languageRetriever(@Query("feature_name") String featureName,@Query("language") String language);
 
   @POST(EirsApis.checkImei)
   Future<CheckImeiRes> checkImei(@Body() CheckImeiReq checkImeiReq,
