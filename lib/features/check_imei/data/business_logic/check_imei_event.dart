@@ -8,3 +8,9 @@ class CheckImeiInitEvent extends CheckImeiEvent {
   String? inputImei;
   CheckImeiInitEvent({ this.inputImei});
 }
+
+
+class LanguageInitEvent extends CheckImeiEvent{
+  String languageType;
+  LanguageInitEvent({required this.languageType});
+}

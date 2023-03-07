@@ -5,11 +5,14 @@ import 'package:eirs/features/imei_result/presentation/widget/device_details_lis
 import 'package:eirs/features/imei_result/presentation/widget/invalid_imei.dart';
 import 'package:eirs/theme/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../../../constants/image_path.dart';
 import '../../component/button.dart';
 import '../../component/need_any_help_widget.dart';
+import '../../history/data/business_logic/device_history_bloc.dart';
+import '../../history/presentation/device_history_screen.dart';
 
 class ImeiResultScreen extends StatefulWidget {
   const ImeiResultScreen(
@@ -35,7 +38,16 @@ class _ImeiResultScreenState extends State<ImeiResultScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar:
-            ResultAppBar(title: StringConstants.result, callback: (value) {}),
+            ResultAppBar(title: StringConstants.result, callback: (value) {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (_) => BlocProvider.value(
+                    value: DeviceHistoryBloc(),
+                    child: const DeviceHistoryScreen(),
+                  ),
+                ),
+              );
+            }),
         body: Padding(
             padding: const EdgeInsets.all(20),
             child: Column(

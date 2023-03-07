@@ -37,4 +37,7 @@ class StringConstants {
   static const String checkOtherImei = 'Check other IMEI';
   static const String imei = 'IMEI';
   static const String scanCode = 'Scan code';
+  static const String invalidImei = 'Invalid IMEI';
+  static const String remark = 'Remark';
+  static const String invalidImeiDesc = 'The IMEI is not as per the 3GPP specification.';
 }

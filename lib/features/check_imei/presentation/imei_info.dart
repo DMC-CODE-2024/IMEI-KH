@@ -1,37 +1,84 @@
-import 'package:eirs/features/component/custom_progress_indicator.dart';
-import 'package:eirs/features/history/data/business_logic/device_history_bloc.dart';
+import 'package:eirs/constants/image_path.dart';
+import 'package:eirs/features/component/localization_dialog.dart';
+import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:provider/provider.dart';
 
-import '../../../constants/image_path.dart';
 import '../../../constants/strings.dart';
+import '../../../helper/app_states.dart';
+import '../../../helper/shared_pref.dart';
+import '../../../main.dart';
+import '../../../provider/app_locale.dart';
 import '../../../theme/colors.dart';
 import '../../component/button.dart';
 import '../../component/eirs_app_bar.dart';
-import '../../component/localization_dialog.dart';
-import '../../component/need_any_help_widget.dart';
-import '../../history/presentation/device_history_screen.dart';
 import '../../imei_result/presentation/imei_result_screen.dart';
 import '../../scanner/scanner_screen.dart';
 import '../data/business_logic/check_imei_bloc.dart';
 import '../data/business_logic/check_imei_state.dart';
 
-class CheckImeiScreen extends StatefulWidget {
-  const CheckImeiScreen({super.key, required this.title});
-
-  final String title;
+class ImeiInfoScreen extends StatefulWidget {
+  const ImeiInfoScreen({super.key, required String title});
 
   @override
-  State<CheckImeiScreen> createState() => _CheckImeiScreenState();
+  State<ImeiInfoScreen> createState() => _ImeiInfoScreenState();
 }
 
-class _CheckImeiScreenState extends State<CheckImeiScreen> {
+class _ImeiInfoScreenState extends State<ImeiInfoScreen> {
+  late String currentDefaultSystemLocale;
+  int selectedLangIndex = 0;
+  var _appLocale;
+  String _scanBarcode = '';
+
+  //late CheckImeiBloc bloc;
   final TextEditingController imeiController = TextEditingController();
 
   @override
+  void initState() {
+    super.initState();
+    //dropdownValue = AppLanguage.languages().first;
+    print("Details is: ${AppStates.getLabelDetails()?.toJson()}");
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _appLocale = Provider.of<AppLocale>(context);
+    getLocale().then((locale) {
+      _appLocale.changeLocale(Locale(locale.languageCode));
+      // dropdownValue = AppLanguage.languages().firstWhere(
+      //         (element) => element.languageCode == locale.languageCode);
+      // _setFlag();
+    });
+  }
+
+  void _setFlag() {
+    currentDefaultSystemLocale = _appLocale.locale.languageCode.split('_')[0];
+    setState(() {
+      // selectedLangIndex = _getLangIndex(currentDefaultSystemLocale);
+    });
+  }
+
+  int _getLangIndex(String currentDefaultSystemLocale) {
+    int _langIndex = 0;
+    switch (currentDefaultSystemLocale) {
+      case 'en':
+        _langIndex = 0;
+        break;
+      case 'km':
+        _langIndex = 1;
+        break;
+    }
+    return _langIndex;
+  }
+
+  @override
   Widget build(BuildContext context) {
+    CheckImeiBloc bloc = BlocProvider.of<CheckImeiBloc>(context);
+    bloc.add(CheckImeiInitEvent());
     return Scaffold(
       appBar: EirsAppBar(
         title: AppLocalizations.of(context)!.appName,
@@ -41,72 +88,27 @@ class _CheckImeiScreenState extends State<CheckImeiScreen> {
       ),
       body: BlocConsumer<CheckImeiBloc, CheckImeiState>(
         builder: (context, state) {
-          if (state is CheckImeiLoadingState) {
-            return const CustomProgressIndicator(textColor: Colors.black);
+          if (state is CheckImeiLoadedState) {
+            return Container();
           }
           return _imeiPageWidget();
         },
         listener: (context, state) {
-          if (state is CheckImeiLoadedState) {
-            _navigateResultScreen(state.checkImeiRes.result?.deviceDetails,
-                state.checkImeiRes.result?.validImei ?? false);
+          if (state is CheckImeiLoadingState) {
+            return;
           }
-          if (state is CheckImeiErrorState) {
-            _navigateResultScreen(null, false);
+          if (state is CheckImeiLoadedState) {
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => ImeiResultScreen(
+                    title: "Result",
+                    scanImei: "",
+                    data: state.checkImeiRes.result?.deviceDetails,
+                    isValidImei:
+                        state.checkImeiRes.result?.validImei ?? false)));
           }
         },
       ),
     );
-  }
-
-  void _navigateResultScreen(Map<String, dynamic>? data, bool isValidImei) {
-    Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => ImeiResultScreen(
-            title: StringConstants.result,
-            scanImei: imeiController.text,
-            data: data,
-            isValidImei: isValidImei)));
-  }
-
-  void _appBarActions(AppBarActions values) {
-    switch (values) {
-      case AppBarActions.localization:
-        _showLocalizationDialog();
-        break;
-      case AppBarActions.history:
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (_) => BlocProvider.value(
-              value: DeviceHistoryBloc(),
-              child: const DeviceHistoryScreen(),
-            ),
-          ),
-        );
-        break;
-      case AppBarActions.info:
-        break;
-    }
-  }
-
-  void _showLocalizationDialog() {
-    showDialog(
-        barrierColor: Colors.black26,
-        context: context,
-        builder: (context) {
-          return LocalizationDialog(callback: (value) {});
-        });
-  }
-
-  void _checkImei(BuildContext context) {
-    String inputImei = imeiController.text;
-    BlocProvider.of<CheckImeiBloc>(context)
-        .add(CheckImeiInitEvent(inputImei: inputImei));
-  }
-
-  Future<void> _startScanner() async {
-    await Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return const ScannerPage();
-    }));
   }
 
   Widget _imeiPageWidget() {
@@ -230,12 +232,12 @@ class _CheckImeiScreenState extends State<CheckImeiScreen> {
             Row(
               children: [
                 Flexible(
-                  flex: 1,
                   child: Image.asset(ImageConstants.deviceBox),
+                  flex: 1,
                 ),
                 Flexible(
-                  flex: 1,
                   child: Image.asset(ImageConstants.deviceBox),
+                  flex: 1,
                 )
               ],
             ),
@@ -258,13 +260,80 @@ class _CheckImeiScreenState extends State<CheckImeiScreen> {
               style: TextStyle(color: AppColors.black, fontSize: 14.0),
             ),
             Image.asset(ImageConstants.deviceInfo),
-            const Padding(
-              padding: EdgeInsets.symmetric(vertical: 12),
-              child: NeedAnyHelpWidget(),
+            Padding(
+              padding: EdgeInsets.only(top: 12.0, bottom: 5),
+              child: Text(
+                AppLocalizations.of(context)!.needAnyHelp,
+                style:
+                    TextStyle(color: AppColors.greyTextColor, fontSize: 14.0),
+              ),
+            ),
+            Row(
+              children: [
+                Text(
+                  AppLocalizations.of(context)!.contactUs,
+                  style: TextStyle(color: AppColors.black, fontSize: 14.0),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 10),
+                  child: Text(
+                    "xyz12@gmail.com",
+                    style:
+                        TextStyle(color: AppColors.secondary, fontSize: 14.0),
+                  ),
+                )
+              ],
             )
           ],
         ),
       ),
     );
+  }
+
+  Future<void> _startScanner() async {
+    var result =
+        await Navigator.push(context, MaterialPageRoute(builder: (context) {
+      return const ScannerPage();
+    }));
+  }
+
+  void _showLocalizationDialog() {
+    showDialog(
+        barrierColor: Colors.black26,
+        context: context,
+        builder: (context) {
+          return LocalizationDialog(callback: (value) {});
+        });
+  }
+
+  void _checkImei(BuildContext context) {
+    String inputImei = imeiController.text;
+    //BlocProvider.of<CheckImeiBloc>(context).add(CheckImeiInitEvent(inputImei: inputImei));
+    //Navigator.of(context).pushNamed(Routes.IMEI_RESULT);
+  }
+
+  void _appBarActions(AppBarActions values) {
+    switch (values) {
+      case AppBarActions.localization:
+        _showLocalizationDialog();
+        break;
+      case AppBarActions.history:
+        break;
+      case AppBarActions.info:
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          FeatureDiscovery.discoverFeatures(
+            context,
+            const <String>{
+              feature1,
+              feature2,
+              feature3,
+              feature4,
+              feature6,
+              feature5
+            },
+          );
+        });
+        break;
+    }
   }
 }

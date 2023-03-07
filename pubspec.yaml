@@ -106,6 +106,8 @@ flutter:
     - assets/images/ic_english.jpg
     - assets/images/ic_khmer.jpg
     - assets/images/ic_help.svg
+    - assets/images/ic_mobile_off.svg
+    - assets/images/ic_mobile_on.svg
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

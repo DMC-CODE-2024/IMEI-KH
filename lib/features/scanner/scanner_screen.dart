@@ -1,12 +1,12 @@
 import 'dart:async';
 
-import 'package:eirs/features/imei_info/data/business_logic/check_imei_bloc.dart';
-import 'package:eirs/features/imei_info/presentation/imei_list.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
+import '../check_imei/data/business_logic/check_imei_bloc.dart';
+import '../check_imei/presentation/imei_list.dart';
 import '../component/app_bar_with_title.dart';
 import 'debug_info_widget.dart';
 

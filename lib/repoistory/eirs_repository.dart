@@ -1,18 +1,18 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
-import 'package:eirs/features/imei_info/data/models/check_imei_req.dart';
 import 'package:eirs/features/launcher/data/models/device_details_req.dart';
 import 'package:eirs/network/eirs_api_client.dart';
 import 'package:intl/intl.dart';
 
-import '../features/imei_info/data/models/check_imei_res.dart';
+import '../features/check_imei/data/models/check_imei_req.dart';
+import '../features/check_imei/data/models/check_imei_res.dart';
 import '../main.dart';
 import '../persistent/database_helper.dart';
 
 class EirsRepository {
   static final EirsRepository _singletonUserRepository =
-  EirsRepository._internal();
+      EirsRepository._internal();
 
   factory EirsRepository() {
     return _singletonUserRepository;
@@ -30,16 +30,16 @@ class EirsRepository {
     return await EirsApiClient(Dio()).checkImei(checkImeiReq);
   }
 
-  Future<dynamic> getUserDetails() async {
-    return await EirsApiClient(Dio()).getUsers();
+  Future<dynamic> getLanguage(String featureName, String language) async {
+    return await EirsApiClient(Dio()).languageRetriever(featureName, language);
   }
 
   Future<List<Map<String, dynamic>>> getDeviceHistory() async {
     return await dbHelper.getDeviceHistory();
   }
 
-  Future<void> insertDeviceDetail(String imei,
-      CheckImeiRes checkImeiRes) async {
+  Future<void> insertDeviceDetail(
+      String imei, CheckImeiRes checkImeiRes) async {
     bool isRecordExist = await dbHelper.isImeiExists(imei);
     if (!isRecordExist) {
       // row to insert
@@ -60,5 +60,4 @@ class EirsRepository {
       await dbHelper.insert(row);
     }
   }
-
 }

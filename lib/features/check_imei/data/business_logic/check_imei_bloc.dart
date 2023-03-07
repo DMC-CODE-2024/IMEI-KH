@@ -1,8 +1,9 @@
 import 'package:bloc/bloc.dart';
-import 'package:eirs/features/imei_info/data/models/check_imei_req.dart';
-import 'package:eirs/features/imei_info/data/models/check_imei_res.dart';
+import 'package:eirs/features/launcher/data/models/device_details_res.dart';
 
 import '../../../../repoistory/eirs_repository.dart';
+import '../models/check_imei_req.dart';
+import '../models/check_imei_res.dart';
 import 'check_imei_state.dart';
 
 part 'check_imei_event.dart';
@@ -30,6 +31,18 @@ class CheckImeiBloc extends Bloc<CheckImeiEvent, CheckImeiState> {
         emit(CheckImeiLoadedState(checkImeiRes));
       } catch (e) {
         emit(CheckImeiErrorState(e.toString()));
+      }
+    }
+
+    if (event is LanguageInitEvent) {
+      emit(LanguageLoadingState());
+      try {
+        DeviceDetailsRes deviceDetailsRes =
+            await eirsRepository.getLanguage("CheckImei", event.languageType);
+        print("${deviceDetailsRes.toJson()}");
+        emit(LanguageLoadedState(deviceDetailsRes));
+      } catch (e) {
+        emit(LanguageErrorState(e.toString()));
       }
     }
   }

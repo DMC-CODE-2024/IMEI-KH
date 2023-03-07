@@ -1,10 +1,10 @@
 import 'package:dio/dio.dart';
-import 'package:eirs/features/imei_info/data/models/check_imei_req.dart';
-import 'package:eirs/features/imei_info/data/models/check_imei_res.dart';
 import 'package:eirs/features/launcher/data/models/device_details_req.dart';
 import 'package:eirs/features/launcher/data/models/device_details_res.dart';
 import 'package:retrofit/http.dart';
 
+import '../features/check_imei/data/models/check_imei_req.dart';
+import '../features/check_imei/data/models/check_imei_res.dart';
 import 'eirs_apis.dart';
 
 part 'eirs_api_client.g.dart';
@@ -17,8 +17,8 @@ abstract class EirsApiClient {
   Future<DeviceDetailsRes> deviceDetailReq(
       @Body() DeviceDetailsReq deviceDetailsReq);
 
-  @GET(EirsApis.test)
-  Future<String> getUsers();
+  @GET("${EirsApis.languageRetriever}/{feature_name}/{language}")
+  Future<DeviceDetailsRes> languageRetriever(@Path("feature_name") String featureName,@Path("language") String language);
 
   @POST(EirsApis.checkImei)
   Future<CheckImeiRes> checkImei(@Body() CheckImeiReq checkImeiReq,

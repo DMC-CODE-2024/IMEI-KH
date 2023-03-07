@@ -23,4 +23,7 @@ class AppColors {
   static Color buttonColor = HexColor('#EE7C23');
   static Color dialogBg = HexColor('#F2F2F2');
   static Color needAnyHelpBg = HexColor("#F1D8C5");
+  static Color historyBg = HexColor("#EFF5FF");
+  static Color historyTxtColor = HexColor("#49454F");
+  static Color dateTimeTxtColor = HexColor("#828282");
 }

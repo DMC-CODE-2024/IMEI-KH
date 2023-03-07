@@ -93,9 +93,10 @@ class _LocalizationDialogState extends State<LocalizationDialog> {
                           child: InkWell(
                             onTap: () {
                               setLocale(StringConstants.english);
-                              setState(() {
+                              isEnglish = true;
+                              /* setState(() {
                                 isEnglish = true;
-                              });
+                              });*/
                             },
                             child: Container(
                               decoration: BoxDecoration(
@@ -133,9 +134,10 @@ class _LocalizationDialogState extends State<LocalizationDialog> {
                           child: InkWell(
                             onTap: () {
                               setLocale(StringConstants.khmerCode);
-                              setState(() {
+                              isEnglish = false;
+                              /* setState(() {
                                 isEnglish = false;
-                              });
+                              });*/
                             },
                             child: Container(
                               decoration: BoxDecoration(
@@ -176,12 +178,18 @@ class _LocalizationDialogState extends State<LocalizationDialog> {
               AppButton(
                 isLoading: false,
                 child: const Text(StringConstants.ok),
-                onPressed: () => Navigator.pop(context),
+                onPressed: () => _navigateNext(),
               ),
             ],
           ),
         ),
       ),
     );
+  }
+
+  void _navigateNext() {
+    widget.callback.call(
+        isEnglish ? StringConstants.englishCode : StringConstants.khmerCode);
+    Navigator.pop(context);
   }
 }
