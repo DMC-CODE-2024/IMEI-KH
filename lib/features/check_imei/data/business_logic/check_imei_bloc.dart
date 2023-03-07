@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:eirs/constants/strings.dart';
 import 'package:eirs/features/launcher/data/models/device_details_res.dart';
+import 'package:eirs/helper/shared_pref.dart';
 
 import '../../../../repoistory/eirs_repository.dart';
 import '../models/check_imei_req.dart';
@@ -15,7 +16,6 @@ class CheckImeiBloc extends Bloc<CheckImeiEvent, CheckImeiState> {
   CheckImeiBloc() : super(CheckImeiInitialState()) {
     on<CheckImeiInitEvent>(mapEventToState);
   }
-
 
   void mapEventToState(
       CheckImeiEvent event, Emitter<CheckImeiState> emit) async {
@@ -36,16 +36,13 @@ class CheckImeiBloc extends Bloc<CheckImeiEvent, CheckImeiState> {
       }
     }
 
-    if (event is CheckImeiInitEvent && event.languageType!=null) {
-      print("yes here invoke");
+    if (event is CheckImeiInitEvent && event.languageType != null) {
       emit(LanguageLoadingState());
       try {
-        DeviceDetailsRes deviceDetailsRes =
-            await eirsRepository.getLanguage("CheckImei", event.languageType ?? StringConstants.englishCode);
-        print("${deviceDetailsRes.toJson()}");
+        DeviceDetailsRes deviceDetailsRes = await eirsRepository.getLanguage("CheckImei", event.languageType ?? StringConstants.englishCode);
+        setLocale(deviceDetailsRes.languageType ?? StringConstants.englishCode);
         emit(LanguageLoadedState(deviceDetailsRes));
       } catch (e) {
-        print("${e.toString()}");
         emit(LanguageErrorState(e.toString()));
       }
     }

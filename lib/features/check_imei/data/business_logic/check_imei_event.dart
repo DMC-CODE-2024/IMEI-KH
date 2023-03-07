@@ -7,11 +7,6 @@ abstract class CheckImeiEvent {
 class CheckImeiInitEvent extends CheckImeiEvent {
   String? inputImei;
   String? languageType;
-  CheckImeiInitEvent({ this.inputImei,this.languageType});
-}
 
-
-class LanguageInitEvent extends CheckImeiEvent{
-  String languageType;
-  LanguageInitEvent({required this.languageType});
+  CheckImeiInitEvent({this.inputImei, this.languageType});
 }

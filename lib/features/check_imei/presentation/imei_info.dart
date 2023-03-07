@@ -327,7 +327,6 @@ class _ImeiInfoScreenState extends State<ImeiInfoScreen> {
               feature2,
               feature3,
               feature4,
-              feature6,
               feature5
             },
           );

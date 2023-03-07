@@ -16,4 +16,5 @@ class ImageConstants {
   static const String helpIcon ="assets/images/ic_help.svg";
   static const String mobileOffIcon ="assets/images/ic_mobile_off.svg";
   static const String mobileOnIcon ="assets/images/ic_mobile_on.svg";
+  static const String coachLanguage ="assets/images/ic_language.svg";
 }

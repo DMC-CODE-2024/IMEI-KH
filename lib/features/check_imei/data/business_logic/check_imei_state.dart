@@ -1,4 +1,3 @@
-
 import '../../../launcher/data/models/device_details_res.dart';
 import '../models/check_imei_res.dart';
 
@@ -10,6 +9,7 @@ class CheckImeiLoadingState extends CheckImeiState {}
 
 class CheckImeiLoadedState extends CheckImeiState {
   CheckImeiRes checkImeiRes;
+
   CheckImeiLoadedState(this.checkImeiRes);
 }
 
@@ -19,14 +19,16 @@ class CheckImeiErrorState extends CheckImeiState {
   CheckImeiErrorState(this.e);
 }
 
+class LanguageLoadingState extends CheckImeiState {}
 
-class LanguageInitialState extends CheckImeiState {}
-class LanguageLoadingState extends CheckImeiState{}
-class LanguageErrorState extends CheckImeiState{
+class LanguageErrorState extends CheckImeiState {
   String e;
+
   LanguageErrorState(this.e);
 }
-class LanguageLoadedState extends CheckImeiState{
+
+class LanguageLoadedState extends CheckImeiState {
   DeviceDetailsRes deviceDetailsRes;
+
   LanguageLoadedState(this.deviceDetailsRes);
 }

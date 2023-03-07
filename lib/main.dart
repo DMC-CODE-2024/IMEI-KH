@@ -14,9 +14,7 @@ const String feature1 = 'feature1',
     feature2 = 'feature2',
     feature3 = 'feature3',
     feature4 = 'feature4',
-    feature5 = 'feature5',
-    feature6 = 'feature6',
-    feature7 = 'feature7';
+    feature5 = 'feature5';
 final dbHelper = DatabaseHelper();
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -55,7 +53,7 @@ class MyApp extends StatelessWidget {
               //home: const LauncherScreen(title: 'Flutter Demo Home Page'),
               home: BlocProvider(
                 create: (context) => LauncherBloc(),
-                child: LauncherScreen(title: "Launcher screen"),
+                child: const LauncherScreen(title: "Launcher screen"),
               ),
               onGenerateRoute: _appRoutes.onGenerateRoute);
         }));

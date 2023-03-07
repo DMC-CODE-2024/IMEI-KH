@@ -10,7 +10,7 @@ import '../features/check_imei/presentation/imei_info.dart';
 class AppRoutes {
   Route onGenerateRoute(RouteSettings settings) {
     switch (settings.name) {
-     /* case Routes.IMEI_RESULT:
+      /* case Routes.IMEI_RESULT:
         return MaterialPageRoute(
           builder: (_) => BlocProvider.value(
             value: ImeiResultBloc(),
@@ -23,7 +23,9 @@ class AppRoutes {
         return MaterialPageRoute(
           builder: (_) => BlocProvider.value(
             value: CheckImeiBloc(),
-            child: const CheckImeiScreen(title: 'Home Screen'),
+            child: const FeatureDiscovery.withProvider(
+                persistenceProvider: NoPersistenceProvider(),
+                child: CheckImeiScreen(title: 'Home Screen')),
           ),
         );
       case Routes.IMEI_INFO:
