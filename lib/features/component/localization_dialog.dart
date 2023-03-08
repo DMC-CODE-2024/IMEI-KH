@@ -49,144 +49,146 @@ class _LocalizationDialogState extends State<LocalizationDialog> {
       ),
       child: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Padding(
-          padding: const EdgeInsets.all(12.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Expanded(
-                    child: Align(
-                      alignment: Alignment.center,
-                      child: Text(
-                        StringConstants.changeLanguage,
-                        style: TextStyle(
-                            fontSize: 16.0,
-                            color: AppColors.black,
-                            fontWeight: FontWeight.bold),
-                      ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Expanded(
+                  child: Align(
+                    alignment: Alignment.center,
+                    child: Text(
+                      StringConstants.changeLanguage,
+                      style: TextStyle(
+                          fontSize: 16.0,
+                          color: AppColors.black,
+                          fontWeight: FontWeight.w600),
                     ),
                   ),
-                  InkWell(
-                      onTap: () => Navigator.pop(context),
-                      child: SvgPicture.asset(ImageConstants.crossIcon))
-                ],
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 30),
-                child: Container(
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    color: AppColors.dialogBg,
-                    borderRadius: const BorderRadius.all(Radius.circular(6)),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(6),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Flexible(
-                          flex: 1,
-                          child: InkWell(
-                            onTap: () {
-                              setLocale(StringConstants.english);
-                               setState(() {
-                                isEnglish = true;
-                              });
-                            },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                  borderRadius: const BorderRadius.all(
-                                      Radius.circular(4)),
-                                  color: isEnglish
-                                      ? AppColors.white
-                                      : AppColors.dialogBg),
-                              child: Align(
-                                alignment: Alignment.center,
-                                child: Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 8),
-                                  child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Image.asset(
-                                          ImageConstants.englishLanIcon,
-                                          width: 26,
-                                          height: 13,
-                                        ),
-                                        const Padding(
-                                          padding: EdgeInsets.only(left: 4),
-                                          child: Text(StringConstants.english),
-                                        ),
-                                      ]),
-                                ),
+                ),
+                InkWell(
+                    onTap: () => Navigator.pop(context),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8),
+                      child: SvgPicture.asset(ImageConstants.crossIcon),
+                    ))
+              ],
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 10),
+              child: Container(
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: AppColors.dialogBg,
+                  borderRadius: const BorderRadius.all(Radius.circular(6)),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(6),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Flexible(
+                        flex: 1,
+                        child: InkWell(
+                          onTap: () {
+                            setLocale(StringConstants.english);
+                            setState(() {
+                              isEnglish = true;
+                            });
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                                borderRadius:
+                                    const BorderRadius.all(Radius.circular(4)),
+                                color: isEnglish
+                                    ? AppColors.white
+                                    : AppColors.dialogBg),
+                            child: Align(
+                              alignment: Alignment.center,
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 8),
+                                child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Image.asset(
+                                        ImageConstants.englishLanIcon,
+                                        width: 26,
+                                        height: 13,
+                                      ),
+                                      const Padding(
+                                        padding: EdgeInsets.only(left: 4),
+                                        child: Text(StringConstants.english),
+                                      ),
+                                    ]),
                               ),
                             ),
                           ),
                         ),
-                        Flexible(
-                          flex: 1,
-                          child: InkWell(
-                            onTap: () {
-                              setLocale(StringConstants.khmerCode);
-                               setState(() {
-                                isEnglish = false;
-                              });
-                            },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                  borderRadius: const BorderRadius.all(
-                                      Radius.circular(4)),
-                                  color: isEnglish
-                                      ? AppColors.dialogBg
-                                      : AppColors.white),
-                              child: Align(
-                                alignment: Alignment.center,
-                                child: Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 8),
-                                  child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Image.asset(
-                                          ImageConstants.khmerLanIcon,
-                                          width: 26,
-                                          height: 15,
-                                        ),
-                                        const Padding(
-                                          padding: EdgeInsets.only(left: 4),
-                                          child: Text(StringConstants.khmer),
-                                        ),
-                                      ]),
-                                ),
+                      ),
+                      Flexible(
+                        flex: 1,
+                        child: InkWell(
+                          onTap: () {
+                            setLocale(StringConstants.khmerCode);
+                            setState(() {
+                              isEnglish = false;
+                            });
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                                borderRadius:
+                                    const BorderRadius.all(Radius.circular(4)),
+                                color: isEnglish
+                                    ? AppColors.dialogBg
+                                    : AppColors.white),
+                            child: Align(
+                              alignment: Alignment.center,
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 8),
+                                child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Image.asset(
+                                        ImageConstants.khmerLanIcon,
+                                        width: 26,
+                                        height: 15,
+                                      ),
+                                      const Padding(
+                                        padding: EdgeInsets.only(left: 4),
+                                        child: Text(StringConstants.khmer),
+                                      ),
+                                    ]),
                               ),
                             ),
                           ),
-                        )
-                      ],
-                    ),
+                        ),
+                      )
+                    ],
                   ),
                 ),
               ),
-              AppButton(
+            ),
+            Padding(
+              padding: const EdgeInsets.only(
+                  left: 10, right: 10, top: 10, bottom: 20),
+              child: AppButton(
                 isLoading: false,
                 child: const Text(StringConstants.ok),
                 onPressed: () => _navigateNext(),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
   }
 
   void _navigateNext() {
-    widget.callback.call(isEnglish ? StringConstants.englishCode : StringConstants.khmerCode);
+    widget.callback.call(
+        isEnglish ? StringConstants.englishCode : StringConstants.khmerCode);
     Navigator.pop(context);
   }
 }

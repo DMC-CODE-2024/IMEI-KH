@@ -24,7 +24,7 @@ class AppButton extends StatelessWidget {
     return DefaultTextStyle(
       style: const TextStyle(
           fontWeight: FontWeight.w600, fontSize: 13, color: AppColors.white),
-      child: InkWell(
+      child: GestureDetector(
         onTap: onPressed,
         child: AnimatedSwitcher(
           duration: animationDuration,

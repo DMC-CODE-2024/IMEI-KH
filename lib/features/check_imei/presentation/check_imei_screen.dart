@@ -193,8 +193,7 @@ class _CheckImeiScreenState extends State<CheckImeiScreen> {
                           padding: const EdgeInsets.only(top: 5),
                           child: Text(
                             text,
-                            style:
-                                TextStyle(fontSize: 10, color: textColor),
+                            style: TextStyle(fontSize: 10, color: textColor),
                           ),
                         ),
                       )
@@ -219,27 +218,29 @@ class _CheckImeiScreenState extends State<CheckImeiScreen> {
                           tapTarget: SvgPicture.asset(ImageConstants.scanIcon),
                           backgroundColor: AppColors.secondary,
                           contentLocation: ContentLocation.below,
-                          title: const Text(StringConstants.scanTitle),
+                          title: const Text(
+                            StringConstants.scanTitle,
+                            style: TextStyle(fontWeight: FontWeight.w700),
+                          ),
                           description: const Text(StringConstants.scanDesc),
                           onOpen: () async {
                             return true;
                           },
-                          child: Column(
-                            children: [
-                              InkWell(
-                                onTap: () => _startScanner(),
-                                child:
-                                    SvgPicture.asset(ImageConstants.scanIcon),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(top: 6),
-                                child: Text(
-                                  AppLocalizations.of(context)!.scanBarcode,
-                                  style: const TextStyle(
-                                      fontSize: 14, color: Colors.black),
+                          child: GestureDetector(
+                            onTap: () => _startScanner(),
+                            child: Column(
+                              children: [
+                                SvgPicture.asset(ImageConstants.scanIcon),
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 6),
+                                  child: Text(
+                                    AppLocalizations.of(context)!.scanBarcode,
+                                    style: const TextStyle(
+                                        fontSize: 14, color: Colors.black),
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
                       )

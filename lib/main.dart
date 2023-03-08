@@ -9,6 +9,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 
+import 'constants/strings.dart';
 import 'features/launcher/presentation/launcher_screen.dart';
 
 const String feature1 = 'feature1',
@@ -17,6 +18,7 @@ const String feature1 = 'feature1',
     feature4 = 'feature4',
     feature5 = 'feature5';
 final dbHelper = DatabaseHelper();
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   //* Update statusbar theme
@@ -43,12 +45,12 @@ class MyApp extends StatelessWidget {
         create: (context) => AppLocale(),
         child: Consumer<AppLocale>(builder: (context, locale, child) {
           return MaterialApp(
-              title: 'Flutter Demo',
               localizationsDelegates: AppLocalizations.localizationsDelegates,
               // important
               supportedLocales: AppLocalizations.supportedLocales,
               locale: locale.locale,
               theme: ThemeData(
+                fontFamily: StringConstants.openSansFontFamily,
                 primarySwatch: AppColors.primaryColor,
               ),
               //home: const LauncherScreen(title: 'Flutter Demo Home Page'),

@@ -52,11 +52,14 @@ class EirsAppBar extends StatelessWidget with PreferredSizeWidget {
       leading: DescribedFeatureOverlay(
         featureId: feature1,
         tapTarget: Padding(
-          padding: const EdgeInsets.all(18),
+          padding: const EdgeInsets.all(30),
           child: SvgPicture.asset(ImageConstants.appIcon),
         ),
         backgroundColor: AppColors.secondary,
-        title: const Text(StringConstants.aboutUs),
+        title: const Text(
+          StringConstants.aboutUs,
+          style: TextStyle(fontWeight: FontWeight.w700),
+        ),
         overflowMode: feature1OverflowMode,
         enablePulsingAnimation: feature1EnablePulsingAnimation,
         description: Column(
@@ -81,7 +84,10 @@ class EirsAppBar extends StatelessWidget with PreferredSizeWidget {
               tapTarget: SvgPicture.asset(ImageConstants.infoIcon),
               backgroundColor: AppColors.secondary,
               contentLocation: ContentLocation.below,
-              title: const Text(StringConstants.infoTitle),
+              title: const Text(
+                StringConstants.infoTitle,
+                style: TextStyle(fontWeight: FontWeight.w700),
+              ),
               onComplete: action,
               onOpen: () async {
                 return true;
@@ -96,7 +102,10 @@ class EirsAppBar extends StatelessWidget with PreferredSizeWidget {
               tapTarget: SvgPicture.asset(ImageConstants.timeIcon),
               backgroundColor: AppColors.secondary,
               contentLocation: ContentLocation.below,
-              title: const Text(StringConstants.history),
+              title: const Text(
+                StringConstants.history,
+                style: TextStyle(fontWeight: FontWeight.w700),
+              ),
               description: const Text(StringConstants.historyDesc),
               onComplete: action,
               onOpen: () async {
@@ -112,7 +121,10 @@ class EirsAppBar extends StatelessWidget with PreferredSizeWidget {
               tapTarget: const Icon(Icons.language),
               backgroundColor: AppColors.secondary,
               contentLocation: ContentLocation.below,
-              title: const Text(StringConstants.language),
+              title: const Text(
+                StringConstants.language,
+                style: TextStyle(fontWeight: FontWeight.w700),
+              ),
               description: const Text(StringConstants.languageDesc),
               onComplete: action,
               onOpen: () async {

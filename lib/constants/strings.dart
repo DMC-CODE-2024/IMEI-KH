@@ -17,7 +17,8 @@ class StringConstants {
   static const String findImei = 'Find IMEI?';
   static const String optionA = 'Option A';
   static const String optionB = 'Option B';
-  static const String optionALabel = 'IMEI also written in the box as shown in Image below';
+  static const String optionALabel =
+      'IMEI also written in the box as shown in Image below';
   static const String optionBLabel = 'Dial *#06# to see your device IMEI';
   static const String needAnyHelp = 'Need any help?';
   static const String contactUs = 'Contact us';
@@ -39,7 +40,8 @@ class StringConstants {
   static const String scanCode = 'Scan code';
   static const String invalidImei = 'Invalid IMEI';
   static const String remark = 'Remark';
-  static const String invalidImeiDesc = 'The IMEI is not as per the 3GPP specification.';
+  static const String invalidImeiDesc =
+      'The IMEI is not as per the 3GPP specification.';
 
   //Coach screen
   static const String aboutUs = 'About Us';
@@ -48,8 +50,10 @@ class StringConstants {
   static const String historyDesc = 'Get list of your searched IMEIs here';
   static const String language = 'Language';
   static const String languageDesc = 'Change app language from here';
-  static const String scanTitle ='Scan IMEI from here';
-  static const String scanDesc ='Can be a barcode or QR code';
+  static const String scanTitle = 'Scan IMEI from here';
+  static const String scanDesc = 'Can be a barcode or QR code';
   static const String emptyMsg = 'IMEI field can not be empty';
   static const String minLengthError = 'Minimum 15 digits are required';
+  static const String openSansFontFamily = 'OpenSans';
+  static const String emptyImei = "No IMEI is selected";
 }

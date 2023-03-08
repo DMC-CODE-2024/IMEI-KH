@@ -34,6 +34,8 @@ class _ImeiListPageState extends State<ImeiListPage> {
     if (widget.data.isNotEmpty) {
       selectedIndex = 0;
       selectedImei = widget.data.keys.elementAt(0);
+    } else {
+      selectedImei = "";
     }
   }
 
@@ -70,13 +72,12 @@ class _ImeiListPageState extends State<ImeiListPage> {
         borderRadius: BorderRadius.circular(15.0),
       ),
       child: Padding(
-        padding: const EdgeInsets.only(top: 12.0, bottom: 12.0),
+        padding: const EdgeInsets.only(bottom: 15.0, top: 5, right: 5, left: 5),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Expanded(
                   child: Align(
@@ -93,7 +94,7 @@ class _ImeiListPageState extends State<ImeiListPage> {
                 InkWell(
                   onTap: () => Navigator.pop(context),
                   child: Padding(
-                      padding: const EdgeInsets.only(right: 15),
+                      padding: const EdgeInsets.all(10),
                       child: SvgPicture.asset(ImageConstants.crossIcon)),
                 )
               ],
@@ -122,23 +123,49 @@ class _ImeiListPageState extends State<ImeiListPage> {
           onTap: () => _getSelectedItem(index, values.keys.elementAt(index)),
           child: ListTile(
             title: Text("${StringConstants.imei} ${index + 1}"),
-            subtitle: Container(
-              margin: const EdgeInsets.only(top: 8.0),
-              padding: const EdgeInsets.only(left: 10, top: 7, bottom: 7),
-              decoration: BoxDecoration(
-                border: Border.all(
-                    color:
-                        (selectedIndex == index) ? Colors.blue : Colors.grey),
-                borderRadius: const BorderRadius.all(
-                  Radius.circular(5.0),
-                ),
+            subtitle: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Expanded(
+                      child: Container(
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                          color: (selectedIndex == index)
+                              ? Colors.blue
+                              : Colors.grey),
+                      borderRadius: const BorderRadius.all(
+                        Radius.circular(5.0),
+                      ),
+                    ),
+                    child: Text(key),
+                  )),
+                  InkWell(
+                    onTap: () => _removeItemFromMap(key),
+                    child: Padding(
+                        padding: const EdgeInsets.all(10),
+                        child: SvgPicture.asset(ImageConstants.crossIcon)),
+                  )
+                ],
               ),
-              child: Text(key),
             ),
           ),
         );
       },
     );
+  }
+
+  void _removeItemFromMap(String key) {
+    widget.data.remove(key);
+    if (widget.data.isNotEmpty) {
+      selectedIndex = 0;
+      selectedImei = widget.data.keys.elementAt(0);
+    } else {
+      selectedImei = "";
+    }
+    setState(() => {});
   }
 
   void _getSelectedItem(int index, String selectedImei) {
@@ -147,8 +174,19 @@ class _ImeiListPageState extends State<ImeiListPage> {
   }
 
   void _checkImei(BuildContext context) {
+    if (selectedImei.isEmpty) return _showErrorMsg(StringConstants.emptyImei);
     BlocProvider.of<CheckImeiBloc>(context)
         .add(CheckImeiInitEvent(inputImei: selectedImei));
+  }
+
+  void _showErrorMsg(String errorMsg) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      backgroundColor: Colors.red,
+      content: Text(
+        errorMsg,
+        style: const TextStyle(color: Colors.white, fontSize: 16),
+      ),
+    ));
   }
 
   void _navigateResultScreen(Map<String, dynamic>? data, bool isValidImei) {
