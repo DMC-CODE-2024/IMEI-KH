@@ -29,6 +29,15 @@ class _ImeiListPageState extends State<ImeiListPage> {
   String selectedImei = "";
 
   @override
+  void initState() {
+    super.initState();
+    if (widget.data.isNotEmpty) {
+      selectedIndex = 0;
+      selectedImei = widget.data.keys.elementAt(0);
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,

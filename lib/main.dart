@@ -2,6 +2,7 @@ import 'package:eirs/features/launcher/data/business_logic/launcher_bloc.dart';
 import 'package:eirs/persistent/database_helper.dart';
 import 'package:eirs/provider/app_locale.dart';
 import 'package:eirs/routes/app_routes.dart';
+import 'package:eirs/theme/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -48,7 +49,7 @@ class MyApp extends StatelessWidget {
               supportedLocales: AppLocalizations.supportedLocales,
               locale: locale.locale,
               theme: ThemeData(
-                primarySwatch: Colors.blue,
+                primarySwatch: AppColors.primaryColor,
               ),
               //home: const LauncherScreen(title: 'Flutter Demo Home Page'),
               home: BlocProvider(

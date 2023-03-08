@@ -81,7 +81,7 @@ Widget _validImeiWidget(BuildContext context, String imei, String date,
     String time, Map<String, dynamic> deviceDetails) {
   return Container(
     color: AppColors.historyBg,
-    padding: const EdgeInsets.all(15),
+    padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
     child: Theme(
         data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
         child: ListTileTheme(
@@ -92,39 +92,37 @@ Widget _validImeiWidget(BuildContext context, String imei, String date,
                   SvgPicture.asset(ImageConstants.mobileOnIcon),
                   Padding(
                     padding: const EdgeInsets.only(left: 12),
-                    child: Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "${StringConstants.imei}  $imei",
-                            style: TextStyle(
-                                fontSize: 14, color: AppColors.historyTxtColor),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 6),
-                            child: Row(
-                              children: [
-                                Text(
-                                  date,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "${StringConstants.imei}  $imei",
+                          style: TextStyle(
+                              fontSize: 14, color: AppColors.historyTxtColor),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 6),
+                          child: Row(
+                            children: [
+                              Text(
+                                date,
+                                style: TextStyle(
+                                    fontSize: 14,
+                                    color: AppColors.dateTimeTxtColor),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 15),
+                                child: Text(
+                                  time,
                                   style: TextStyle(
-                                      fontSize: 14,
+                                      fontSize: 12,
                                       color: AppColors.dateTimeTxtColor),
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 15),
-                                  child: Text(
-                                    time,
-                                    style: TextStyle(
-                                        fontSize: 12,
-                                        color: AppColors.dateTimeTxtColor),
-                                  ),
-                                )
-                              ],
-                            ),
+                              )
+                            ],
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   )
                 ],
@@ -177,50 +175,48 @@ Widget _invalidImeiWidget(String imei, String date, String time) {
         SvgPicture.asset(ImageConstants.mobileOffIcon),
         Padding(
           padding: const EdgeInsets.only(left: 12),
-          child: Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "${StringConstants.invalidImei}  $imei",
-                  style:
-                      TextStyle(fontSize: 14, color: AppColors.historyTxtColor),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 6),
-                  child: Row(
-                    children: [
-                      Text(
-                        date,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "${StringConstants.invalidImei}  $imei",
+                style:
+                    TextStyle(fontSize: 14, color: AppColors.historyTxtColor),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 6),
+                child: Row(
+                  children: [
+                    Text(
+                      date,
+                      style: TextStyle(
+                          fontSize: 14, color: AppColors.dateTimeTxtColor),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 15),
+                      child: Text(
+                        time,
                         style: TextStyle(
-                            fontSize: 14, color: AppColors.dateTimeTxtColor),
+                            fontSize: 12, color: AppColors.dateTimeTxtColor),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 15),
-                        child: Text(
-                          time,
-                          style: TextStyle(
-                              fontSize: 12, color: AppColors.dateTimeTxtColor),
-                        ),
-                      )
-                    ],
-                  ),
+                    )
+                  ],
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 15, bottom: 10),
-                  child: Text(
-                    StringConstants.remark,
-                    style: TextStyle(
-                        fontSize: 14, color: AppColors.historyTxtColor),
-                  ),
-                ),
-                Text(
-                  StringConstants.invalidImeiDesc,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 15, bottom: 10),
+                child: Text(
+                  StringConstants.remark,
                   style:
                       TextStyle(fontSize: 14, color: AppColors.historyTxtColor),
-                )
-              ],
-            ),
+                ),
+              ),
+              Text(
+                StringConstants.invalidImeiDesc,
+                style:
+                    TextStyle(fontSize: 14, color: AppColors.historyTxtColor),
+              )
+            ],
           ),
         ),
       ],

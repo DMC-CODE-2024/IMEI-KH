@@ -73,10 +73,8 @@ class _ScannerPageState extends State<ScannerPage> {
   }
 
   void getScanBarCodeResult(String? code) {
+    print("Scan IMEI is: $code");
     if (code != null && _isNumeric(code)) {
-      setState(() {
-        successScans = successScans + 1;
-      });
       if (uniqueImei.containsKey(code)) {
         var count = uniqueImei[code];
         if (count == 3) {
@@ -85,6 +83,9 @@ class _ScannerPageState extends State<ScannerPage> {
         if (count != null) uniqueImei[code] = count + 1;
       } else {
         uniqueImei[code] = 1;
+        setState(() {
+          successScans = successScans + 1;
+        });
       }
       stopTimer();
     }
@@ -95,6 +96,9 @@ class _ScannerPageState extends State<ScannerPage> {
     cameraController.stop();
     stopTimer();
     isNavigateNext = true;
+    if (uniqueImei.isEmpty) {
+      return Navigator.of(context).pop();
+    }
     Navigator.of(context)
         .push(
       MaterialPageRoute(

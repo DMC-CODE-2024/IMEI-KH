@@ -40,4 +40,16 @@ class StringConstants {
   static const String invalidImei = 'Invalid IMEI';
   static const String remark = 'Remark';
   static const String invalidImeiDesc = 'The IMEI is not as per the 3GPP specification.';
+
+  //Coach screen
+  static const String aboutUs = 'About Us';
+  static const String aboutUsDesc = 'Know more here about us';
+  static const String infoTitle = 'Click to watch Tutorial again';
+  static const String historyDesc = 'Get list of your searched IMEIs here';
+  static const String language = 'Language';
+  static const String languageDesc = 'Change app language from here';
+  static const String scanTitle ='Scan IMEI from here';
+  static const String scanDesc ='Can be a barcode or QR code';
+  static const String emptyMsg = 'IMEI field can not be empty';
+  static const String minLengthError = 'Minimum 15 digits are required';
 }

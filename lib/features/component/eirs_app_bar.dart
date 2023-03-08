@@ -1,3 +1,4 @@
+import 'package:eirs/constants/strings.dart';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -55,13 +56,13 @@ class EirsAppBar extends StatelessWidget with PreferredSizeWidget {
           child: SvgPicture.asset(ImageConstants.appIcon),
         ),
         backgroundColor: AppColors.secondary,
-        title: const Text('About Us'),
+        title: const Text(StringConstants.aboutUs),
         overflowMode: feature1OverflowMode,
         enablePulsingAnimation: feature1EnablePulsingAnimation,
         description: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: const <Widget>[
-            Text('Know more here about us'),
+            Text(StringConstants.aboutUsDesc),
           ],
         ),
         child: Padding(
@@ -80,7 +81,7 @@ class EirsAppBar extends StatelessWidget with PreferredSizeWidget {
               tapTarget: SvgPicture.asset(ImageConstants.infoIcon),
               backgroundColor: AppColors.secondary,
               contentLocation: ContentLocation.below,
-              title: const Text('Click to watch Tutorial again'),
+              title: const Text(StringConstants.infoTitle),
               onComplete: action,
               onOpen: () async {
                 return true;
@@ -95,8 +96,8 @@ class EirsAppBar extends StatelessWidget with PreferredSizeWidget {
               tapTarget: SvgPicture.asset(ImageConstants.timeIcon),
               backgroundColor: AppColors.secondary,
               contentLocation: ContentLocation.below,
-              title: const Text('History'),
-              description: Text('Get list of your searched IMEIs here'),
+              title: const Text(StringConstants.history),
+              description: const Text(StringConstants.historyDesc),
               onComplete: action,
               onOpen: () async {
                 return true;
@@ -111,8 +112,8 @@ class EirsAppBar extends StatelessWidget with PreferredSizeWidget {
               tapTarget: const Icon(Icons.language),
               backgroundColor: AppColors.secondary,
               contentLocation: ContentLocation.below,
-              title: const Text('Language'),
-              description: const Text('Change app language from here'),
+              title: const Text(StringConstants.language),
+              description: const Text(StringConstants.languageDesc),
               onComplete: action,
               onOpen: () async {
                 return true;

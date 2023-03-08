@@ -2,6 +2,7 @@ import 'package:eirs/features/component/custom_progress_indicator.dart';
 import 'package:eirs/features/history/data/business_logic/device_history_bloc.dart';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_svg/svg.dart';
@@ -12,6 +13,7 @@ import '../../../main.dart';
 import '../../../theme/colors.dart';
 import '../../component/button.dart';
 import '../../component/eirs_app_bar.dart';
+import '../../component/input_borders.dart';
 import '../../component/localization_dialog.dart';
 import '../../component/need_any_help_widget.dart';
 import '../../history/presentation/device_history_screen.dart';
@@ -31,6 +33,8 @@ class CheckImeiScreen extends StatefulWidget {
 
 class _CheckImeiScreenState extends State<CheckImeiScreen> {
   final TextEditingController imeiController = TextEditingController();
+  String text = "0/15";
+  Color textColor = AppColors.grey;
 
   @override
   Widget build(BuildContext context) {
@@ -111,8 +115,21 @@ class _CheckImeiScreenState extends State<CheckImeiScreen> {
 
   void _checkImei(BuildContext context) {
     String inputImei = imeiController.text;
+    if (inputImei.isEmpty) return _showErrorMsg(StringConstants.emptyMsg);
+    if (inputImei.length < 15) {
+      return _showErrorMsg(StringConstants.minLengthError);
+    }
     BlocProvider.of<CheckImeiBloc>(context)
         .add(CheckImeiInitEvent(inputImei: inputImei));
+  }
+
+  void _showErrorMsg(String errorMsg) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text(
+        errorMsg,
+        style: const TextStyle(color: Colors.red, fontSize: 16),
+      ),
+    ));
   }
 
   Future<void> _startScanner() async {
@@ -145,20 +162,29 @@ class _CheckImeiScreenState extends State<CheckImeiScreen> {
                     children: [
                       SizedBox(
                         height: 40,
-                        child: TextField(
+                        child: TextFormField(
+                          onChanged: (value) => {
+                            setState(() {
+                              if (value.length == 15) textColor = Colors.green;
+                              text = "${value.length}/15";
+                            })
+                          },
+                          inputFormatters: [
+                            LengthLimitingTextInputFormatter(15),
+                          ],
+                          keyboardType: TextInputType.number,
                           controller: imeiController,
-                          decoration: InputDecoration(
-                              border: OutlineInputBorder(
-                                borderSide: BorderSide(color: AppColors.grey),
-                                borderRadius: BorderRadius.circular(8.0),
-                              ),
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
+                          decoration: const InputDecoration(
                               filled: true,
-                              focusedBorder: OutlineInputBorder(
-                                  borderSide:
-                                      BorderSide(color: AppColors.grey)),
                               hintText: StringConstants.imeiNumberHint,
-                              hintStyle: const TextStyle(fontSize: 10),
-                              fillColor: Colors.white70),
+                              hintStyle: TextStyle(fontSize: 10),
+                              fillColor: Colors.white70,
+                              enabledBorder: InputBorders.enabled,
+                              errorBorder: InputBorders.error,
+                              focusedErrorBorder: InputBorders.error,
+                              border: InputBorders.border,
+                              focusedBorder: InputBorders.focused),
                         ),
                       ),
                       Align(
@@ -166,9 +192,9 @@ class _CheckImeiScreenState extends State<CheckImeiScreen> {
                         child: Padding(
                           padding: const EdgeInsets.only(top: 5),
                           child: Text(
-                            AppLocalizations.of(context)!.imeiNumberLength,
+                            text,
                             style:
-                                TextStyle(fontSize: 10, color: AppColors.grey),
+                                TextStyle(fontSize: 10, color: textColor),
                           ),
                         ),
                       )
@@ -193,8 +219,8 @@ class _CheckImeiScreenState extends State<CheckImeiScreen> {
                           tapTarget: SvgPicture.asset(ImageConstants.scanIcon),
                           backgroundColor: AppColors.secondary,
                           contentLocation: ContentLocation.below,
-                          title: const Text('Scan IMEI from here'),
-                          description: Text('Can be a barcode or QR code'),
+                          title: const Text(StringConstants.scanTitle),
+                          description: const Text(StringConstants.scanDesc),
                           onOpen: () async {
                             return true;
                           },
