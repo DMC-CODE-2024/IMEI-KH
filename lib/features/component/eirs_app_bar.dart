@@ -53,7 +53,7 @@ class EirsAppBar extends StatelessWidget with PreferredSizeWidget {
         featureId: feature1,
         tapTarget: Padding(
           padding: const EdgeInsets.all(30),
-          child: SvgPicture.asset(ImageConstants.appIcon),
+          child: SvgPicture.asset(ImageConstants.splashIcon),
         ),
         backgroundColor: AppColors.secondary,
         title: const Text(
@@ -72,7 +72,7 @@ class EirsAppBar extends StatelessWidget with PreferredSizeWidget {
           padding: const EdgeInsets.only(left: 15),
           child: Padding(
             padding: const EdgeInsets.all(4),
-            child: SvgPicture.asset(ImageConstants.appIcon),
+            child: SvgPicture.asset(ImageConstants.splashIcon),
           ),
         ),
       ),
@@ -118,7 +118,7 @@ class EirsAppBar extends StatelessWidget with PreferredSizeWidget {
             ),
             DescribedFeatureOverlay(
               featureId: feature4,
-              tapTarget: const Icon(Icons.language),
+              tapTarget: SvgPicture.asset(ImageConstants.localizationIcon),
               backgroundColor: AppColors.secondary,
               contentLocation: ContentLocation.below,
               title: const Text(
@@ -132,11 +132,7 @@ class EirsAppBar extends StatelessWidget with PreferredSizeWidget {
               },
               child: IconButton(
                 onPressed: () => callback.call(AppBarActions.localization),
-                icon: Image.asset(
-                  ImageConstants.localizationIcon,
-                  width: 24,
-                  height: 24,
-                ),
+                icon: SvgPicture.asset(ImageConstants.localizationIcon),
               ),
             ),
           ],

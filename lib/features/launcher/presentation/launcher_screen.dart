@@ -65,7 +65,7 @@ class _LauncherScreenState extends State<LauncherScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                SvgPicture.asset(ImageConstants.appIcon),
+                SvgPicture.asset(ImageConstants.splashIcon),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(30, 20, 30, 0),
                   child: Text(

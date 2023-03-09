@@ -4,7 +4,7 @@ class ImageConstants {
   static const String appIcon ="assets/images/ic_eirs.svg";
   static const String timeIcon ="assets/images/ic_time.svg";
   static const String infoIcon ="assets/images/ic_info.svg";
-  static const String localizationIcon ="assets/images/ic_localization.jpg";
+  static const String localizationIcon ="assets/images/ic_localization.svg";
   static const String scanIcon ="assets/images/ic_transform.svg";
   static const String deviceInfo ="assets/images/ic_device_info.jpg";
   static const String deviceBox ="assets/images/ic_device_box.jpg";
@@ -17,4 +17,6 @@ class ImageConstants {
   static const String mobileOffIcon ="assets/images/ic_mobile_off.svg";
   static const String mobileOnIcon ="assets/images/ic_mobile_on.svg";
   static const String coachLanguage ="assets/images/ic_language.svg";
+  static const String splashIcon = "assets/images/ic_splash_icon.svg";
+  static const String boxImei = "assets/images/ic_box_imei.svg";
 }

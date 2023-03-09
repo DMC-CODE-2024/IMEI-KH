@@ -39,6 +39,7 @@ class _CheckImeiScreenState extends State<CheckImeiScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: EirsAppBar(
         title: AppLocalizations.of(context)!.appName,
         callback: (value) {
@@ -286,7 +287,7 @@ class _CheckImeiScreenState extends State<CheckImeiScreen> {
                 ),
                 Flexible(
                   flex: 1,
-                  child: Image.asset(ImageConstants.deviceBox),
+                  child: SvgPicture.asset(ImageConstants.boxImei),
                 )
               ],
             ),
