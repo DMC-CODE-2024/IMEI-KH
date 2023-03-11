@@ -15,12 +15,11 @@ class DeviceDetailsRes {
   Map<String, dynamic> toJson() => _$DeviceDetailsResToJson(this);
 }
 
-
 @JsonSerializable()
-class LabelDetails{
+class LabelDetails {
   @JsonKey(name: 'find_imei')
   String? findImei;
-  @JsonKey(name: 'get_imei_information')
+  @JsonKey(name: 'get_imie_information')
   String? getImeiInfo;
   @JsonKey(name: 'imei_details')
   String? imeiDetails;
@@ -28,10 +27,56 @@ class LabelDetails{
   String? enterImei;
   @JsonKey(name: 'option_a')
   String? optionA;
+  String? aboutUs;
+  String? makeSureWifiData;
+  String? checkImeiMesssage;
+  @JsonKey(name: 'IMEI_also_written_in_the_box_as_shown_in_Image_below')
+  String? imeiAlsoWrittenInBox;
+  String? imeiAlsoWritten;
+  String? scan;
+  @JsonKey(name: 'enter15Digit')
+  String? enterFifteenDigit;
+  String? changeAppLanguage;
+  @JsonKey(name: 'eirs_app')
+  String? eirsApp;
+  String? remark;
+  String? emailId;
+  String? language;
+  String? selectOneImei;
+  String? callToAction;
+  String? sorryUnableToFetch;
+  String? getList;
+  String? oops;
+  String? ok;
+  @JsonKey(name: 'findImei')
+  String? findImeiLabel;
+  String? dial;
+  String? contactUs;
+  String? or;
+  String? scanIMEI;
+  String? clickToWatch;
+  String? changeLanguage;
+  String? knowMore;
+  String? tryAgain;
+  String? noInternetConnection;
+  @JsonKey(name: 'optionA')
+  String? optionALabel;
+  String? history;
+  String? optionB;
+  String? checkIMEI;
+  String? scanBar;
+  String? eirsAppHeader;
+  String? enterIMEI;
+  String? canBeBarcode;
+  String? getIMEIInfo;
+  String? invalid;
+  String? checkOtherImei;
+  String? needAnyHelp;
 
   LabelDetails();
 
-  factory LabelDetails.fromJson(Map<String, dynamic> json) => _$LabelDetailsFromJson(json);
+  factory LabelDetails.fromJson(Map<String, dynamic> json) =>
+      _$LabelDetailsFromJson(json);
 
   Map<String, dynamic> toJson() => _$LabelDetailsToJson(this);
 }

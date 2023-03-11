@@ -40,7 +40,7 @@ class CheckImeiBloc extends Bloc<CheckImeiEvent, CheckImeiState> {
       emit(LanguageLoadingState());
       try {
         DeviceDetailsRes deviceDetailsRes = await eirsRepository.getLanguage("CheckImei", event.languageType ?? StringConstants.englishCode);
-        setLocale(deviceDetailsRes.languageType ?? StringConstants.englishCode);
+        //setLocale(deviceDetailsRes.languageType ?? StringConstants.englishCode);
         emit(LanguageLoadedState(deviceDetailsRes));
       } catch (e) {
         emit(LanguageErrorState(e.toString()));

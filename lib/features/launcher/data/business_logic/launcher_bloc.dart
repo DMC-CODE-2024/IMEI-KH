@@ -20,14 +20,13 @@ class LauncherBloc extends Bloc<LauncherEvent, LauncherState> {
     emit(LauncherLoadingState());
     if (event is LauncherInitEvent) {
       try {
-        print(event.languageType);
         DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
         DeviceDetailsReq deviceDetailsReq = _readAndroidBuildData(
             event.languageType ?? StringConstants.englishCode,
             await deviceInfoPlugin.androidInfo);
         DeviceDetailsRes deviceDetailsRes =
             await eirsRepository.deviceDetailsReq(deviceDetailsReq);
-        print(deviceDetailsRes.labelDetails?.toJson());
+        print("Init Res: ${deviceDetailsRes.labelDetails?.toJson()}");
         AppStates.setLabelDetails(deviceDetailsRes.labelDetails);
         emit(LauncherLoadedState(deviceDetailsRes));
       } catch (e) {

@@ -27,13 +27,17 @@ class _LocalizationDialogState extends State<LocalizationDialog> {
   @override
   void initState() {
     super.initState();
-    getLocale().then((locale) {
-      switch (locale.languageCode) {
+    getLocale().then((languageCode) {
+      switch (languageCode) {
         case StringConstants.englishCode:
-          isEnglish = true;
+          setState(() {
+            isEnglish = true;
+          });
           break;
         case StringConstants.khmerCode:
-          isEnglish = false;
+          setState(() {
+            isEnglish = false;
+          });
           break;
       }
     });
@@ -92,7 +96,7 @@ class _LocalizationDialogState extends State<LocalizationDialog> {
                         flex: 1,
                         child: InkWell(
                           onTap: () {
-                            setLocale(StringConstants.english);
+                            setLocale(StringConstants.englishCode);
                             setState(() {
                               isEnglish = true;
                             });

@@ -29,7 +29,7 @@ class StringConstants {
   static const String check = 'Check';
   static const String englishCode = 'en';
   static const String english = 'English';
-  static const String khmerCode = 'km';
+  static const String khmerCode = 'kh';
   static const String khmer = 'Khmer';
   static const String result = 'Result';
   static const String history = 'History';

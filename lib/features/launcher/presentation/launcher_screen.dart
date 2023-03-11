@@ -26,15 +26,17 @@ class _LauncherScreenState extends State<LauncherScreen> {
   @override
   void initState() {
     super.initState();
-    getLocale().then((locale) {
-      selectedLanguage = locale.languageCode;
-    });
+    _initApiReq();
+  }
+
+  Future<void> _initApiReq() async {
+    LauncherBloc bloc = BlocProvider.of<LauncherBloc>(context);
+    String selectedLng = await getLocale();
+    bloc.add(LauncherInitEvent(languageType: selectedLng));
   }
 
   @override
   Widget build(BuildContext context) {
-    LauncherBloc bloc = BlocProvider.of<LauncherBloc>(context);
-    bloc.add(LauncherInitEvent(languageType: selectedLanguage));
     return Scaffold(
       body: BlocConsumer<LauncherBloc, LauncherState>(
         builder: (context, state) {
