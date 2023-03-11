@@ -7,6 +7,7 @@ import 'package:flutter_svg/svg.dart';
 
 import '../../../constants/image_path.dart';
 import '../../../constants/strings.dart';
+import '../../../helper/shared_pref.dart';
 import '../../../theme/colors.dart';
 import '../data/business_logic/launcher_event.dart';
 
@@ -20,19 +21,20 @@ class LauncherScreen extends StatefulWidget {
 }
 
 class _LauncherScreenState extends State<LauncherScreen> {
+  String selectedLanguage = StringConstants.englishCode;
+
   @override
   void initState() {
     super.initState();
-    /*Future.delayed(splashDuration, () {
-      Navigator.pushNamedAndRemoveUntil(
-          context, Routes.IMEI_INFO, (route) => false);
-    });*/
+    getLocale().then((locale) {
+      selectedLanguage = locale.languageCode;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     LauncherBloc bloc = BlocProvider.of<LauncherBloc>(context);
-    bloc.add(LauncherInitEvent());
+    bloc.add(LauncherInitEvent(languageType: selectedLanguage));
     return Scaffold(
       body: BlocConsumer<LauncherBloc, LauncherState>(
         builder: (context, state) {
@@ -68,11 +70,10 @@ class _LauncherScreenState extends State<LauncherScreen> {
                 SvgPicture.asset(ImageConstants.splashIcon),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(30, 20, 30, 0),
-                  child: Text(
-                      StringConstants.splashTitle,
-                      style: TextStyle(fontSize: 24, color: AppColors.secondary),
-                      textAlign: TextAlign.center
-                  ),
+                  child: Text(StringConstants.splashTitle,
+                      style:
+                          TextStyle(fontSize: 24, color: AppColors.secondary),
+                      textAlign: TextAlign.center),
                 )
               ],
             ),

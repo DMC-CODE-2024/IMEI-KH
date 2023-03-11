@@ -3,5 +3,6 @@ abstract class LauncherEvent {
 }
 
 class LauncherInitEvent extends LauncherEvent {
-  LauncherInitEvent();
+  String? languageType;
+  LauncherInitEvent({this.languageType});
 }

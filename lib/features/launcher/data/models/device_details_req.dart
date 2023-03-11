@@ -6,11 +6,13 @@ part 'device_details_req.g.dart';
 class DeviceDetailsReq {
   String osType;
   String deviceId;
+  String languageType;
   AndroidDeviceDetails deviceDetails;
 
   DeviceDetailsReq(
       {required this.osType,
       required this.deviceId,
+      required this.languageType,
       required this.deviceDetails});
 
   factory DeviceDetailsReq.fromJson(Map<String, dynamic> json) =>

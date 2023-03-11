@@ -1,4 +1,5 @@
 import 'package:device_info_plus/device_info_plus.dart';
+import 'package:eirs/constants/strings.dart';
 import 'package:eirs/features/launcher/data/business_logic/launcher_state.dart';
 import 'package:eirs/features/launcher/data/models/device_details_req.dart';
 import 'package:eirs/features/launcher/data/models/device_details_res.dart';
@@ -19,11 +20,14 @@ class LauncherBloc extends Bloc<LauncherEvent, LauncherState> {
     emit(LauncherLoadingState());
     if (event is LauncherInitEvent) {
       try {
+        print(event.languageType);
         DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
-        DeviceDetailsReq deviceDetailsReq =
-            _readAndroidBuildData(await deviceInfoPlugin.androidInfo);
+        DeviceDetailsReq deviceDetailsReq = _readAndroidBuildData(
+            event.languageType ?? StringConstants.englishCode,
+            await deviceInfoPlugin.androidInfo);
         DeviceDetailsRes deviceDetailsRes =
             await eirsRepository.deviceDetailsReq(deviceDetailsReq);
+        print(deviceDetailsRes.labelDetails?.toJson());
         AppStates.setLabelDetails(deviceDetailsRes.labelDetails);
         emit(LauncherLoadedState(deviceDetailsRes));
       } catch (e) {
@@ -32,10 +36,12 @@ class LauncherBloc extends Bloc<LauncherEvent, LauncherState> {
     }
   }
 
-  DeviceDetailsReq _readAndroidBuildData(AndroidDeviceInfo androidDeviceInfo) {
+  DeviceDetailsReq _readAndroidBuildData(
+      String languageType, AndroidDeviceInfo androidDeviceInfo) {
     return DeviceDetailsReq(
         osType: "Android",
         deviceId: androidDeviceInfo.id,
+        languageType: languageType,
         deviceDetails: AndroidDeviceDetails(
             versionCode: androidDeviceInfo.version.sdkInt,
             versionName: androidDeviceInfo.version.codename,
