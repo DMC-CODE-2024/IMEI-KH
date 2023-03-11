@@ -10,6 +10,7 @@ DeviceDetailsReq _$DeviceDetailsReqFromJson(Map<String, dynamic> json) =>
     DeviceDetailsReq(
       osType: json['osType'] as String,
       deviceId: json['deviceId'] as String,
+      languageType: json['languageType'] as String,
       deviceDetails: AndroidDeviceDetails.fromJson(
           json['deviceDetails'] as Map<String, dynamic>),
     );
@@ -18,6 +19,7 @@ Map<String, dynamic> _$DeviceDetailsReqToJson(DeviceDetailsReq instance) =>
     <String, dynamic>{
       'osType': instance.osType,
       'deviceId': instance.deviceId,
+      'languageType': instance.languageType,
       'deviceDetails': instance.deviceDetails,
     };
 
