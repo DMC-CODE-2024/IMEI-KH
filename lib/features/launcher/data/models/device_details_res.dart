@@ -72,7 +72,17 @@ class LabelDetails {
   String? invalid;
   String? checkOtherImei;
   String? needAnyHelp;
-
+  @JsonKey(name: 'Result')
+  String? result;
+  String? check;
+  String? khmer;
+  String? imeiInfo;
+  String? feildNotEmpty;
+  String? noImeiSelected;
+  String? copyRight;
+  String? imeiNotPer3gpp;
+  String? scanCode;
+  String? min15Digit;
   LabelDetails();
 
   factory LabelDetails.fromJson(Map<String, dynamic> json) =>

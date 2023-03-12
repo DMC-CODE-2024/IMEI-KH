@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:eirs/features/launcher/data/models/device_details_res.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,7 +12,9 @@ import '../component/app_bar_with_title.dart';
 import 'debug_info_widget.dart';
 
 class ScannerPage extends StatefulWidget {
-  const ScannerPage({Key? key}) : super(key: key);
+  const ScannerPage({super.key, required this.labelDetails});
+
+  final LabelDetails? labelDetails;
 
   @override
   State<ScannerPage> createState() => _ScannerPageState();
@@ -39,7 +42,7 @@ class _ScannerPageState extends State<ScannerPage> {
     final isCameraSupported = defaultTargetPlatform == TargetPlatform.iOS ||
         defaultTargetPlatform == TargetPlatform.android;
     return Scaffold(
-      appBar: const AppBarWithTitleOnly(title: "Scan code"),
+      appBar: AppBarWithTitleOnly(title: widget.labelDetails?.scanCode ?? ""),
       body: Builder(
         builder: (context) {
           return Stack(
@@ -73,7 +76,6 @@ class _ScannerPageState extends State<ScannerPage> {
   }
 
   void getScanBarCodeResult(String? code) {
-    print("Scan IMEI is: $code");
     if (code != null && _isNumeric(code)) {
       if (uniqueImei.containsKey(code)) {
         var count = uniqueImei[code];

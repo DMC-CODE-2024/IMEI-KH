@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:provider/provider.dart';
 
 import '../../../constants/image_path.dart';
 import '../../../constants/strings.dart';
+import '../../../helper/app_states_notifier.dart';
 import '../../../theme/colors.dart';
 import '../../component/app_bar_with_title.dart';
 import '../../component/button.dart';
 import '../../component/custom_progress_indicator.dart';
 import '../../imei_result/presentation/imei_result_screen.dart';
+import '../../launcher/data/models/device_details_res.dart';
 import '../data/business_logic/check_imei_bloc.dart';
 import '../data/business_logic/check_imei_state.dart';
 
@@ -27,6 +30,8 @@ class ImeiListPage extends StatefulWidget {
 class _ImeiListPageState extends State<ImeiListPage> {
   int selectedIndex = -1;
   String selectedImei = "";
+  String emptyString = "";
+  LabelDetails? labelDetails;
 
   @override
   void initState() {
@@ -40,10 +45,16 @@ class _ImeiListPageState extends State<ImeiListPage> {
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    labelDetails = Provider.of<AppStatesNotifier>(context).value;
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-      appBar: const AppBarWithTitleOnly(title: StringConstants.scanCode),
+      appBar: AppBarWithTitleOnly(title: labelDetails?.scanCode ?? emptyString),
       body: BlocConsumer<CheckImeiBloc, CheckImeiState>(
         builder: (context, state) {
           if (state is CheckImeiLoadingState) {
@@ -83,7 +94,7 @@ class _ImeiListPageState extends State<ImeiListPage> {
                   child: Align(
                     alignment: Alignment.center,
                     child: Text(
-                      StringConstants.selectImei,
+                      labelDetails?.selectOneImei ?? "",
                       style: TextStyle(
                           fontSize: 16.0,
                           color: AppColors.black,
@@ -104,7 +115,7 @@ class _ImeiListPageState extends State<ImeiListPage> {
             AppButton(
               width: 200,
               isLoading: false,
-              child: const Text(StringConstants.check),
+              child: Text(labelDetails?.check ?? emptyString),
               onPressed: () => _checkImei(context),
             )
           ],
@@ -174,7 +185,9 @@ class _ImeiListPageState extends State<ImeiListPage> {
   }
 
   void _checkImei(BuildContext context) {
-    if (selectedImei.isEmpty) return _showErrorMsg(StringConstants.emptyImei);
+    if (selectedImei.isEmpty) {
+      return _showErrorMsg(labelDetails?.noImeiSelected ?? emptyString);
+    }
     BlocProvider.of<CheckImeiBloc>(context)
         .add(CheckImeiInitEvent(inputImei: selectedImei));
   }
@@ -192,7 +205,7 @@ class _ImeiListPageState extends State<ImeiListPage> {
   void _navigateResultScreen(Map<String, dynamic>? data, bool isValidImei) {
     Navigator.of(context).push(MaterialPageRoute(
         builder: (context) => ImeiResultScreen(
-            title: StringConstants.result,
+            labelDetails: labelDetails,
             scanImei: selectedImei,
             data: data,
             isValidImei: isValidImei)));

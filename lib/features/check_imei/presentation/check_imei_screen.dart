@@ -1,11 +1,14 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:eirs/features/component/custom_progress_indicator.dart';
 import 'package:eirs/features/history/data/business_logic/device_history_bloc.dart';
+import 'package:eirs/helper/app_states_notifier.dart';
+import 'package:eirs/helper/connection_status_notifier.dart';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:provider/provider.dart';
 
 import '../../../constants/image_path.dart';
 import '../../../constants/strings.dart';
@@ -13,11 +16,14 @@ import '../../../main.dart';
 import '../../../theme/colors.dart';
 import '../../component/button.dart';
 import '../../component/eirs_app_bar.dart';
+import '../../component/error_page.dart';
 import '../../component/input_borders.dart';
 import '../../component/localization_dialog.dart';
 import '../../component/need_any_help_widget.dart';
+import '../../component/no_internet_page.dart';
 import '../../history/presentation/device_history_screen.dart';
 import '../../imei_result/presentation/imei_result_screen.dart';
+import '../../launcher/data/models/device_details_res.dart';
 import '../../scanner/scanner_screen.dart';
 import '../data/business_logic/check_imei_bloc.dart';
 import '../data/business_logic/check_imei_state.dart';
@@ -32,45 +38,94 @@ class CheckImeiScreen extends StatefulWidget {
 }
 
 class _CheckImeiScreenState extends State<CheckImeiScreen> {
+  Map _source = {ConnectivityResult.none: false};
+  bool hasNetwork = false;
   final TextEditingController imeiController = TextEditingController();
   String text = "0/15";
+  String emptyString = "";
   Color textColor = AppColors.grey;
+  LabelDetails? labelDetails;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    labelDetails = Provider.of<AppStatesNotifier>(context).value;
+  }
+
+  void updateNetworkStatus(Map<dynamic, dynamic> source) async {
+    _source = source;
+    if (_source.isNotEmpty) {
+      switch (_source.keys.toList()[0]) {
+        case ConnectivityResult.mobile:
+          hasNetwork = _source.values.toList()[0] ? true : false;
+          break;
+        case ConnectivityResult.wifi:
+          hasNetwork = _source.values.toList()[0] ? true : false;
+          break;
+        case ConnectivityResult.none:
+        default:
+          hasNetwork = false;
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: EirsAppBar(
-        title: AppLocalizations.of(context)!.appName,
-        callback: (value) {
-          _appBarActions(value);
-        },
-      ),
-      body: BlocConsumer<CheckImeiBloc, CheckImeiState>(
-        builder: (context, state) {
-          if (state is CheckImeiLoadingState || state is LanguageLoadingState) {
-            return const CustomProgressIndicator(textColor: Colors.black);
-          }
-          return _imeiPageWidget();
-        },
-        listener: (context, state) {
-          if (state is CheckImeiLoadedState) {
-            _navigateResultScreen(state.checkImeiRes.result?.deviceDetails,
-                state.checkImeiRes.result?.validImei ?? false);
-          }
+    return ValueListenableBuilder(
+        valueListenable: ConnectionStatusNotifier(),
+        builder: (context, Map<dynamic, dynamic> status, child) {
+          updateNetworkStatus(status);
+          return Scaffold(
+            backgroundColor: Colors.white,
+            appBar: EirsAppBar(
+              labelDetails: labelDetails,
+              callback: (value) {
+                _appBarActions(value);
+              },
+            ),
+            body: BlocConsumer<CheckImeiBloc, CheckImeiState>(
+              builder: (context, state) {
+                if (!hasNetwork) {
+                  return NoInternetPage(labelDetails: labelDetails);
+                }
 
-          if (state is CheckImeiErrorState) {
-            _navigateResultScreen(null, false);
-          }
-        },
-      ),
-    );
+                if (state is CheckImeiLoadingState ||
+                    state is LanguageLoadingState) {
+                  return const CustomProgressIndicator(textColor: Colors.black);
+                }
+
+                if (state is CheckImeiErrorState ||
+                    state is LanguageErrorState) {
+                  return ErrorPage(labelDetails: labelDetails);
+                }
+
+                return _imeiPageWidget();
+              },
+              listener: (context, state) {
+                if (state is CheckImeiLoadedState) {
+                  _navigateResultScreen(
+                      state.checkImeiRes.result?.deviceDetails,
+                      state.checkImeiRes.result?.validImei ?? false);
+                }
+
+                if (state is CheckImeiErrorState) {
+                  _navigateResultScreen(null, false);
+                }
+
+                if (state is LanguageLoadedState) {
+                  Provider.of<AppStatesNotifier>(context, listen: false)
+                      .updateState(state.deviceDetailsRes.labelDetails);
+                }
+              },
+            ),
+          );
+        });
   }
 
   void _navigateResultScreen(Map<String, dynamic>? data, bool isValidImei) {
     Navigator.of(context).push(MaterialPageRoute(
         builder: (context) => ImeiResultScreen(
-            title: StringConstants.result,
+            labelDetails: labelDetails,
             scanImei: imeiController.text,
             data: data,
             isValidImei: isValidImei)));
@@ -135,7 +190,9 @@ class _CheckImeiScreenState extends State<CheckImeiScreen> {
 
   Future<void> _startScanner() async {
     await Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return const ScannerPage();
+      return ScannerPage(
+        labelDetails: labelDetails,
+      );
     }));
   }
 
@@ -147,12 +204,12 @@ class _CheckImeiScreenState extends State<CheckImeiScreen> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Text(
-              AppLocalizations.of(context)!.appName,
+              labelDetails?.getIMEIInfo ?? emptyString,
               style: TextStyle(fontSize: 20, color: AppColors.secondary),
             ),
             Container(
               margin: const EdgeInsets.only(top: 15, bottom: 5),
-              child: Text(AppLocalizations.of(context)!.enterImei,
+              child: Text(labelDetails?.enterIMEI ?? emptyString,
                   style: const TextStyle(fontSize: 14, color: Colors.black)),
             ),
             Row(
@@ -176,10 +233,11 @@ class _CheckImeiScreenState extends State<CheckImeiScreen> {
                           keyboardType: TextInputType.number,
                           controller: imeiController,
                           autovalidateMode: AutovalidateMode.onUserInteraction,
-                          decoration: const InputDecoration(
+                          decoration: InputDecoration(
                               filled: true,
-                              hintText: StringConstants.imeiNumberHint,
-                              hintStyle: TextStyle(fontSize: 10),
+                              hintText: labelDetails?.enterFifteenDigit ??
+                                  emptyString,
+                              hintStyle: const TextStyle(fontSize: 10),
                               fillColor: Colors.white70,
                               enabledBorder: InputBorders.enabled,
                               errorBorder: InputBorders.error,
@@ -208,7 +266,7 @@ class _CheckImeiScreenState extends State<CheckImeiScreen> {
                       Padding(
                         padding: const EdgeInsets.only(left: 20),
                         child: Text(
-                          AppLocalizations.of(context)!.or,
+                          labelDetails?.or ?? emptyString,
                           style: const TextStyle(fontSize: 14),
                         ),
                       ),
@@ -219,11 +277,12 @@ class _CheckImeiScreenState extends State<CheckImeiScreen> {
                           tapTarget: SvgPicture.asset(ImageConstants.scanIcon),
                           backgroundColor: AppColors.secondary,
                           contentLocation: ContentLocation.below,
-                          title: const Text(
-                            StringConstants.scanTitle,
-                            style: TextStyle(fontWeight: FontWeight.w700),
+                          title: Text(
+                            labelDetails?.scanIMEI ?? emptyString,
+                            style: const TextStyle(fontWeight: FontWeight.w700),
                           ),
-                          description: const Text(StringConstants.scanDesc),
+                          description:
+                              Text(labelDetails?.canBeBarcode ?? emptyString),
                           onOpen: () async {
                             return true;
                           },
@@ -235,7 +294,7 @@ class _CheckImeiScreenState extends State<CheckImeiScreen> {
                                 Padding(
                                   padding: const EdgeInsets.only(top: 6),
                                   child: Text(
-                                    AppLocalizations.of(context)!.scanBarcode,
+                                    labelDetails?.scanBar ?? emptyString,
                                     style: const TextStyle(
                                         fontSize: 14, color: Colors.black),
                                   ),
@@ -254,7 +313,7 @@ class _CheckImeiScreenState extends State<CheckImeiScreen> {
               margin: const EdgeInsets.only(top: 30),
               child: AppButton(
                 isLoading: false,
-                child: Text(AppLocalizations.of(context)!.checkImei),
+                child: Text(labelDetails?.checkIMEI ?? emptyString),
                 onPressed: () => _checkImei(context),
               ),
             ),
@@ -263,7 +322,7 @@ class _CheckImeiScreenState extends State<CheckImeiScreen> {
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 10),
                 child: Text(
-                  AppLocalizations.of(context)!.findImei,
+                  labelDetails?.findImei ?? emptyString,
                   style: TextStyle(color: AppColors.secondary, fontSize: 14.0),
                 ),
               ),
@@ -271,12 +330,12 @@ class _CheckImeiScreenState extends State<CheckImeiScreen> {
             Padding(
               padding: const EdgeInsets.only(top: 15, bottom: 5),
               child: Text(
-                AppLocalizations.of(context)!.optionA,
+                labelDetails?.optionA ?? emptyString,
                 style: TextStyle(color: AppColors.buttonColor, fontSize: 14.0),
               ),
             ),
             Text(
-              AppLocalizations.of(context)!.optionALabel,
+              labelDetails?.imeiAlsoWrittenInBox ?? emptyString,
               style: TextStyle(color: AppColors.black, fontSize: 14.0),
             ),
             Row(
@@ -294,25 +353,27 @@ class _CheckImeiScreenState extends State<CheckImeiScreen> {
             Container(
               margin: const EdgeInsets.only(top: 10),
               child: Text(
-                AppLocalizations.of(context)!.or,
+                labelDetails?.or ?? emptyString,
                 style: TextStyle(fontSize: 14, color: AppColors.greyTextColor),
               ),
             ),
             Padding(
               padding: const EdgeInsets.only(top: 10, bottom: 5),
               child: Text(
-                AppLocalizations.of(context)!.optionB,
+                labelDetails?.optionB ?? emptyString,
                 style: TextStyle(color: AppColors.buttonColor, fontSize: 14.0),
               ),
             ),
             Text(
-              AppLocalizations.of(context)!.optionBLabel,
+              labelDetails?.dial ?? emptyString,
               style: TextStyle(color: AppColors.black, fontSize: 14.0),
             ),
             Image.asset(ImageConstants.deviceInfo),
-            const Padding(
-              padding: EdgeInsets.symmetric(vertical: 12),
-              child: NeedAnyHelpWidget(),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 12),
+              child: NeedAnyHelpWidget(
+                labelDetails: labelDetails,
+              ),
             )
           ],
         ),

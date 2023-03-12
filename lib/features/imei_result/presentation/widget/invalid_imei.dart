@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 
 import '../../../../theme/colors.dart';
+import '../../../launcher/data/models/device_details_res.dart';
 
 class InvalidImeiResult extends StatelessWidget {
   const InvalidImeiResult({
     Key? key,
+    this.labelDetails,
   }) : super(key: key);
+
+  final LabelDetails? labelDetails;
 
   @override
   Widget build(BuildContext context) {
@@ -24,13 +28,13 @@ class InvalidImeiResult extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Remark',
+                labelDetails?.remark ?? "",
                 style: TextStyle(fontSize: 14.0, color: AppColors.black),
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 20),
                 child: Text(
-                  'The IMEI is not as per the 3GPP specification.',
+                  labelDetails?.imeiNotPer3gpp ?? "",
                   style: TextStyle(fontSize: 14.0, color: AppColors.black),
                 ),
               ),
@@ -47,7 +51,7 @@ class InvalidImeiResult extends StatelessWidget {
                 ),
           ),
           child: Text(
-            "Call to action to be decided later based on error",
+            labelDetails?.callToAction ?? "",
             style: TextStyle(fontSize: 14, color: AppColors.grey),
           ),
         )

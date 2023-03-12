@@ -17,6 +17,9 @@ class DeviceHistoryBloc extends Bloc<DeviceHistoryEvent, DeviceHistoryState> {
     try {
       List<Map<String, dynamic>> deviceHistory =
           await eirsRepository.getDeviceHistory();
+      if (deviceHistory.isEmpty) {
+        return emit(DeviceHistoryErrorState("No Data"));
+      }
       emit(DeviceHistoryLoadedState(deviceHistory));
     } catch (e) {
       emit(DeviceHistoryErrorState(e.toString()));

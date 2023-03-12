@@ -1,4 +1,3 @@
-import 'package:eirs/constants/strings.dart';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -8,24 +7,26 @@ import 'package:flutter_svg/svg.dart';
 import '../../constants/image_path.dart';
 import '../../main.dart';
 import '../../theme/colors.dart';
+import '../launcher/data/models/device_details_res.dart';
 
 class EirsAppBar extends StatelessWidget with PreferredSizeWidget {
   const EirsAppBar({
     Key? key,
     this.autoImplementLeading = true,
-    this.title,
+    this.labelDetails,
     this.actions,
     this.systemUiOverlayStyle = SystemUiOverlayStyle.dark,
     required this.callback,
   }) : super(key: key);
   final Function callback;
   final bool autoImplementLeading;
-  final String? title;
+  final LabelDetails? labelDetails;
   final List<Widget>? actions;
   final SystemUiOverlayStyle systemUiOverlayStyle;
 
   @override
   Widget build(BuildContext context) {
+    String emptyString = "";
     var feature1OverflowMode = OverflowMode.clipContent;
     var feature1EnablePulsingAnimation = true;
 
@@ -42,12 +43,10 @@ class EirsAppBar extends StatelessWidget with PreferredSizeWidget {
       titleSpacing: 0.0,
       title: Padding(
         padding: const EdgeInsets.only(left: 5),
-        child: (title != null)
-            ? Text(
-                title!,
-                style: TextStyle(color: AppColors.secondary, fontSize: 14),
-              )
-            : const Spacer(),
+        child: Text(
+          labelDetails?.eirsAppHeader ?? emptyString,
+          style: TextStyle(color: AppColors.secondary, fontSize: 14),
+        ),
       ),
       leading: DescribedFeatureOverlay(
         featureId: feature1,
@@ -56,16 +55,16 @@ class EirsAppBar extends StatelessWidget with PreferredSizeWidget {
           child: SvgPicture.asset(ImageConstants.splashIcon),
         ),
         backgroundColor: AppColors.secondary,
-        title: const Text(
-          StringConstants.aboutUs,
-          style: TextStyle(fontWeight: FontWeight.w700),
+        title: Text(
+          labelDetails?.aboutUs ?? emptyString,
+          style: const TextStyle(fontWeight: FontWeight.w700),
         ),
         overflowMode: feature1OverflowMode,
         enablePulsingAnimation: feature1EnablePulsingAnimation,
         description: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: const <Widget>[
-            Text(StringConstants.aboutUsDesc),
+          children: <Widget>[
+            Text(labelDetails?.knowMore ?? emptyString),
           ],
         ),
         child: Padding(
@@ -84,9 +83,9 @@ class EirsAppBar extends StatelessWidget with PreferredSizeWidget {
               tapTarget: SvgPicture.asset(ImageConstants.infoIcon),
               backgroundColor: AppColors.secondary,
               contentLocation: ContentLocation.below,
-              title: const Text(
-                StringConstants.infoTitle,
-                style: TextStyle(fontWeight: FontWeight.w700),
+              title: Text(
+                labelDetails?.clickToWatch ?? emptyString,
+                style: const TextStyle(fontWeight: FontWeight.w700),
               ),
               onComplete: action,
               onOpen: () async {
@@ -102,11 +101,11 @@ class EirsAppBar extends StatelessWidget with PreferredSizeWidget {
               tapTarget: SvgPicture.asset(ImageConstants.timeIcon),
               backgroundColor: AppColors.secondary,
               contentLocation: ContentLocation.below,
-              title: const Text(
-                StringConstants.history,
-                style: TextStyle(fontWeight: FontWeight.w700),
+              title: Text(
+                labelDetails?.history ?? emptyString,
+                style: const TextStyle(fontWeight: FontWeight.w700),
               ),
-              description: const Text(StringConstants.historyDesc),
+              description: Text(labelDetails?.getList ?? emptyString),
               onComplete: action,
               onOpen: () async {
                 return true;
@@ -121,11 +120,11 @@ class EirsAppBar extends StatelessWidget with PreferredSizeWidget {
               tapTarget: SvgPicture.asset(ImageConstants.localizationIcon),
               backgroundColor: AppColors.secondary,
               contentLocation: ContentLocation.below,
-              title: const Text(
-                StringConstants.language,
-                style: TextStyle(fontWeight: FontWeight.w700),
+              title: Text(
+                labelDetails?.language ?? emptyString,
+                style: const TextStyle(fontWeight: FontWeight.w700),
               ),
-              description: const Text(StringConstants.languageDesc),
+              description: Text(labelDetails?.changeAppLanguage ?? emptyString),
               onComplete: action,
               onOpen: () async {
                 return true;

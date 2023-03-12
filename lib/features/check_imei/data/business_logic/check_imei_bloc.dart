@@ -1,7 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:eirs/constants/strings.dart';
 import 'package:eirs/features/launcher/data/models/device_details_res.dart';
-import 'package:eirs/helper/shared_pref.dart';
 
 import '../../../../repoistory/eirs_repository.dart';
 import '../models/check_imei_req.dart';
@@ -39,8 +38,8 @@ class CheckImeiBloc extends Bloc<CheckImeiEvent, CheckImeiState> {
     if (event is CheckImeiInitEvent && event.languageType != null) {
       emit(LanguageLoadingState());
       try {
-        DeviceDetailsRes deviceDetailsRes = await eirsRepository.getLanguage("CheckImei", event.languageType ?? StringConstants.englishCode);
-        //setLocale(deviceDetailsRes.languageType ?? StringConstants.englishCode);
+        DeviceDetailsRes deviceDetailsRes = await eirsRepository.getLanguage(
+            "CheckImei", event.languageType ?? StringConstants.englishCode);
         emit(LanguageLoadedState(deviceDetailsRes));
       } catch (e) {
         emit(LanguageErrorState(e.toString()));

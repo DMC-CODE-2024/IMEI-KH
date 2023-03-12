@@ -111,6 +111,8 @@ flutter:
     - assets/images/ic_splash_icon.svg
     - assets/images/ic_localization.svg
     - assets/images/ic_box_imei.svg
+    - assets/images/ic_error.svg
+    - assets/images/ic_no_internet.jpg
 
   #   - images/a_dot_ham.jpeg
 

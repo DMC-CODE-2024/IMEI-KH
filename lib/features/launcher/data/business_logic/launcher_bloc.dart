@@ -6,7 +6,6 @@ import 'package:eirs/features/launcher/data/models/device_details_res.dart';
 import 'package:eirs/repoistory/eirs_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../helper/app_states.dart';
 import 'launcher_event.dart';
 
 class LauncherBloc extends Bloc<LauncherEvent, LauncherState> {
@@ -26,8 +25,6 @@ class LauncherBloc extends Bloc<LauncherEvent, LauncherState> {
             await deviceInfoPlugin.androidInfo);
         DeviceDetailsRes deviceDetailsRes =
             await eirsRepository.deviceDetailsReq(deviceDetailsReq);
-        print("Init Res: ${deviceDetailsRes.labelDetails?.toJson()}");
-        AppStates.setLabelDetails(deviceDetailsRes.labelDetails);
         emit(LauncherLoadedState(deviceDetailsRes));
       } catch (e) {
         emit(LauncherErrorState(e.toString()));

@@ -55,5 +55,10 @@ class StringConstants {
   static const String emptyMsg = 'IMEI field can not be empty';
   static const String minLengthError = 'Minimum 15 digits are required';
   static const String openSansFontFamily = 'OpenSans';
-  static const String emptyImei = "No IMEI is selected";
+  static const String emptyImei = "No IMEI selected";
+  static const String noInternet = "No Internet connection";
+  static const String noInternetMsg = "Make sure wifi or cellular data is turned on and then try again";
+  static const String tryAgain = "Try Again";
+  static const String oops = 'OOPS!';
+  static const String errorMsg = 'Sorry, Unable to fetch the data please try after sometime later';
 }

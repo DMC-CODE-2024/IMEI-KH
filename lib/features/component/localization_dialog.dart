@@ -1,10 +1,13 @@
 import 'package:eirs/theme/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:provider/provider.dart';
 
 import '../../constants/image_path.dart';
 import '../../constants/strings.dart';
+import '../../helper/app_states_notifier.dart';
 import '../../helper/shared_pref.dart';
+import '../launcher/data/models/device_details_res.dart';
 import 'button.dart';
 
 class LocalizationDialog extends StatefulWidget {
@@ -23,6 +26,13 @@ class LocalizationDialog extends StatefulWidget {
 
 class _LocalizationDialogState extends State<LocalizationDialog> {
   bool isEnglish = true;
+  LabelDetails? labelDetails;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    labelDetails = Provider.of<AppStatesNotifier>(context).value;
+  }
 
   @override
   void initState() {
@@ -63,7 +73,7 @@ class _LocalizationDialogState extends State<LocalizationDialog> {
                   child: Align(
                     alignment: Alignment.center,
                     child: Text(
-                      StringConstants.changeLanguage,
+                      labelDetails?.changeLanguage ?? "",
                       style: TextStyle(
                           fontSize: 16.0,
                           color: AppColors.black,
@@ -160,9 +170,9 @@ class _LocalizationDialogState extends State<LocalizationDialog> {
                                         width: 26,
                                         height: 15,
                                       ),
-                                      const Padding(
-                                        padding: EdgeInsets.only(left: 4),
-                                        child: Text(StringConstants.khmer),
+                                      Padding(
+                                        padding: const EdgeInsets.only(left: 4),
+                                        child: Text(labelDetails?.khmer ?? ""),
                                       ),
                                     ]),
                               ),
@@ -180,7 +190,7 @@ class _LocalizationDialogState extends State<LocalizationDialog> {
                   left: 10, right: 10, top: 10, bottom: 20),
               child: AppButton(
                 isLoading: false,
-                child: const Text(StringConstants.ok),
+                child: Text(labelDetails?.ok ?? ""),
                 onPressed: () => _navigateNext(),
               ),
             ),

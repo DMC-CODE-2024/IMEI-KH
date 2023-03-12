@@ -1,17 +1,21 @@
 import 'dart:convert';
 
 import 'package:eirs/features/component/app_bar_with_title.dart';
+import 'package:eirs/features/component/error_page.dart';
 import 'package:eirs/features/history/data/business_logic/device_history_bloc.dart';
 import 'package:eirs/features/history/data/business_logic/device_history_state.dart';
 import 'package:eirs/theme/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:provider/provider.dart';
 
 import '../../../constants/image_path.dart';
 import '../../../constants/strings.dart';
+import '../../../helper/app_states_notifier.dart';
 import '../../../persistent/database_helper.dart';
 import '../../component/custom_progress_indicator.dart';
+import '../../launcher/data/models/device_details_res.dart';
 import '../data/business_logic/device_history_event.dart';
 
 class DeviceHistoryScreen extends StatefulWidget {
@@ -22,11 +26,19 @@ class DeviceHistoryScreen extends StatefulWidget {
 }
 
 class _DeviceHistoryScreenState extends State<DeviceHistoryScreen> {
+  LabelDetails? labelDetails;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    labelDetails = Provider.of<AppStatesNotifier>(context).value;
+  }
+
   @override
   Widget build(BuildContext context) {
     BlocProvider.of<DeviceHistoryBloc>(context).add(DeviceHistoryInitEvent());
     return Scaffold(
-      appBar: const AppBarWithTitleOnly(title: StringConstants.history),
+      appBar: AppBarWithTitleOnly(title: labelDetails?.history ?? ""),
       body: BlocConsumer<DeviceHistoryBloc, DeviceHistoryState>(
         builder: (context, state) {
           if (state is DeviceHistoryLoadingState) {
@@ -34,6 +46,11 @@ class _DeviceHistoryScreenState extends State<DeviceHistoryScreen> {
           }
           if (state is DeviceHistoryLoadedState) {
             return _listWidget(state.deviceHistory);
+          }
+          if (state is DeviceHistoryErrorState) {
+            return ErrorPage(
+              labelDetails: labelDetails,
+            );
           }
           return Container();
         },
@@ -69,7 +86,8 @@ class _DeviceHistoryScreenState extends State<DeviceHistoryScreen> {
             child: _invalidImeiWidget(
                 key,
                 deviceDetail[DatabaseHelper.columnDate],
-                deviceDetail[DatabaseHelper.columnTime]),
+                deviceDetail[DatabaseHelper.columnTime],
+                labelDetails),
           );
         }
       },
@@ -165,7 +183,8 @@ Widget _listWidget(Map<String, dynamic> values) {
   );
 }
 
-Widget _invalidImeiWidget(String imei, String date, String time) {
+Widget _invalidImeiWidget(
+    String imei, String date, String time, LabelDetails? labelDetails) {
   return Container(
     color: AppColors.historyBg,
     padding: const EdgeInsets.all(15),
@@ -179,7 +198,7 @@ Widget _invalidImeiWidget(String imei, String date, String time) {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "${StringConstants.invalidImei}  $imei",
+                "${labelDetails?.invalid}  $imei",
                 style:
                     TextStyle(fontSize: 14, color: AppColors.historyTxtColor),
               ),
@@ -206,13 +225,13 @@ Widget _invalidImeiWidget(String imei, String date, String time) {
               Padding(
                 padding: const EdgeInsets.only(top: 15, bottom: 10),
                 child: Text(
-                  StringConstants.remark,
+                  labelDetails?.remark ?? "",
                   style:
                       TextStyle(fontSize: 14, color: AppColors.historyTxtColor),
                 ),
               ),
               Text(
-                StringConstants.invalidImeiDesc,
+                labelDetails?.imeiNotPer3gpp ?? "",
                 style:
                     TextStyle(fontSize: 14, color: AppColors.historyTxtColor),
               )

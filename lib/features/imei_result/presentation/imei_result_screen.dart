@@ -13,16 +13,17 @@ import '../../component/button.dart';
 import '../../component/need_any_help_widget.dart';
 import '../../history/data/business_logic/device_history_bloc.dart';
 import '../../history/presentation/device_history_screen.dart';
+import '../../launcher/data/models/device_details_res.dart';
 
 class ImeiResultScreen extends StatefulWidget {
   const ImeiResultScreen(
       {super.key,
-      required this.title,
+      required this.labelDetails,
       required this.scanImei,
       required this.data,
       required this.isValidImei});
 
-  final String title;
+  final LabelDetails? labelDetails;
   final String scanImei;
   final Map<String, dynamic>? data;
   final bool isValidImei;
@@ -33,12 +34,14 @@ class ImeiResultScreen extends StatefulWidget {
 
 class _ImeiResultScreenState extends State<ImeiResultScreen> {
   List<DeviceDetails> deviceList = [];
+  String emptyString = "";
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar:
-            ResultAppBar(title: StringConstants.result, callback: (value) {
+        appBar: ResultAppBar(
+            title: widget.labelDetails?.result ?? emptyString,
+            callback: (value) {
               Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (_) => BlocProvider.value(
@@ -59,7 +62,7 @@ class _ImeiResultScreenState extends State<ImeiResultScreen> {
                     Padding(
                       padding: const EdgeInsets.only(top: 25.0),
                       child: Text(
-                        StringConstants.imeiInfo,
+                        widget.labelDetails?.imeiInfo ?? emptyString,
                         style: TextStyle(
                             fontSize: 20.0, color: AppColors.secondary),
                       ),
@@ -78,8 +81,10 @@ class _ImeiResultScreenState extends State<ImeiResultScreen> {
                                   const EdgeInsets.symmetric(vertical: 10.0),
                               child: Text(
                                 (widget.isValidImei == true)
-                                    ? "Valid"
-                                    : "InValid",
+                                    ? widget.labelDetails?.invalid ??
+                                        emptyString
+                                    : widget.labelDetails?.invalid ??
+                                        emptyString,
                                 style: const TextStyle(fontSize: 24.0),
                               ),
                             )
@@ -105,18 +110,23 @@ class _ImeiResultScreenState extends State<ImeiResultScreen> {
                     if (widget.isValidImei && widget.data != null)
                       DeviceDetailList(data: widget.data!)
                     else
-                      const InvalidImeiResult(),
+                      InvalidImeiResult(
+                        labelDetails: widget.labelDetails,
+                      ),
                     Container(
                       margin: const EdgeInsets.only(top: 20),
                       child: AppButton(
                         isLoading: false,
-                        child: const Text(StringConstants.checkOtherImei),
+                        child: Text(
+                            widget.labelDetails?.checkOtherImei ?? emptyString),
                         onPressed: () => {Navigator.of(context).pop()},
                       ),
                     )
                   ],
                 )),
-                const NeedAnyHelpWidget()
+                NeedAnyHelpWidget(
+                  labelDetails: widget.labelDetails,
+                )
               ],
             )));
   }

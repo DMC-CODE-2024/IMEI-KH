@@ -5,7 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../features/check_imei/data/business_logic/check_imei_bloc.dart';
 import '../features/check_imei/presentation/check_imei_screen.dart';
-import '../features/check_imei/presentation/imei_info.dart';
 
 class AppRoutes {
   Route onGenerateRoute(RouteSettings settings) {
@@ -26,16 +25,6 @@ class AppRoutes {
             child: const FeatureDiscovery.withProvider(
                 persistenceProvider: NoPersistenceProvider(),
                 child: CheckImeiScreen(title: 'Home Screen')),
-          ),
-        );
-      case Routes.IMEI_INFO:
-        return MaterialPageRoute(
-          builder: (_) => BlocProvider.value(
-            value: CheckImeiBloc(),
-            child: const FeatureDiscovery.withProvider(
-              persistenceProvider: NoPersistenceProvider(),
-              child: ImeiInfoScreen(title: 'Home Screen'),
-            ),
           ),
         );
       case Routes.THIRD:
