@@ -94,7 +94,7 @@ class _ImeiListPageState extends State<ImeiListPage> {
                   child: Align(
                     alignment: Alignment.center,
                     child: Text(
-                      labelDetails?.selectOneImei ?? "",
+                      labelDetails?.selectOnImei ?? "",
                       style: TextStyle(
                           fontSize: 16.0,
                           color: AppColors.black,

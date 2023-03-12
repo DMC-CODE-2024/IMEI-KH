@@ -38,7 +38,8 @@ LabelDetails _$LabelDetailsFromJson(Map<String, dynamic> json) => LabelDetails()
   ..remark = json['remark'] as String?
   ..emailId = json['emailId'] as String?
   ..language = json['language'] as String?
-  ..selectOneImei = json['selectOneImei'] as String?
+  ..selectOneImei = json['selectOneImei '] as String?
+  ..selectOnImei = json['selectOnImei'] as String?
   ..callToAction = json['callToAction'] as String?
   ..sorryUnableToFetch = json['sorryUnableToFetch'] as String?
   ..getList = json['getList'] as String?
@@ -97,7 +98,8 @@ Map<String, dynamic> _$LabelDetailsToJson(LabelDetails instance) =>
       'remark': instance.remark,
       'emailId': instance.emailId,
       'language': instance.language,
-      'selectOneImei': instance.selectOneImei,
+      'selectOneImei ': instance.selectOneImei,
+      'selectOnImei': instance.selectOnImei,
       'callToAction': instance.callToAction,
       'sorryUnableToFetch': instance.sorryUnableToFetch,
       'getList': instance.getList,

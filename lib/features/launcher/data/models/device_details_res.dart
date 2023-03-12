@@ -42,7 +42,9 @@ class LabelDetails {
   String? remark;
   String? emailId;
   String? language;
+  @JsonKey(name: 'selectOneImei ')
   String? selectOneImei;
+  String? selectOnImei;
   String? callToAction;
   String? sorryUnableToFetch;
   String? getList;
