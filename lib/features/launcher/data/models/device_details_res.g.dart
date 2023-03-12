@@ -65,7 +65,17 @@ LabelDetails _$LabelDetailsFromJson(Map<String, dynamic> json) => LabelDetails()
   ..getIMEIInfo = json['getIMEIInfo'] as String?
   ..invalid = json['invalid'] as String?
   ..checkOtherImei = json['checkOtherImei'] as String?
-  ..needAnyHelp = json['needAnyHelp'] as String?;
+  ..needAnyHelp = json['needAnyHelp'] as String?
+  ..result = json['Result'] as String?
+  ..check = json['check'] as String?
+  ..khmer = json['khmer'] as String?
+  ..imeiInfo = json['imeiInfo'] as String?
+  ..feildNotEmpty = json['feildNotEmpty'] as String?
+  ..noImeiSelected = json['noImeiSelected'] as String?
+  ..copyRight = json['copyRight'] as String?
+  ..imeiNotPer3gpp = json['imeiNotPer3gpp'] as String?
+  ..scanCode = json['scanCode'] as String?
+  ..min15Digit = json['min15Digit'] as String?;
 
 Map<String, dynamic> _$LabelDetailsToJson(LabelDetails instance) =>
     <String, dynamic>{
@@ -115,4 +125,14 @@ Map<String, dynamic> _$LabelDetailsToJson(LabelDetails instance) =>
       'invalid': instance.invalid,
       'checkOtherImei': instance.checkOtherImei,
       'needAnyHelp': instance.needAnyHelp,
+      'Result': instance.result,
+      'check': instance.check,
+      'khmer': instance.khmer,
+      'imeiInfo': instance.imeiInfo,
+      'feildNotEmpty': instance.feildNotEmpty,
+      'noImeiSelected': instance.noImeiSelected,
+      'copyRight': instance.copyRight,
+      'imeiNotPer3gpp': instance.imeiNotPer3gpp,
+      'scanCode': instance.scanCode,
+      'min15Digit': instance.min15Digit,
     };
