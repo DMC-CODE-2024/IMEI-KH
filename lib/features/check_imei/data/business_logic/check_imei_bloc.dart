@@ -1,7 +1,9 @@
 import 'package:bloc/bloc.dart';
 import 'package:eirs/constants/strings.dart';
 import 'package:eirs/features/launcher/data/models/device_details_res.dart';
+import 'package:eirs/helper/shared_pref.dart';
 
+import '../../../../constants/constants.dart';
 import '../../../../repoistory/eirs_repository.dart';
 import '../models/check_imei_req.dart';
 import '../models/check_imei_res.dart';
@@ -18,13 +20,13 @@ class CheckImeiBloc extends Bloc<CheckImeiEvent, CheckImeiState> {
 
   void mapEventToState(
       CheckImeiEvent event, Emitter<CheckImeiState> emit) async {
-    if (event is CheckImeiInitEvent && event.inputImei != null) {
+    if (event is CheckImeiInitEvent && event.requestCode == checkImeiReq) {
       emit(CheckImeiLoadingState());
       try {
         CheckImeiReq checkImeiReq = CheckImeiReq(
             imei: event.inputImei ?? "",
             operator: "smart",
-            language: "en",
+            language: event.languageType ?? StringConstants.englishCode,
             channel: "phone");
         CheckImeiRes checkImeiRes =
             await eirsRepository.checkImei(checkImeiReq);
@@ -35,11 +37,12 @@ class CheckImeiBloc extends Bloc<CheckImeiEvent, CheckImeiState> {
       }
     }
 
-    if (event is CheckImeiInitEvent && event.languageType != null) {
+    if (event is CheckImeiInitEvent && event.requestCode == languageReq) {
       emit(LanguageLoadingState());
       try {
         DeviceDetailsRes deviceDetailsRes = await eirsRepository.getLanguage(
             "CheckImei", event.languageType ?? StringConstants.englishCode);
+        setLocale(deviceDetailsRes.languageType ?? StringConstants.englishCode);
         emit(LanguageLoadedState(deviceDetailsRes));
       } catch (e) {
         emit(LanguageErrorState(e.toString()));

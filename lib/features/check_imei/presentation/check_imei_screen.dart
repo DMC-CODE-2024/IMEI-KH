@@ -10,8 +10,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 
+import '../../../constants/constants.dart';
 import '../../../constants/image_path.dart';
 import '../../../constants/strings.dart';
+import '../../../helper/shared_pref.dart';
 import '../../../main.dart';
 import '../../../theme/colors.dart';
 import '../../component/button.dart';
@@ -45,6 +47,15 @@ class _CheckImeiScreenState extends State<CheckImeiScreen> {
   String emptyString = "";
   Color textColor = AppColors.grey;
   LabelDetails? labelDetails;
+  String selectedLng = StringConstants.englishCode;
+
+  @override
+  void initState() {
+    super.initState();
+    getLocale().then((languageCode) {
+      selectedLng = languageCode;
+    });
+  }
 
   @override
   void didChangeDependencies() {
@@ -69,6 +80,29 @@ class _CheckImeiScreenState extends State<CheckImeiScreen> {
     }
   }
 
+  PreferredSizeWidget _appBarWithTitle() {
+    return AppBar(
+      backgroundColor: Colors.white,
+      elevation: 1,
+      centerTitle: false,
+      titleSpacing: 0.0,
+      title: Padding(
+        padding: const EdgeInsets.only(left: 5),
+        child: Text(
+          labelDetails?.eirsAppHeader ?? emptyString,
+          style: TextStyle(color: AppColors.secondary, fontSize: 14),
+        ),
+      ),
+      leading: Padding(
+        padding: const EdgeInsets.only(left: 15),
+        child: Padding(
+          padding: const EdgeInsets.all(4),
+          child: SvgPicture.asset(ImageConstants.splashIcon),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
@@ -77,28 +111,34 @@ class _CheckImeiScreenState extends State<CheckImeiScreen> {
           updateNetworkStatus(status);
           return Scaffold(
             backgroundColor: Colors.white,
-            appBar: EirsAppBar(
-              labelDetails: labelDetails,
-              callback: (value) {
-                _appBarActions(value);
-              },
-            ),
+            appBar: hasNetwork
+                ? EirsAppBar(
+                    labelDetails: labelDetails,
+                    callback: (value) {
+                      _appBarActions(value);
+                    },
+                  )
+                : _appBarWithTitle(),
             body: BlocConsumer<CheckImeiBloc, CheckImeiState>(
               builder: (context, state) {
                 if (!hasNetwork) {
-                  return NoInternetPage(labelDetails: labelDetails);
-                }
+                  return NoInternetPage(
+                      labelDetails: labelDetails,
+                      callback: (value) {
+                        setState(() {});
+                      });
+                } else {
+                  if (state is CheckImeiLoadingState ||
+                      state is LanguageLoadingState) {
+                    return const CustomProgressIndicator(
+                        textColor: Colors.black);
+                  }
 
-                if (state is CheckImeiLoadingState ||
-                    state is LanguageLoadingState) {
-                  return const CustomProgressIndicator(textColor: Colors.black);
+                  if (state is CheckImeiErrorState ||
+                      state is LanguageErrorState) {
+                    return ErrorPage(labelDetails: labelDetails);
+                  }
                 }
-
-                if (state is CheckImeiErrorState ||
-                    state is LanguageErrorState) {
-                  return ErrorPage(labelDetails: labelDetails);
-                }
-
                 return _imeiPageWidget();
               },
               listener: (context, state) {
@@ -113,6 +153,8 @@ class _CheckImeiScreenState extends State<CheckImeiScreen> {
                 }
 
                 if (state is LanguageLoadedState) {
+                  selectedLng = state.deviceDetailsRes.languageType ??
+                      StringConstants.englishCode;
                   Provider.of<AppStatesNotifier>(context, listen: false)
                       .updateState(state.deviceDetailsRes.labelDetails);
                 }
@@ -163,20 +205,27 @@ class _CheckImeiScreenState extends State<CheckImeiScreen> {
         context: context,
         builder: (context) {
           return LocalizationDialog(callback: (value) {
-            BlocProvider.of<CheckImeiBloc>(this.context)
-                .add(CheckImeiInitEvent(languageType: value));
+            if (hasNetwork) {
+              BlocProvider.of<CheckImeiBloc>(this.context).add(
+                  CheckImeiInitEvent(
+                      languageType: value, requestCode: languageReq));
+            }
           });
         });
   }
 
   void _checkImei(BuildContext context) {
     String inputImei = imeiController.text;
-    if (inputImei.isEmpty) return _showErrorMsg(StringConstants.emptyMsg);
-    if (inputImei.length < 15) {
-      return _showErrorMsg(StringConstants.minLengthError);
+    if (inputImei.isEmpty) {
+      return _showErrorMsg(labelDetails?.feildNotEmpty ?? emptyString);
     }
-    BlocProvider.of<CheckImeiBloc>(context)
-        .add(CheckImeiInitEvent(inputImei: inputImei));
+    if (inputImei.length < 15) {
+      return _showErrorMsg(labelDetails?.min15Digit ?? emptyString);
+    }
+    BlocProvider.of<CheckImeiBloc>(context).add(CheckImeiInitEvent(
+        inputImei: inputImei,
+        languageType: selectedLng,
+        requestCode: checkImeiReq));
   }
 
   void _showErrorMsg(String errorMsg) {

@@ -31,7 +31,7 @@ class LauncherScreen extends StatefulWidget {
 
 class _LauncherScreenState extends State<LauncherScreen> {
   Map _source = {ConnectivityResult.none: false};
-  bool hasNetwork = false;
+  bool hasNetwork = true;
   String selectedLanguage = StringConstants.englishCode;
 
   Future<void> _initApiReq() async {
@@ -54,9 +54,9 @@ class _LauncherScreenState extends State<LauncherScreen> {
         default:
           hasNetwork = false;
       }
-    }
-    if (hasNetwork) {
-      _initApiReq();
+      if (hasNetwork) {
+        _initApiReq();
+      }
     }
   }
 
@@ -72,21 +72,26 @@ class _LauncherScreenState extends State<LauncherScreen> {
           body: BlocConsumer<LauncherBloc, LauncherState>(
             builder: (context, state) {
               if (!hasNetwork) {
-                return NoInternetPage(labelDetails: LabelDetails());
-              }
-              if (state is LauncherLoadingState) {
-                return Center(
-                  child: Container(),
-                );
-              }
-              if (state is LauncherErrorState) {
-                return ErrorPage(
-                  labelDetails: LabelDetails(),
-                );
-              }
+                return NoInternetPage(
+                    labelDetails: LabelDetails(),
+                    callback: (value) {
+                      setState(() {});
+                    });
+              } else {
+                if (state is LauncherLoadingState) {
+                  return Center(
+                    child: Container(),
+                  );
+                }
+                if (state is LauncherErrorState) {
+                  return ErrorPage(
+                    labelDetails: LabelDetails(),
+                  );
+                }
 
-              if (state is LauncherLoadedState) {
-                return _splashWidget(state.deviceDetailsRes.labelDetails);
+                if (state is LauncherLoadedState) {
+                  return _splashWidget(state.deviceDetailsRes.labelDetails);
+                }
               }
               return Container();
             },

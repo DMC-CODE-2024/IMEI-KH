@@ -43,6 +43,7 @@ class MyApp extends StatelessWidget {
     return ChangeNotifierProvider<AppStatesNotifier>(
         create: (context) => AppStatesNotifier(),
         child: MaterialApp(
+            debugShowCheckedModeBanner: false,
             theme: ThemeData(
               fontFamily: StringConstants.openSansFontFamily,
               primarySwatch: AppColors.primaryColor,

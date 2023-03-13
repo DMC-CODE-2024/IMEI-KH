@@ -106,7 +106,6 @@ class _LocalizationDialogState extends State<LocalizationDialog> {
                         flex: 1,
                         child: InkWell(
                           onTap: () {
-                            setLocale(StringConstants.englishCode);
                             setState(() {
                               isEnglish = true;
                             });
@@ -145,7 +144,6 @@ class _LocalizationDialogState extends State<LocalizationDialog> {
                         flex: 1,
                         child: InkWell(
                           onTap: () {
-                            setLocale(StringConstants.khmerCode);
                             setState(() {
                               isEnglish = false;
                             });

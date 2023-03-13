@@ -1,3 +1,4 @@
+import 'package:eirs/constants/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -6,6 +7,7 @@ import 'package:provider/provider.dart';
 import '../../../constants/image_path.dart';
 import '../../../constants/strings.dart';
 import '../../../helper/app_states_notifier.dart';
+import '../../../helper/shared_pref.dart';
 import '../../../theme/colors.dart';
 import '../../component/app_bar_with_title.dart';
 import '../../component/button.dart';
@@ -32,10 +34,14 @@ class _ImeiListPageState extends State<ImeiListPage> {
   String selectedImei = "";
   String emptyString = "";
   LabelDetails? labelDetails;
+  String selectedLng = StringConstants.englishCode;
 
   @override
   void initState() {
     super.initState();
+    getLocale().then((languageCode) {
+      selectedLng = languageCode;
+    });
     if (widget.data.isNotEmpty) {
       selectedIndex = 0;
       selectedImei = widget.data.keys.elementAt(0);
@@ -175,6 +181,7 @@ class _ImeiListPageState extends State<ImeiListPage> {
       selectedImei = widget.data.keys.elementAt(0);
     } else {
       selectedImei = "";
+      return Navigator.pop(context);
     }
     setState(() => {});
   }
@@ -188,8 +195,10 @@ class _ImeiListPageState extends State<ImeiListPage> {
     if (selectedImei.isEmpty) {
       return _showErrorMsg(labelDetails?.noImeiSelected ?? emptyString);
     }
-    BlocProvider.of<CheckImeiBloc>(context)
-        .add(CheckImeiInitEvent(inputImei: selectedImei));
+    BlocProvider.of<CheckImeiBloc>(context).add(CheckImeiInitEvent(
+        inputImei: selectedImei,
+        languageType: selectedLng,
+        requestCode: checkImeiReq));
   }
 
   void _showErrorMsg(String errorMsg) {

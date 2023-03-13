@@ -9,9 +9,11 @@ class NoInternetPage extends StatelessWidget {
   const NoInternetPage({
     super.key,
     this.labelDetails,
+    required this.callback
   });
 
   final LabelDetails? labelDetails;
+  final Function callback;
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +46,7 @@ class NoInternetPage extends StatelessWidget {
             width: 200,
             isLoading: false,
             child: Text(labelDetails?.tryAgain ?? StringConstants.tryAgain),
-            onPressed: () => {},
+            onPressed: () => callback.call(true),
           )
         ],
       ),
