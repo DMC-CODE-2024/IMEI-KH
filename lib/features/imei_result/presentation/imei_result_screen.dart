@@ -81,7 +81,7 @@ class _ImeiResultScreenState extends State<ImeiResultScreen> {
                                   const EdgeInsets.symmetric(vertical: 10.0),
                               child: Text(
                                 (widget.isValidImei == true)
-                                    ? widget.labelDetails?.invalid ??
+                                    ? widget.labelDetails?.valid ??
                                         emptyString
                                     : widget.labelDetails?.invalid ??
                                         emptyString,

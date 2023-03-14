@@ -205,7 +205,7 @@ class _CheckImeiScreenState extends State<CheckImeiScreen> {
         context: context,
         builder: (context) {
           return LocalizationDialog(callback: (value) {
-            if (hasNetwork) {
+            if (hasNetwork && value != selectedLng) {
               BlocProvider.of<CheckImeiBloc>(this.context).add(
                   CheckImeiInitEvent(
                       languageType: value, requestCode: languageReq));
