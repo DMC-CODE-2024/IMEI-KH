@@ -64,6 +64,7 @@ LabelDetails _$LabelDetailsFromJson(Map<String, dynamic> json) => LabelDetails()
   ..enterIMEI = json['enterIMEI'] as String?
   ..canBeBarcode = json['canBeBarcode'] as String?
   ..getIMEIInfo = json['getIMEIInfo'] as String?
+  ..valid = json['Valid'] as String?
   ..invalid = json['invalid'] as String?
   ..checkOtherImei = json['checkOtherImei'] as String?
   ..needAnyHelp = json['needAnyHelp'] as String?
@@ -124,6 +125,7 @@ Map<String, dynamic> _$LabelDetailsToJson(LabelDetails instance) =>
       'enterIMEI': instance.enterIMEI,
       'canBeBarcode': instance.canBeBarcode,
       'getIMEIInfo': instance.getIMEIInfo,
+      'Valid': instance.valid,
       'invalid': instance.invalid,
       'checkOtherImei': instance.checkOtherImei,
       'needAnyHelp': instance.needAnyHelp,

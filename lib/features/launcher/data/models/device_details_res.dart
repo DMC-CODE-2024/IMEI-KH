@@ -71,6 +71,8 @@ class LabelDetails {
   String? enterIMEI;
   String? canBeBarcode;
   String? getIMEIInfo;
+  @JsonKey(name: 'Valid')
+  String? valid;
   String? invalid;
   String? checkOtherImei;
   String? needAnyHelp;
