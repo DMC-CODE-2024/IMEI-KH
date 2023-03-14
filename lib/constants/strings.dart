@@ -61,4 +61,5 @@ class StringConstants {
   static const String tryAgain = "Try Again";
   static const String oops = 'OOPS!';
   static const String errorMsg = 'Sorry, Unable to fetch the data please try after sometime later';
+  static const String noDataFound = "No Data Found!!";
 }

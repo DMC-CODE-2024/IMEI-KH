@@ -1,3 +1,4 @@
+import 'package:eirs/constants/strings.dart';
 import 'package:eirs/features/history/data/business_logic/device_history_event.dart';
 import 'package:eirs/features/history/data/business_logic/device_history_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -18,7 +19,7 @@ class DeviceHistoryBloc extends Bloc<DeviceHistoryEvent, DeviceHistoryState> {
       List<Map<String, dynamic>> deviceHistory =
           await eirsRepository.getDeviceHistory();
       if (deviceHistory.isEmpty) {
-        return emit(DeviceHistoryErrorState("No Data"));
+        return emit(NoDataDeviceHistoryState(StringConstants.noDataFound));
       }
       emit(DeviceHistoryLoadedState(deviceHistory));
     } catch (e) {

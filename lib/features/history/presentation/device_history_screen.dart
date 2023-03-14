@@ -47,6 +47,14 @@ class _DeviceHistoryScreenState extends State<DeviceHistoryScreen> {
           if (state is DeviceHistoryLoadedState) {
             return _listWidget(state.deviceHistory);
           }
+          if (state is NoDataDeviceHistoryState) {
+            return Center(
+              child: Text(
+                state.message,
+                style: const TextStyle(color: Colors.black, fontSize: 20.0),
+              ),
+            );
+          }
           if (state is DeviceHistoryErrorState) {
             return ErrorPage(
               labelDetails: labelDetails,

@@ -30,10 +30,19 @@ class DeviceDetailList extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 18),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Text(deviceDetailMap.key),
-                    Text(deviceDetailMap.value),
+                    Expanded(
+                        child: Padding(
+                      padding: const EdgeInsets.only(left: 15),
+                      child: Text(deviceDetailMap.key),
+                    )),
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.only(right: 15),
+                        child: Text(deviceDetailMap.value),
+                      ),
+                    ),
                   ],
                 ),
               ),
