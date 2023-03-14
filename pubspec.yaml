@@ -1,5 +1,5 @@
 name: eirs
-description: A new Flutter project.
+description: Developed by Ministry of Post and Telecommunications, this app will verify any mobile by its IMEI number. EIRS app will provide status (Invalid/BlackListed) or provide details like Manufacturer, Brand name and Model name of the given IMEI.While purchasing a mobile device, the genuineness of mobile devices can be verified using KYM App.
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
