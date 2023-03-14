@@ -41,15 +41,13 @@ class EirsRepository {
   Future<void> insertDeviceDetail(
       String imei, CheckImeiRes checkImeiRes) async {
     bool isRecordExist = await dbHelper.isImeiExists(imei);
+    var dt = DateTime.now();
+    var dateFormatter = DateFormat('yyyy-MM-dd');
+    var timeFormatter = DateFormat('HH:mm');
+    bool isValidImei = checkImeiRes.result?.validImei ?? false;
     if (!isRecordExist) {
       // row to insert
-      bool isValidImei = checkImeiRes.result?.validImei ?? false;
       Map<String, dynamic>? deviceDetails = checkImeiRes.result?.deviceDetails;
-
-      var dt = DateTime.now();
-      var dateFormatter = DateFormat('yyyy-MM-dd');
-      var timeFormatter = DateFormat('HH:mm');
-
       Map<String, dynamic> row = {
         DatabaseHelper.columnImei: imei,
         DatabaseHelper.columnDeviceDetails: jsonEncode(deviceDetails),
@@ -58,6 +56,24 @@ class EirsRepository {
         DatabaseHelper.columnTime: timeFormatter.format(dt)
       };
       await dbHelper.insert(row);
+    } else {
+      int deviceStatus = isValidImei ? 1 : 0;
+      List<Map<String, dynamic>> existingData =
+          await dbHelper.getImeiData(imei);
+      if (existingData.isNotEmpty) {
+        Map<String, dynamic> deviceDetails = existingData.first;
+        int existingStatus = deviceDetails.values.elementAt(3);
+        if (deviceStatus != existingStatus) {
+          await dbHelper.updateDateTimeWithDeviceDetails(
+              jsonEncode(checkImeiRes.result?.deviceDetails),
+              dateFormatter.format(dt),
+              timeFormatter.format(dt),
+              imei);
+        } else {
+          await dbHelper.updateDateTime(
+              dateFormatter.format(dt), timeFormatter.format(dt), imei);
+        }
+      }
     }
   }
 }

@@ -58,4 +58,24 @@ class DatabaseHelper {
     int? exists = Sqflite.firstIntValue(result);
     return exists == 1;
   }
+
+  Future updateDateTime(String date, String time, String imei) async {
+    var res = await _db.rawQuery(
+        ''' UPDATE $table SET $columnDate = ? , $columnTime = ? WHERE $columnImei = ? ''',
+        [date, time, imei]);
+    return res;
+  }
+
+  Future updateDateTimeWithDeviceDetails(
+      String deviceDetails, String date, String time, String imei) async {
+    var res = await _db.rawQuery(
+        ''' UPDATE $table SET $columnDate = ? , $columnTime = ? , $columnDeviceDetails = ? WHERE $columnImei = ? ''',
+        [date, time, deviceDetails, imei]);
+    return res;
+  }
+
+  Future<List<Map<String, dynamic>>> getImeiData(String imei) async {
+    return await _db.query(table,
+        where: "$columnImei = ? ", whereArgs: [imei], limit: 1);
+  }
 }
