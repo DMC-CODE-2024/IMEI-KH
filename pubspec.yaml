@@ -40,8 +40,7 @@ dependencies:
   connectivity_plus: ^2.3.7
   retrofit: ^3.0.1+1
   dio: ^4.0.6
-  json_annotation: ^4.0.0
-  # built_value: ^8.0.0
+  json_annotation: ^4.8.0
   flutter_svg: ^1.1.6
   intl: ^0.17.0
   provider: ^6.0.0
