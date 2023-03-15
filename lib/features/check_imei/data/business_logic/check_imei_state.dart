@@ -13,11 +13,6 @@ class CheckImeiLoadedState extends CheckImeiState {
   CheckImeiLoadedState(this.checkImeiRes);
 }
 
-class InternetConnectionError extends CheckImeiState {
-  bool hasNetwork;
-  InternetConnectionError(this.hasNetwork);
-}
-
 class CheckImeiErrorState extends CheckImeiState {
   String e;
 

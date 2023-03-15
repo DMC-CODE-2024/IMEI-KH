@@ -6,8 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
-import '../check_imei/data/business_logic/check_imei_bloc.dart';
-import '../check_imei/presentation/imei_list.dart';
+import '../check_multi_imei/data/business_logic/check_multi_imei_bloc.dart';
+import '../check_multi_imei/presentation/imei_list.dart';
 import '../component/app_bar_with_title.dart';
 import 'debug_info_widget.dart';
 
@@ -105,7 +105,7 @@ class _ScannerPageState extends State<ScannerPage> {
         .push(
       MaterialPageRoute(
         builder: (_) => BlocProvider.value(
-          value: CheckImeiBloc(),
+          value: CheckMultiImeiBloc(),
           child: ImeiListPage(data: uniqueImei),
         ),
       ),

@@ -1,4 +1,3 @@
-import 'package:eirs/constants/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -12,10 +11,12 @@ import '../../../theme/colors.dart';
 import '../../component/app_bar_with_title.dart';
 import '../../component/button.dart';
 import '../../component/custom_progress_indicator.dart';
-import '../../imei_result/presentation/imei_result_screen.dart';
+import '../../imei_result/presentation/multi_imei_result_screen.dart';
 import '../../launcher/data/models/device_details_res.dart';
-import '../data/business_logic/check_imei_bloc.dart';
-import '../data/business_logic/check_imei_state.dart';
+import '../data/business_logic/check_multi_imei_bloc.dart';
+import '../data/business_logic/check_multi_imei_event.dart';
+import '../data/business_logic/check_multi_imei_state.dart';
+import '../data/models/multi_imei_res.dart';
 
 class ImeiListPage extends StatefulWidget {
   ImeiListPage({
@@ -61,20 +62,16 @@ class _ImeiListPageState extends State<ImeiListPage> {
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBarWithTitleOnly(title: labelDetails?.scanCode ?? emptyString),
-      body: BlocConsumer<CheckImeiBloc, CheckImeiState>(
+      body: BlocConsumer<CheckMultiImeiBloc, CheckMultiImeiState>(
         builder: (context, state) {
-          if (state is CheckImeiLoadingState) {
+          if (state is CheckMultiImeiLoadingState) {
             return const CustomProgressIndicator(textColor: Colors.white);
           }
           return showImeiDialog(widget.data);
         },
         listener: (context, state) {
-          if (state is CheckImeiLoadedState) {
-            _navigateResultScreen(state.checkImeiRes.result?.deviceDetails,
-                state.checkImeiRes.result?.validImei ?? false);
-          }
-          if (state is CheckImeiErrorState) {
-            _navigateResultScreen(null, false);
+          if (state is CheckMultiImeiLoadedState) {
+            _navigateResultScreen(state.multiImeiResList);
           }
         },
       ),
@@ -149,10 +146,7 @@ class _ImeiListPageState extends State<ImeiListPage> {
                       child: Container(
                     padding: const EdgeInsets.all(10),
                     decoration: BoxDecoration(
-                      border: Border.all(
-                          color: (selectedIndex == index)
-                              ? Colors.blue
-                              : Colors.grey),
+                      border: Border.all(color: Colors.blue),
                       borderRadius: const BorderRadius.all(
                         Radius.circular(5.0),
                       ),
@@ -195,10 +189,8 @@ class _ImeiListPageState extends State<ImeiListPage> {
     if (selectedImei.isEmpty) {
       return _showErrorMsg(labelDetails?.noImeiSelected ?? emptyString);
     }
-    BlocProvider.of<CheckImeiBloc>(context).add(CheckImeiInitEvent(
-        inputImei: selectedImei,
-        languageType: selectedLng,
-        requestCode: checkImeiReq));
+    BlocProvider.of<CheckMultiImeiBloc>(context).add(CheckMultiImeiInitEvent(
+        imeiMap: widget.data, languageType: selectedLng));
   }
 
   void _showErrorMsg(String errorMsg) {
@@ -211,12 +203,9 @@ class _ImeiListPageState extends State<ImeiListPage> {
     ));
   }
 
-  void _navigateResultScreen(Map<String, dynamic>? data, bool isValidImei) {
+  void _navigateResultScreen(List<MultiImeiRes> imeiResList) {
     Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => ImeiResultScreen(
-            labelDetails: labelDetails,
-            scanImei: selectedImei,
-            data: data,
-            isValidImei: isValidImei)));
+        builder: (context) => MultiImeiResultScreen(
+            imeiResList: imeiResList, labelDetails: labelDetails)));
   }
 }
