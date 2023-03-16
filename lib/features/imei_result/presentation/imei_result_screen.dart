@@ -39,95 +39,108 @@ class _ImeiResultScreenState extends State<ImeiResultScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: ResultAppBar(
-            title: widget.labelDetails?.result ?? emptyString,
-            callback: (value) {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (_) => BlocProvider.value(
-                    value: DeviceHistoryBloc(),
-                    child: const DeviceHistoryScreen(),
-                  ),
+      appBar: ResultAppBar(
+          title: widget.labelDetails?.result ?? emptyString,
+          callback: (value) {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (_) => BlocProvider.value(
+                  value: DeviceHistoryBloc(),
+                  child: const DeviceHistoryScreen(),
                 ),
-              );
-            }),
-        body: Padding(
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              children: [
-                Expanded(
+              ),
+            );
+          }),
+      body: LayoutBuilder(builder: (context,constraints){
+        return SingleChildScrollView(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(minWidth: constraints.maxWidth, minHeight: constraints.maxHeight),
+            child:IntrinsicHeight(
+              child:  Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: SizedBox(
+                    height: MediaQuery.of(context).size.height,
                     child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(top: 25.0),
-                      child: Text(
-                        widget.labelDetails?.imeiInfo ?? emptyString,
-                        style: TextStyle(
-                            fontSize: 20.0, color: AppColors.secondary),
-                      ),
-                    ),
-                    Align(
-                      alignment: Alignment.center,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 35),
-                        child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            SvgPicture.asset((widget.isValidImei == true)
-                                ? ImageConstants.imeiValidIcon
-                                : ImageConstants.imeiInValidIcon),
                             Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(vertical: 10.0),
+                              padding: const EdgeInsets.only(top: 25.0),
                               child: Text(
-                                (widget.isValidImei == true)
-                                    ? widget.labelDetails?.valid ??
-                                        emptyString
-                                    : widget.labelDetails?.invalid ??
-                                        emptyString,
-                                style: const TextStyle(fontSize: 24.0),
+                                widget.labelDetails?.imeiInfo ?? emptyString,
+                                style:
+                                TextStyle(fontSize: 20.0, color: AppColors.secondary),
                               ),
-                            )
+                            ),
+                            Align(
+                              alignment: Alignment.center,
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(vertical: 35),
+                                child: Column(
+                                  children: [
+                                    SvgPicture.asset((widget.isValidImei == true)
+                                        ? ImageConstants.imeiValidIcon
+                                        : ImageConstants.imeiInValidIcon),
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(vertical: 10.0),
+                                      child: Text(
+                                        (widget.isValidImei == true)
+                                            ? widget.labelDetails?.valid ?? emptyString
+                                            : widget.labelDetails?.invalid ?? emptyString,
+                                        style: TextStyle(fontSize: 24.0,color: (widget.isValidImei==true) ? Colors.green : Colors.red),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                            Row(
+                              children: [
+                                const Text(
+                                  StringConstants.imei,
+                                  style: TextStyle(fontSize: 14.0),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 40.0),
+                                  child: Text(
+                                    widget.scanImei,
+                                    style: const TextStyle(fontSize: 14.0),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            if (widget.isValidImei && widget.data != null)
+                              DeviceDetailList(data: widget.data!)
+                            else
+                              InvalidImeiResult(
+                                labelDetails: widget.labelDetails,
+                              ),
+                            Container(
+                              margin: const EdgeInsets.only(top: 30),
+                              child: AppButton(
+                                isLoading: false,
+                                child: Text(
+                                    widget.labelDetails?.checkOtherImei ?? emptyString),
+                                onPressed: () => {Navigator.of(context).pop()},
+                              ),
+                            ),
                           ],
                         ),
-                      ),
-                    ),
-                    Row(
-                      children: [
-                        const Text(
-                          StringConstants.imei,
-                          style: TextStyle(fontSize: 14.0),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 40.0),
-                          child: Text(
-                            widget.scanImei,
-                            style: const TextStyle(fontSize: 14.0),
-                          ),
-                        ),
+                        Spacer(),
+                        NeedAnyHelpWidget(
+                          labelDetails: widget.labelDetails,
+                        )
                       ],
                     ),
-                    if (widget.isValidImei && widget.data != null)
-                      DeviceDetailList(data: widget.data!)
-                    else
-                      InvalidImeiResult(
-                        labelDetails: widget.labelDetails,
-                      ),
-                    Container(
-                      margin: const EdgeInsets.only(top: 20),
-                      child: AppButton(
-                        isLoading: false,
-                        child: Text(
-                            widget.labelDetails?.checkOtherImei ?? emptyString),
-                        onPressed: () => {Navigator.of(context).pop()},
-                      ),
-                    )
-                  ],
-                )),
-                NeedAnyHelpWidget(
-                  labelDetails: widget.labelDetails,
-                )
-              ],
-            )));
+                  )
+              ),
+            ),
+          ),
+        );
+      },),
+    );
   }
 }

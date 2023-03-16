@@ -43,11 +43,11 @@ class InvalidImeiResult extends StatelessWidget {
         ),
         Container(
           width: double.infinity,
-          margin: const EdgeInsets.symmetric(vertical: 5.0),
+          margin: const EdgeInsets.only(top: 20.0),
           padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 25),
           decoration: BoxDecoration(
             border: Border.all(color: AppColors.grey),
-            borderRadius: const BorderRadius.all(Radius.circular(15.0) //
+            borderRadius: const BorderRadius.all(Radius.circular(20.0) //
                 ),
           ),
           child: Text(

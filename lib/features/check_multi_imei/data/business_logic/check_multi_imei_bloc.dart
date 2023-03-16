@@ -22,6 +22,9 @@ class CheckMultiImeiBloc
     if (event is CheckMultiImeiInitEvent) {
       emit(CheckMultiImeiLoadingState());
       try {
+        if (imeiResponseList.isNotEmpty) {
+          imeiResponseList.clear();
+        }
         for (final mapEntry in event.imeiMap.entries) {
           final key = mapEntry.key;
           CheckImeiReq checkImeiReq = CheckImeiReq(

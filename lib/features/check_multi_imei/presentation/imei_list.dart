@@ -11,6 +11,7 @@ import '../../../theme/colors.dart';
 import '../../component/app_bar_with_title.dart';
 import '../../component/button.dart';
 import '../../component/custom_progress_indicator.dart';
+import '../../component/error_page.dart';
 import '../../imei_result/presentation/multi_imei_result_screen.dart';
 import '../../launcher/data/models/device_details_res.dart';
 import '../data/business_logic/check_multi_imei_bloc.dart';
@@ -67,6 +68,13 @@ class _ImeiListPageState extends State<ImeiListPage> {
           if (state is CheckMultiImeiLoadingState) {
             return const CustomProgressIndicator(textColor: Colors.white);
           }
+          if (state is CheckMultiImeiErrorState) {
+            return Container(
+              color: Colors.white,
+              child: ErrorPage(labelDetails: labelDetails),
+            );
+          }
+
           return showImeiDialog(widget.data);
         },
         listener: (context, state) {

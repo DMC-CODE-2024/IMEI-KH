@@ -27,6 +27,8 @@ class AppColors {
   static Color historyBg = HexColor("#EFF5FF");
   static Color historyTxtColor = HexColor("#49454F");
   static Color dateTimeTxtColor = HexColor("#828282");
+  static Color validBg = HexColor("#F2FFF8");
+  static Color inVlidBg = HexColor("#FFF2F2");
 
   static Map<int, Color> color = {
     50: Color.fromRGBO(136, 14, 79, .1),
