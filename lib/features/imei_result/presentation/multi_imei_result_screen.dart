@@ -63,24 +63,18 @@ class _MultiImeiResultScreenState extends State<MultiImeiResultScreen> {
                   itemBuilder: (BuildContext context, int index) {
                     MultiImeiRes multiImeiRes = widget.imeiResList![index];
                     if (multiImeiRes.checkImeiRes.result?.validImei ?? false) {
-                      return Expanded(
-                        flex: 1,
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 10),
-                          child: validImeiList(
-                              multiImeiRes.checkImeiRes.result?.deviceDetails ??
-                                  {},
-                              multiImeiRes.imei),
-                        ),
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 10),
+                        child: validImeiList(
+                            multiImeiRes.checkImeiRes.result?.deviceDetails ??
+                                {},
+                            multiImeiRes.imei),
                       );
                     } else {
-                      return Expanded(
-                        flex: 1,
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 10),
-                          child: invalidImeiList(
-                            multiImeiRes.imei,
-                          ),
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 10),
+                        child: invalidImeiList(
+                          multiImeiRes.imei,
                         ),
                       );
                     }
