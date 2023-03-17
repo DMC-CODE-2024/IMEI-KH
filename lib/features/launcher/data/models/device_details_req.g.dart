@@ -38,6 +38,17 @@ AndroidDeviceDetails _$AndroidDeviceDetailsFromJson(
       manufacturer: json['manufacturer'] as String,
       manufacturermodel: json['manufacturermodel'] as String,
       product: json['product'] as String,
+      fingerprint: json['fingerprint'] as String?,
+      tags: json['tags'] as String?,
+      type: json['type'] as String?,
+      isPhysicalDevice: json['isPhysicalDevice'] as bool?,
+      systemFeature: (json['systemFeature'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList(),
+      serialNumber: json['serialNumber'] as String?,
+      displayWidthInches: (json['displayWidthInches'] as num?)?.toDouble(),
+      displayHeightInches: (json['displayHeightInches'] as num?)?.toDouble(),
+      baseOS: json['baseOS'] as String?,
     );
 
 Map<String, dynamic> _$AndroidDeviceDetailsToJson(
@@ -55,4 +66,13 @@ Map<String, dynamic> _$AndroidDeviceDetailsToJson(
       'manufacturer': instance.manufacturer,
       'manufacturermodel': instance.manufacturermodel,
       'product': instance.product,
+      'fingerprint': instance.fingerprint,
+      'tags': instance.tags,
+      'type': instance.type,
+      'isPhysicalDevice': instance.isPhysicalDevice,
+      'systemFeature': instance.systemFeature,
+      'serialNumber': instance.serialNumber,
+      'displayWidthInches': instance.displayWidthInches,
+      'displayHeightInches': instance.displayHeightInches,
+      'baseOS': instance.baseOS,
     };

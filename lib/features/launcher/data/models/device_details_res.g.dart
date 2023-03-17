@@ -77,7 +77,9 @@ LabelDetails _$LabelDetailsFromJson(Map<String, dynamic> json) => LabelDetails()
   ..copyRight = json['copyRight'] as String?
   ..imeiNotPer3gpp = json['imeiNotPer3gpp'] as String?
   ..scanCode = json['scanCode'] as String?
-  ..min15Digit = json['min15Digit'] as String?;
+  ..min15Digit = json['min15Digit'] as String?
+  ..loadingTxt = json['loadingTxt'] as String?
+  ..noDataFound = json['noDataFound'] as String?;
 
 Map<String, dynamic> _$LabelDetailsToJson(LabelDetails instance) =>
     <String, dynamic>{
@@ -139,4 +141,6 @@ Map<String, dynamic> _$LabelDetailsToJson(LabelDetails instance) =>
       'imeiNotPer3gpp': instance.imeiNotPer3gpp,
       'scanCode': instance.scanCode,
       'min15Digit': instance.min15Digit,
+      'loadingTxt': instance.loadingTxt,
+      'noDataFound': instance.noDataFound,
     };
