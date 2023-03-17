@@ -87,6 +87,8 @@ class LabelDetails {
   String? imeiNotPer3gpp;
   String? scanCode;
   String? min15Digit;
+  String? loadingTxt;
+  String? noDataFound;
   LabelDetails();
 
   factory LabelDetails.fromJson(Map<String, dynamic> json) =>

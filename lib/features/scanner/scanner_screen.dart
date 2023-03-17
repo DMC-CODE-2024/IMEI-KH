@@ -28,7 +28,7 @@ class _ScannerPageState extends State<ScannerPage> {
     formats: [BarcodeFormat.all],
     returnImage: true,
   );
-  bool showDebugInfo = true;
+  bool showDebugInfo = false;
   int successScans = 0;
   int failedScans = 0;
   var uniqueImei = <String, int>{};
@@ -85,9 +85,9 @@ class _ScannerPageState extends State<ScannerPage> {
         if (count != null) uniqueImei[code] = count + 1;
       } else {
         uniqueImei[code] = 1;
-        setState(() {
+/*        setState(() {
           successScans = successScans + 1;
-        });
+        });*/
       }
       stopTimer();
     }

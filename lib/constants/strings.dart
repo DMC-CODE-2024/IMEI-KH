@@ -57,9 +57,12 @@ class StringConstants {
   static const String openSansFontFamily = 'OpenSans';
   static const String emptyImei = "No IMEI selected";
   static const String noInternet = "No Internet connection";
-  static const String noInternetMsg = "Make sure wifi or cellular data is turned on and then try again";
+  static const String noInternetMsg =
+      "Make sure wifi or cellular data is turned on and then try again";
   static const String tryAgain = "Try Again";
   static const String oops = 'OOPS!';
-  static const String errorMsg = 'Sorry, Unable to fetch the data please try after sometime later';
+  static const String errorMsg =
+      'Sorry, Unable to fetch the data please try after sometime later';
   static const String noDataFound = "No Data Found!!";
+  static const String androidOs = "Android";
 }

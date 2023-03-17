@@ -86,13 +86,14 @@ class _MultiImeiResultScreenState extends State<MultiImeiResultScreen> {
                     }
                   }),
               Container(
-                margin: const EdgeInsets.only(top: 15, bottom: 120),
+                margin: const EdgeInsets.only(top: 15, bottom: 15),
                 child: AppButton(
                   isLoading: false,
                   child: Text(widget.labelDetails?.checkOtherImei ?? ""),
                   onPressed: () => {Navigator.of(context).pop()},
                 ),
               ),
+              _emptyWidget(),
               NeedAnyHelpWidget(
                 labelDetails: widget.labelDetails,
               )
@@ -101,6 +102,20 @@ class _MultiImeiResultScreenState extends State<MultiImeiResultScreen> {
         ),
       ),
     );
+  }
+
+  Widget _emptyWidget() {
+    if (widget.imeiResList?.length == 1) {
+      bool isValidImei =
+          widget.imeiResList?.first.checkImeiRes.result?.validImei ?? false;
+      return Container(
+        height: (isValidImei) ? 125 : 180,
+      );
+    } else {
+      return Container(
+        height: 60,
+      );
+    }
   }
 
   Widget validImeiList(Map<String, dynamic> data, String imei) {

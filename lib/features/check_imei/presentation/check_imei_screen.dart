@@ -130,8 +130,8 @@ class _CheckImeiScreenState extends State<CheckImeiScreen> {
                 } else {
                   if (state is CheckImeiLoadingState ||
                       state is LanguageLoadingState) {
-                    return const CustomProgressIndicator(
-                        textColor: Colors.black);
+                    return CustomProgressIndicator(
+                        labelDetails: labelDetails, textColor: Colors.black);
                   }
 
                   if (state is CheckImeiErrorState ||

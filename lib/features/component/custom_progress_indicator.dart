@@ -1,9 +1,13 @@
 import 'package:eirs/constants/strings.dart';
 import 'package:flutter/material.dart';
 
-class CustomProgressIndicator extends StatelessWidget {
-  const CustomProgressIndicator({super.key, required this.textColor});
+import '../launcher/data/models/device_details_res.dart';
 
+class CustomProgressIndicator extends StatelessWidget {
+  const CustomProgressIndicator(
+      {super.key, this.labelDetails, required this.textColor});
+
+  final LabelDetails? labelDetails;
   final Color textColor;
 
   @override
@@ -19,7 +23,7 @@ class CustomProgressIndicator extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 12),
             child: Text(
-              StringConstants.loadingTxt,
+              labelDetails?.loadingTxt ?? StringConstants.loadingTxt,
               style: TextStyle(fontSize: 18.0, color: textColor),
             ),
           )

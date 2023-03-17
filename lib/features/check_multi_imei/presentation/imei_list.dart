@@ -66,7 +66,7 @@ class _ImeiListPageState extends State<ImeiListPage> {
       body: BlocConsumer<CheckMultiImeiBloc, CheckMultiImeiState>(
         builder: (context, state) {
           if (state is CheckMultiImeiLoadingState) {
-            return const CustomProgressIndicator(textColor: Colors.white);
+            return CustomProgressIndicator( labelDetails: labelDetails,textColor: Colors.white);
           }
           if (state is CheckMultiImeiErrorState) {
             return Container(

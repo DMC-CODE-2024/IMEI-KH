@@ -42,15 +42,16 @@ class _DeviceHistoryScreenState extends State<DeviceHistoryScreen> {
       body: BlocConsumer<DeviceHistoryBloc, DeviceHistoryState>(
         builder: (context, state) {
           if (state is DeviceHistoryLoadingState) {
-            return const CustomProgressIndicator(textColor: Colors.black);
+            return CustomProgressIndicator(
+                labelDetails: labelDetails, textColor: Colors.black);
           }
           if (state is DeviceHistoryLoadedState) {
-            return _listWidget(state.deviceHistory);
+            return _listWidget(state.deviceHistory.reversed.toList());
           }
           if (state is NoDataDeviceHistoryState) {
             return Center(
               child: Text(
-                state.message,
+                labelDetails?.noDataFound ?? StringConstants.noDataFound,
                 style: const TextStyle(color: Colors.black, fontSize: 20.0),
               ),
             );

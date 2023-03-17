@@ -35,6 +35,15 @@ class AndroidDeviceDetails {
   String manufacturer;
   String manufacturermodel;
   String product;
+  String? fingerprint;
+  String? tags;
+  String? type;
+  bool? isPhysicalDevice;
+  List<String>? systemFeature;
+  String? serialNumber;
+  double? displayWidthInches;
+  double? displayHeightInches;
+  String? baseOS;
 
   AndroidDeviceDetails(
       {required this.versionCode,
@@ -48,7 +57,16 @@ class AndroidDeviceDetails {
       required this.host,
       required this.manufacturer,
       required this.manufacturermodel,
-      required this.product});
+      required this.product,
+      this.fingerprint,
+      this.tags,
+      this.type,
+      this.isPhysicalDevice,
+      this.systemFeature,
+      this.serialNumber,
+      this.displayWidthInches,
+      this.displayHeightInches,
+      this.baseOS});
 
   factory AndroidDeviceDetails.fromJson(Map<String, dynamic> json) =>
       _$AndroidDeviceDetailsFromJson(json);

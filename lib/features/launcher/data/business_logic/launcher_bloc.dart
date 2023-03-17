@@ -35,21 +35,31 @@ class LauncherBloc extends Bloc<LauncherEvent, LauncherState> {
   DeviceDetailsReq _readAndroidBuildData(
       String languageType, AndroidDeviceInfo androidDeviceInfo) {
     return DeviceDetailsReq(
-        osType: "Android",
-        deviceId: androidDeviceInfo.id,
-        languageType: languageType,
-        deviceDetails: AndroidDeviceDetails(
-            versionCode: androidDeviceInfo.version.sdkInt,
-            versionName: androidDeviceInfo.version.codename,
-            codename: androidDeviceInfo.version.codename,
-            brand: androidDeviceInfo.brand,
-            device: androidDeviceInfo.device,
-            display: androidDeviceInfo.display,
-            hardware: androidDeviceInfo.hardware,
-            id: androidDeviceInfo.id,
-            host: androidDeviceInfo.host,
-            manufacturer: androidDeviceInfo.manufacturer,
-            manufacturermodel: androidDeviceInfo.model,
-            product: androidDeviceInfo.product));
+      osType: StringConstants.androidOs,
+      deviceId: androidDeviceInfo.id,
+      languageType: languageType,
+      deviceDetails: AndroidDeviceDetails(
+          versionCode: androidDeviceInfo.version.sdkInt,
+          versionName: androidDeviceInfo.version.codename,
+          codename: androidDeviceInfo.version.codename,
+          brand: androidDeviceInfo.brand,
+          device: androidDeviceInfo.device,
+          display: androidDeviceInfo.display,
+          hardware: androidDeviceInfo.hardware,
+          id: androidDeviceInfo.id,
+          host: androidDeviceInfo.host,
+          manufacturer: androidDeviceInfo.manufacturer,
+          manufacturermodel: androidDeviceInfo.model,
+          product: androidDeviceInfo.product,
+          fingerprint: androidDeviceInfo.fingerprint,
+          tags: androidDeviceInfo.tags,
+          type: androidDeviceInfo.type,
+          isPhysicalDevice: androidDeviceInfo.isPhysicalDevice,
+          systemFeature: androidDeviceInfo.systemFeatures,
+          serialNumber: androidDeviceInfo.serialNumber,
+          displayWidthInches: androidDeviceInfo.displayMetrics.widthInches,
+          displayHeightInches: androidDeviceInfo.displayMetrics.heightInches,
+          baseOS: androidDeviceInfo.version.baseOS),
+    );
   }
 }

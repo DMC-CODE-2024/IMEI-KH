@@ -17,7 +17,6 @@ class DeviceHistoryErrorState extends DeviceHistoryState {
 }
 
 class NoDataDeviceHistoryState extends DeviceHistoryState {
-  String message;
 
-  NoDataDeviceHistoryState(this.message);
+  NoDataDeviceHistoryState();
 }
