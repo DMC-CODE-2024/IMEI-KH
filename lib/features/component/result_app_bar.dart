@@ -7,15 +7,17 @@ import '../../theme/colors.dart';
 import 'eirs_app_bar.dart';
 
 class ResultAppBar extends StatelessWidget with PreferredSizeWidget {
-  const ResultAppBar({
-    Key? key,
-    this.autoImplementLeading = true,
-    this.title,
-    this.actions,
-    this.systemUiOverlayStyle = SystemUiOverlayStyle.dark,
-    required this.callback,
-  }) : super(key: key);
+  const ResultAppBar(
+      {Key? key,
+      this.autoImplementLeading = true,
+      this.title,
+      this.actions,
+      this.systemUiOverlayStyle = SystemUiOverlayStyle.dark,
+      required this.callback,
+      this.backButtonCallBack})
+      : super(key: key);
   final Function callback;
+  final VoidCallback? backButtonCallBack;
   final bool autoImplementLeading;
   final String? title;
   final List<Widget>? actions;
@@ -29,7 +31,7 @@ class ResultAppBar extends StatelessWidget with PreferredSizeWidget {
       titleSpacing: 0.0,
       leading: IconButton(
         icon: const Icon(Icons.arrow_back, color: Colors.black),
-        onPressed: () => Navigator.of(context).pop(),
+        onPressed: backButtonCallBack ?? () => Navigator.pop(context),
       ),
       title: Padding(
         padding: const EdgeInsets.only(left: 5),

@@ -165,12 +165,22 @@ class _CheckImeiScreenState extends State<CheckImeiScreen> {
   }
 
   void _navigateResultScreen(Map<String, dynamic>? data, bool isValidImei) {
-    Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => ImeiResultScreen(
-            labelDetails: labelDetails,
-            scanImei: imeiController.text,
-            data: data,
-            isValidImei: isValidImei)));
+    Navigator.of(context)
+        .push(MaterialPageRoute(
+            builder: (context) => ImeiResultScreen(
+                labelDetails: labelDetails,
+                scanImei: imeiController.text,
+                data: data,
+                isValidImei: isValidImei)))
+        .then((value) {
+      if (value == true) {
+        setState(() {
+          imeiController.clear();
+          text = "0/15";
+          textColor = AppColors.grey;
+        });
+      }
+    });
   }
 
   void _appBarActions(AppBarActions values) {
