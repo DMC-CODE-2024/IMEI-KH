@@ -260,7 +260,7 @@ class _CheckImeiScreenState extends State<CheckImeiScreen> {
       child: Padding(
         padding: const EdgeInsets.all(25),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               labelDetails?.getIMEIInfo ?? emptyString,
@@ -397,18 +397,7 @@ class _CheckImeiScreenState extends State<CheckImeiScreen> {
               labelDetails?.imeiAlsoWrittenInBox ?? emptyString,
               style: TextStyle(color: AppColors.black, fontSize: 14.0),
             ),
-            Row(
-              children: [
-                Flexible(
-                  flex: 1,
-                  child: Image.asset(ImageConstants.deviceBox),
-                ),
-                Flexible(
-                  flex: 1,
-                  child: SvgPicture.asset(ImageConstants.boxImei),
-                )
-              ],
-            ),
+            Image.asset(ImageConstants.optionA),
             Container(
               margin: const EdgeInsets.only(top: 10),
               child: Text(

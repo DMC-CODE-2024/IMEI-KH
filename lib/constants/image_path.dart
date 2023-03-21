@@ -21,4 +21,6 @@ class ImageConstants {
   static const String boxImei = "assets/images/ic_box_imei.svg";
   static const String errorImg = "assets/images/ic_error.svg";
   static const String noInternet = "assets/images/ic_no_internet.jpg";
+  static const String optionA = "assets/images/ic_option_a.jpg";
+  static const String loadingImg = "assets/images/ic_loading.gif";
 }
