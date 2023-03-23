@@ -48,6 +48,7 @@ class _CheckImeiScreenState extends State<CheckImeiScreen> {
   Color textColor = AppColors.grey;
   LabelDetails? labelDetails;
   String selectedLng = StringConstants.englishCode;
+  bool reloadPage = false;
 
   @override
   void initState() {
@@ -78,6 +79,11 @@ class _CheckImeiScreenState extends State<CheckImeiScreen> {
           hasNetwork = false;
       }
     }
+  }
+
+  void _reloadPage() {
+    BlocProvider.of<CheckImeiBloc>(context)
+        .add(CheckImeiInitEvent(requestCode: pageRefresh));
   }
 
   PreferredSizeWidget _appBarWithTitle() {
@@ -125,7 +131,7 @@ class _CheckImeiScreenState extends State<CheckImeiScreen> {
                   return NoInternetPage(
                       labelDetails: labelDetails,
                       callback: (value) {
-                        setState(() {});
+                        _reloadPage();
                       });
                 } else {
                   if (state is CheckImeiLoadingState ||
@@ -136,9 +142,14 @@ class _CheckImeiScreenState extends State<CheckImeiScreen> {
 
                   if (state is CheckImeiErrorState ||
                       state is LanguageErrorState) {
-                    return ErrorPage(labelDetails: labelDetails);
+                    return ErrorPage(
+                        labelDetails: labelDetails,
+                        callback: (value) {
+                          _reloadPage();
+                        });
                   }
                 }
+
                 return _imeiPageWidget();
               },
               listener: (context, state) {
@@ -146,10 +157,6 @@ class _CheckImeiScreenState extends State<CheckImeiScreen> {
                   _navigateResultScreen(
                       state.checkImeiRes.result?.deviceDetails,
                       state.checkImeiRes.result?.validImei ?? false);
-                }
-
-                if (state is CheckImeiErrorState) {
-                  _navigateResultScreen(null, false);
                 }
 
                 if (state is LanguageLoadedState) {
@@ -286,6 +293,7 @@ class _CheckImeiScreenState extends State<CheckImeiScreen> {
                               text = "${value.length}/15";
                             })
                           },
+                          enableInteractiveSelection: true,
                           inputFormatters: [
                             LengthLimitingTextInputFormatter(15),
                           ],

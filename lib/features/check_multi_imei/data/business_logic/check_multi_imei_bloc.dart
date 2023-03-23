@@ -1,4 +1,6 @@
+import 'package:eirs/constants/constants.dart';
 import 'package:eirs/features/check_multi_imei/data/models/multi_imei_res.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../constants/strings.dart';
@@ -20,27 +22,45 @@ class CheckMultiImeiBloc
   void mapEventToState(
       CheckMultiImeiEvent event, Emitter<CheckMultiImeiState> emit) async {
     if (event is CheckMultiImeiInitEvent) {
-      emit(CheckMultiImeiLoadingState());
-      try {
-        if (imeiResponseList.isNotEmpty) {
-          imeiResponseList.clear();
-        }
-        for (final mapEntry in event.imeiMap.entries) {
-          final key = mapEntry.key;
-          CheckImeiReq checkImeiReq = CheckImeiReq(
-              imei: key ?? "",
-              operator: "smart",
-              language: event.languageType ?? StringConstants.englishCode,
-              channel: "phone");
-          CheckImeiRes checkImeiRes =
-              await eirsRepository.checkImei(checkImeiReq);
-          eirsRepository.insertDeviceDetail(key ?? "", checkImeiRes);
-          imeiResponseList
-              .add(MultiImeiRes(imei: key, checkImeiRes: checkImeiRes));
-        }
-        emit(CheckMultiImeiLoadedState(imeiResponseList));
-      } catch (e) {
-        emit(CheckMultiImeiErrorState(e.toString()));
+      switch (event.requestCode) {
+        case pageRefresh:
+          emit(PageRefresh());
+          break;
+        case checkMultiImeiReq:
+          emit(CheckMultiImeiLoadingState());
+          if (imeiResponseList.isNotEmpty) {
+            imeiResponseList.clear();
+          }
+          Map<String, int>? imeiMap = event.imeiMap;
+          if (imeiMap == null || imeiMap.isEmpty) {
+            emit(CheckMultiImeiErrorState(StringConstants.emptyImeiError));
+          } else {
+            for (final mapEntry in imeiMap.entries) {
+              try {
+                final key = mapEntry.key;
+                CheckImeiReq checkImeiReq = CheckImeiReq(
+                    imei: key,
+                    operator: "smart",
+                    language: event.languageType ?? StringConstants.englishCode,
+                    channel: "phone");
+                CheckImeiRes checkImeiRes =
+                    await eirsRepository.checkImei(checkImeiReq);
+                eirsRepository.insertDeviceDetail(key, checkImeiRes);
+                imeiResponseList
+                    .add(MultiImeiRes(imei: key, checkImeiRes: checkImeiRes));
+              } catch (e) {
+                if (kDebugMode) {
+                  print(e.toString());
+                }
+              }
+            }
+            if (imeiResponseList.isEmpty) {
+              emit(CheckMultiImeiErrorState(StringConstants.errorInScanImei));
+            } else {
+              emit(CheckMultiImeiLoadedState(imeiResponseList));
+            }
+          }
+          break;
       }
     }
   }

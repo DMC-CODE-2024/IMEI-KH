@@ -20,32 +20,41 @@ class CheckImeiBloc extends Bloc<CheckImeiEvent, CheckImeiState> {
 
   void mapEventToState(
       CheckImeiEvent event, Emitter<CheckImeiState> emit) async {
-    if (event is CheckImeiInitEvent && event.requestCode == checkImeiReq) {
-      emit(CheckImeiLoadingState());
-      try {
-        CheckImeiReq checkImeiReq = CheckImeiReq(
-            imei: event.inputImei ?? "",
-            operator: "smart",
-            language: event.languageType ?? StringConstants.englishCode,
-            channel: "phone");
-        CheckImeiRes checkImeiRes =
-            await eirsRepository.checkImei(checkImeiReq);
-        eirsRepository.insertDeviceDetail(event.inputImei ?? "", checkImeiRes);
-        emit(CheckImeiLoadedState(checkImeiRes));
-      } catch (e) {
-        emit(CheckImeiErrorState(e.toString()));
-      }
-    }
-
-    if (event is CheckImeiInitEvent && event.requestCode == languageReq) {
-      emit(LanguageLoadingState());
-      try {
-        DeviceDetailsRes deviceDetailsRes = await eirsRepository.getLanguage(
-            "CheckImei", event.languageType ?? StringConstants.englishCode);
-        setLocale(deviceDetailsRes.languageType ?? StringConstants.englishCode);
-        emit(LanguageLoadedState(deviceDetailsRes));
-      } catch (e) {
-        emit(LanguageErrorState(e.toString()));
+    if (event is CheckImeiInitEvent) {
+      switch (event.requestCode) {
+        case pageRefresh:
+          emit(CheckImeiPageRefresh());
+          break;
+        case checkImeiReq:
+          emit(CheckImeiLoadingState());
+          try {
+            CheckImeiReq checkImeiReq = CheckImeiReq(
+                imei: event.inputImei ?? "",
+                operator: "smart",
+                language: event.languageType ?? StringConstants.englishCode,
+                channel: "phone");
+            CheckImeiRes checkImeiRes =
+                await eirsRepository.checkImei(checkImeiReq);
+            eirsRepository.insertDeviceDetail(
+                event.inputImei ?? "", checkImeiRes);
+            emit(CheckImeiLoadedState(checkImeiRes));
+          } catch (e) {
+            emit(CheckImeiErrorState(e.toString()));
+          }
+          break;
+        case languageReq:
+          emit(LanguageLoadingState());
+          try {
+            DeviceDetailsRes deviceDetailsRes =
+                await eirsRepository.getLanguage("CheckImei",
+                    event.languageType ?? StringConstants.englishCode);
+            setLocale(
+                deviceDetailsRes.languageType ?? StringConstants.englishCode);
+            emit(LanguageLoadedState(deviceDetailsRes));
+          } catch (e) {
+            emit(LanguageErrorState(e.toString()));
+          }
+          break;
       }
     }
   }

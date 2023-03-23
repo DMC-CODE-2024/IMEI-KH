@@ -1,3 +1,4 @@
+import 'package:eirs/constants/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -66,12 +67,17 @@ class _ImeiListPageState extends State<ImeiListPage> {
       body: BlocConsumer<CheckMultiImeiBloc, CheckMultiImeiState>(
         builder: (context, state) {
           if (state is CheckMultiImeiLoadingState) {
-            return CustomProgressIndicator( labelDetails: labelDetails,textColor: Colors.white);
+            return CustomProgressIndicator(
+                labelDetails: labelDetails, textColor: Colors.white);
           }
           if (state is CheckMultiImeiErrorState) {
             return Container(
               color: Colors.white,
-              child: ErrorPage(labelDetails: labelDetails),
+              child: ErrorPage(
+                  labelDetails: labelDetails,
+                  callback: (value) {
+                    _reloadPage();
+                  }),
             );
           }
 
@@ -198,7 +204,14 @@ class _ImeiListPageState extends State<ImeiListPage> {
       return _showErrorMsg(labelDetails?.noImeiSelected ?? emptyString);
     }
     BlocProvider.of<CheckMultiImeiBloc>(context).add(CheckMultiImeiInitEvent(
-        imeiMap: widget.data, languageType: selectedLng));
+        imeiMap: widget.data,
+        languageType: selectedLng,
+        requestCode: checkMultiImeiReq));
+  }
+
+  void _reloadPage() {
+    BlocProvider.of<CheckMultiImeiBloc>(context)
+        .add(CheckMultiImeiInitEvent(requestCode: pageRefresh));
   }
 
   void _showErrorMsg(String errorMsg) {

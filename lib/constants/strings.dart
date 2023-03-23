@@ -65,4 +65,6 @@ class StringConstants {
       'Sorry, Unable to fetch the data please try after sometime later';
   static const String noDataFound = "No Data Found!!";
   static const String androidOs = "Android";
+  static const String emptyImeiError = "Imei field can not be null or empty";
+  static const String errorInScanImei = "Unable to process the input imei";
 }

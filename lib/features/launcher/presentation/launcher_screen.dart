@@ -85,8 +85,10 @@ class _LauncherScreenState extends State<LauncherScreen> {
                 }
                 if (state is LauncherErrorState) {
                   return ErrorPage(
-                    labelDetails: LabelDetails(),
-                  );
+                      labelDetails: LabelDetails(),
+                      callback: (value) {
+                        _initApiReq();
+                      });
                 }
 
                 if (state is LauncherLoadedState) {

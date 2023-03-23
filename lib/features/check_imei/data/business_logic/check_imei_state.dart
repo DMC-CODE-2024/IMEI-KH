@@ -6,6 +6,7 @@ abstract class CheckImeiState {}
 class CheckImeiInitialState extends CheckImeiState {}
 
 class CheckImeiLoadingState extends CheckImeiState {}
+class CheckImeiPageRefresh extends CheckImeiState{}
 
 class CheckImeiLoadedState extends CheckImeiState {
   CheckImeiRes checkImeiRes;

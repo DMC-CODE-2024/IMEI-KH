@@ -6,6 +6,8 @@ class CheckMultiImeiInitialState extends CheckMultiImeiState {}
 
 class CheckMultiImeiLoadingState extends CheckMultiImeiState {}
 
+class PageRefresh extends CheckMultiImeiState {}
+
 class CheckMultiImeiLoadedState extends CheckMultiImeiState {
   List<MultiImeiRes> multiImeiResList;
 
