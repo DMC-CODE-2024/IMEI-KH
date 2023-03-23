@@ -1,3 +1,4 @@
+import 'package:eirs/features/check_imei/presentation/check_imei_screen.dart';
 import 'package:eirs/features/check_multi_imei/data/models/multi_imei_res.dart';
 import 'package:eirs/features/launcher/data/models/device_details_res.dart';
 import 'package:flutter/material.dart';
@@ -5,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../../../constants/image_path.dart';
+import '../../../constants/routes.dart';
 import '../../../constants/strings.dart';
 import '../../../theme/colors.dart';
 import '../../component/button.dart';
@@ -84,7 +86,9 @@ class _MultiImeiResultScreenState extends State<MultiImeiResultScreen> {
                 child: AppButton(
                   isLoading: false,
                   child: Text(widget.labelDetails?.checkOtherImei ?? ""),
-                  onPressed: () => {Navigator.of(context).pop()},
+                  onPressed: () => {
+                  Navigator.pushNamedAndRemoveUntil(context, Routes.IMEI_SCREEN, (route) => false)
+                  },
                 ),
               ),
               _emptyWidget(),
