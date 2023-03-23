@@ -48,7 +48,7 @@ class DatabaseHelper {
   // All of the rows are returned as a list of maps, where each map is
   // a key-value list of columns.
   Future<List<Map<String, dynamic>>> getDeviceHistory() async {
-    return await _db.query(table);
+    return await _db.query(table, orderBy: "$columnDate DESC, $columnTime DESC");
   }
 
   Future<bool> isImeiExists(String imei) async {

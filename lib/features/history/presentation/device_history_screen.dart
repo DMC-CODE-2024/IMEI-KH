@@ -46,7 +46,7 @@ class _DeviceHistoryScreenState extends State<DeviceHistoryScreen> {
                 labelDetails: labelDetails, textColor: Colors.black);
           }
           if (state is DeviceHistoryLoadedState) {
-            return _listWidget(state.deviceHistory.reversed.toList());
+            return _listWidget(state.deviceHistory);
           }
           if (state is NoDataDeviceHistoryState) {
             return Center(
