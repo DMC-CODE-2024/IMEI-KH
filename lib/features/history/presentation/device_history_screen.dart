@@ -171,13 +171,15 @@ Widget _listWidget(Map<String, dynamic> values) {
         child: ListTile(
           title: Row(
             children: [
-              Text(
-                key,
-                style:
-                    TextStyle(fontSize: 14, color: AppColors.historyTxtColor),
+              Expanded(
+                child: Text(
+                  key,
+                  style:
+                      TextStyle(fontSize: 14, color: AppColors.historyTxtColor),
+                ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(left: 20),
+              Expanded(
+                flex: 2,
                 child: Text(
                   value,
                   style:
