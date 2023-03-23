@@ -136,7 +136,8 @@ class _ImeiResultScreenState extends State<ImeiResultScreen> {
                         isLoading: false,
                         child: Text(
                             widget.labelDetails?.checkOtherImei ?? emptyString),
-                        onPressed: () => {Navigator.of(context).pop()},
+                        onPressed: () =>
+                            {Navigator.pop(context, widget.isValidImei)},
                       ),
                     ),
                   ],
