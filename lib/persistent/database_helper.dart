@@ -12,6 +12,7 @@ class DatabaseHelper {
   static const columnIsValid = 'is_valid';
   static const columnDate = 'date';
   static const columnTime = 'time';
+  static const columnTimeStamp = 'timestamp';
 
   late Database _db;
 
@@ -34,6 +35,7 @@ class DatabaseHelper {
             $columnImei TEXT NOT NULL,
             $columnDeviceDetails TEXT NOT NULL,
             $columnIsValid INTEGER NOT NULL,
+            $columnTimeStamp TEXT NOT NULL,
             $columnDate TEXT NOT NULL,
             $columnTime TEXT NOT NULL
           )
@@ -48,29 +50,29 @@ class DatabaseHelper {
   // All of the rows are returned as a list of maps, where each map is
   // a key-value list of columns.
   Future<List<Map<String, dynamic>>> getDeviceHistory() async {
-    return await _db.query(table, orderBy: "$columnDate DESC, $columnTime DESC");
+    return await _db.query(table, orderBy: "$columnTimeStamp DESC");
   }
 
   Future<bool> isImeiExists(String imei) async {
-    var result = await _db.rawQuery(
-      'SELECT EXISTS(SELECT 1 FROM $table WHERE imei= $imei )',
-    );
+    var sql = "SELECT COUNT(*) FROM $table WHERE imei = '$imei' ";
+    var result = await _db.rawQuery(sql);
     int? exists = Sqflite.firstIntValue(result);
     return exists == 1;
   }
 
-  Future updateDateTime(String date, String time, String imei) async {
+  Future updateDateTime(
+      String timestamp, String date, String time, String imei) async {
     var res = await _db.rawQuery(
-        ''' UPDATE $table SET $columnDate = ? , $columnTime = ? WHERE $columnImei = ? ''',
-        [date, time, imei]);
+        ''' UPDATE $table SET $columnTimeStamp = ? , $columnDate = ? , $columnTime = ? WHERE $columnImei = ? ''',
+        [timestamp, date, time, imei]);
     return res;
   }
 
-  Future updateDateTimeWithDeviceDetails(
-      String deviceDetails, String date, String time, String imei) async {
+  Future updateDateTimeWithDeviceDetails(String deviceDetails, String timestamp,
+      String date, String time, String imei) async {
     var res = await _db.rawQuery(
-        ''' UPDATE $table SET $columnDate = ? , $columnTime = ? , $columnDeviceDetails = ? WHERE $columnImei = ? ''',
-        [date, time, deviceDetails, imei]);
+        ''' UPDATE $table SET $columnTimeStamp = ? , $columnDate = ? , $columnTime = ? , $columnDeviceDetails = ? WHERE $columnImei = ? ''',
+        [timestamp, date, time, deviceDetails, imei]);
     return res;
   }
 

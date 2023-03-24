@@ -52,6 +52,7 @@ class EirsRepository {
         DatabaseHelper.columnImei: imei,
         DatabaseHelper.columnDeviceDetails: jsonEncode(deviceDetails),
         DatabaseHelper.columnIsValid: isValidImei ? 1 : 0,
+        DatabaseHelper.columnTimeStamp: "${dt.millisecondsSinceEpoch}",
         DatabaseHelper.columnDate: dateFormatter.format(dt),
         DatabaseHelper.columnTime: timeFormatter.format(dt)
       };
@@ -66,11 +67,12 @@ class EirsRepository {
         if (deviceStatus != existingStatus) {
           await dbHelper.updateDateTimeWithDeviceDetails(
               jsonEncode(checkImeiRes.result?.deviceDetails),
+              "${dt.millisecondsSinceEpoch}",
               dateFormatter.format(dt),
               timeFormatter.format(dt),
               imei);
         } else {
-          await dbHelper.updateDateTime(
+          await dbHelper.updateDateTime("${dt.millisecondsSinceEpoch}",
               dateFormatter.format(dt), timeFormatter.format(dt), imei);
         }
       }
