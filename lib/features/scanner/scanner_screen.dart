@@ -99,7 +99,7 @@ class _ScannerPageState extends State<ScannerPage> {
     stopTimer();
     isNavigateNext = true;
     if (uniqueImei.isEmpty) {
-      return Navigator.of(context).pop();
+      return Navigator.pop(context,true);
     }
     Navigator.of(context)
         .push(

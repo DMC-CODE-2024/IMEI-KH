@@ -1,5 +1,6 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:eirs/features/component/custom_progress_indicator.dart';
+import 'package:eirs/features/component/imei_scan_failed_dialog.dart';
 import 'package:eirs/features/history/data/business_logic/device_history_bloc.dart';
 import 'package:eirs/helper/app_states_notifier.dart';
 import 'package:eirs/helper/connection_status_notifier.dart';
@@ -231,6 +232,19 @@ class _CheckImeiScreenState extends State<CheckImeiScreen> {
         });
   }
 
+  void _showImeiFailedDialog() {
+    showDialog(
+        barrierColor: Colors.black26,
+        context: context,
+        builder: (context) {
+          return ImeiScanFailedDialog(
+            callback: () {
+              _startScanner();
+            },
+          );
+        });
+  }
+
   void _checkImei(BuildContext context) {
     String inputImei = imeiController.text;
     if (inputImei.isEmpty) {
@@ -259,7 +273,11 @@ class _CheckImeiScreenState extends State<CheckImeiScreen> {
       return ScannerPage(
         labelDetails: labelDetails,
       );
-    }));
+    })).then((value) {
+      if (value == true) {
+        _showImeiFailedDialog();
+      }
+    });
   }
 
   Widget _imeiPageWidget() {

@@ -89,6 +89,10 @@ class LabelDetails {
   String? min15Digit;
   String? loadingTxt;
   String? noDataFound;
+  String? scanFailedMsg;
+  String? scanFailedDesc;
+  String? positiveBtnTxt;
+  String? negativeBtnTxt;
   LabelDetails();
 
   factory LabelDetails.fromJson(Map<String, dynamic> json) =>

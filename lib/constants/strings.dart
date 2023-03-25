@@ -67,4 +67,8 @@ class StringConstants {
   static const String androidOs = "Android";
   static const String emptyImeiError = "Imei field can not be null or empty";
   static const String errorInScanImei = "Unable to process the input imei";
+  static const String scanFailedMsg = "Scan Failed!";
+  static const String scanFailedDesc = "Do you want scan again?";
+  static const String positiveBtnTxt = "YES";
+  static const String negativeBtnTxt = "NO";
 }
