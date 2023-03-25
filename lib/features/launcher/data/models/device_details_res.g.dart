@@ -79,7 +79,11 @@ LabelDetails _$LabelDetailsFromJson(Map<String, dynamic> json) => LabelDetails()
   ..scanCode = json['scanCode'] as String?
   ..min15Digit = json['min15Digit'] as String?
   ..loadingTxt = json['loadingTxt'] as String?
-  ..noDataFound = json['noDataFound'] as String?;
+  ..noDataFound = json['noDataFound'] as String?
+  ..scanFailedMsg = json['scanFailedMsg'] as String?
+  ..scanFailedDesc = json['scanFailedDesc'] as String?
+  ..positiveBtnTxt = json['positiveBtnTxt'] as String?
+  ..negativeBtnTxt = json['negativeBtnTxt'] as String?;
 
 Map<String, dynamic> _$LabelDetailsToJson(LabelDetails instance) =>
     <String, dynamic>{
@@ -143,4 +147,8 @@ Map<String, dynamic> _$LabelDetailsToJson(LabelDetails instance) =>
       'min15Digit': instance.min15Digit,
       'loadingTxt': instance.loadingTxt,
       'noDataFound': instance.noDataFound,
+      'scanFailedMsg': instance.scanFailedMsg,
+      'scanFailedDesc': instance.scanFailedDesc,
+      'positiveBtnTxt': instance.positiveBtnTxt,
+      'negativeBtnTxt': instance.negativeBtnTxt,
     };
