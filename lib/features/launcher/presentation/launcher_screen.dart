@@ -8,6 +8,7 @@ import 'package:eirs/features/launcher/data/business_logic/launcher_state.dart';
 import 'package:eirs/features/launcher/data/models/device_details_res.dart';
 import 'package:eirs/helper/connection_status_notifier.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
@@ -30,9 +31,20 @@ class LauncherScreen extends StatefulWidget {
 }
 
 class _LauncherScreenState extends State<LauncherScreen> {
+  static const platform = MethodChannel('com.dmc.eris.eirs/deviceInfo');
   Map _source = {ConnectivityResult.none: false};
   bool hasNetwork = true;
   String selectedLanguage = StringConstants.englishCode;
+
+  Future<void> _getBatteryLevel() async {
+    String batteryLevel;
+    try {
+      final List<dynamic> result = await platform.invokeMethod('getDeviceInfo');
+      print("Device info: ${result.toString()}");
+    } on PlatformException catch (e) {
+      batteryLevel = "Failed to get battery level: '${e.message}'.";
+    }
+  }
 
   Future<void> _initApiReq() async {
     LauncherBloc bloc = BlocProvider.of<LauncherBloc>(context);
