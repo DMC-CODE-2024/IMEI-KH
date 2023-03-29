@@ -7,7 +7,7 @@ class DeviceDetailsReq {
   String osType;
   String deviceId;
   String languageType;
-  AndroidDeviceDetails deviceDetails;
+  dynamic deviceDetails;
 
   DeviceDetailsReq(
       {required this.osType,
@@ -19,6 +19,29 @@ class DeviceDetailsReq {
       _$DeviceDetailsReqFromJson(json);
 
   Map<String, dynamic> toJson() => _$DeviceDetailsReqToJson(this);
+}
+
+@JsonSerializable()
+class IosDeviceDetails{
+String? name;
+String? systemName;
+String? systemVersion;
+String? model;
+String? localizedModel;
+String? id;
+bool? isPhysicalDevice;
+String? sysname;
+String? nodename;
+String? release;
+String? version;
+String? machine;
+IosDeviceDetails({this.name,this.systemName,this.systemVersion,this.model,this.localizedModel,this.id
+    ,this.isPhysicalDevice,this.sysname,this.nodename,this.release,this.version,this.machine});
+
+factory IosDeviceDetails.fromJson(Map<String, dynamic> json) =>
+    _$IosDeviceDetailsFromJson(json);
+
+Map<String, dynamic> toJson() => _$IosDeviceDetailsToJson(this);
 }
 
 @JsonSerializable()

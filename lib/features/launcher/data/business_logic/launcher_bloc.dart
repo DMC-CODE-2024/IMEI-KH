@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:eirs/constants/strings.dart';
 import 'package:eirs/features/launcher/data/business_logic/launcher_state.dart';
@@ -20,9 +22,12 @@ class LauncherBloc extends Bloc<LauncherEvent, LauncherState> {
     if (event is LauncherInitEvent) {
       try {
         DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
-        DeviceDetailsReq deviceDetailsReq = _readAndroidBuildData(
-            event.languageType ?? StringConstants.englishCode,
-            await deviceInfoPlugin.androidInfo);
+        DeviceDetailsReq deviceDetailsReq;
+        if (Platform.isIOS) {
+          deviceDetailsReq = _readIosBuildData(event.languageType ?? StringConstants.englishCode, await deviceInfoPlugin.iosInfo);
+        }else{
+          deviceDetailsReq = _readAndroidBuildData(event.languageType ?? StringConstants.englishCode, await deviceInfoPlugin.androidInfo);
+        }
         DeviceDetailsRes deviceDetailsRes =
             await eirsRepository.deviceDetailsReq(deviceDetailsReq);
         emit(LauncherLoadedState(deviceDetailsRes));
@@ -32,8 +37,7 @@ class LauncherBloc extends Bloc<LauncherEvent, LauncherState> {
     }
   }
 
-  DeviceDetailsReq _readAndroidBuildData(
-      String languageType, AndroidDeviceInfo androidDeviceInfo) {
+  DeviceDetailsReq _readAndroidBuildData(String languageType, AndroidDeviceInfo androidDeviceInfo) {
     return DeviceDetailsReq(
       osType: StringConstants.androidOs,
       deviceId: androidDeviceInfo.id,
@@ -63,20 +67,26 @@ class LauncherBloc extends Bloc<LauncherEvent, LauncherState> {
     );
   }
 
-  Map<String, dynamic> _readIosDeviceInfo(IosDeviceInfo data) {
-    return <String, dynamic>{
-      'name': data.name,
-      'systemName': data.systemName,
-      'systemVersion': data.systemVersion,
-      'model': data.model,
-      'localizedModel': data.localizedModel,
-      'identifierForVendor': data.identifierForVendor,
-      'isPhysicalDevice': data.isPhysicalDevice,
-      'utsname.sysname:': data.utsname.sysname,
-      'utsname.nodename:': data.utsname.nodename,
-      'utsname.release:': data.utsname.release,
-      'utsname.version:': data.utsname.version,
-      'utsname.machine:': data.utsname.machine,
-    };
+
+  DeviceDetailsReq _readIosBuildData(String languageType, IosDeviceInfo iosDeviceInfo) {
+    return DeviceDetailsReq(
+      osType: StringConstants.iOSOs,
+      deviceId: iosDeviceInfo.identifierForVendor ?? "",
+      languageType: languageType,
+      deviceDetails: IosDeviceDetails(
+          name:iosDeviceInfo.name,
+        systemName:iosDeviceInfo.systemName,
+        systemVersion:iosDeviceInfo.systemVersion,
+        model:iosDeviceInfo.model,
+        localizedModel:iosDeviceInfo.localizedModel,
+        id:iosDeviceInfo.identifierForVendor,
+        isPhysicalDevice:iosDeviceInfo.isPhysicalDevice,
+        sysname:iosDeviceInfo.utsname.sysname,
+        nodename:iosDeviceInfo.utsname.nodename,
+        release:iosDeviceInfo.utsname.release,
+        version:iosDeviceInfo.utsname.version,
+        machine:iosDeviceInfo.utsname.machine
+    ));
   }
+
 }
