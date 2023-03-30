@@ -1,4 +1,5 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:eirs/features/component/custom_progress_indicator.dart';
 import 'package:eirs/features/component/imei_scan_failed_dialog.dart';
 import 'package:eirs/features/history/data/business_logic/device_history_bloc.dart';
@@ -9,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants/constants.dart';
@@ -41,10 +43,12 @@ class CheckImeiScreen extends StatefulWidget {
 }
 
 class _CheckImeiScreenState extends State<CheckImeiScreen> {
+  DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
   Map _source = {ConnectivityResult.none: false};
   bool hasNetwork = false;
   final TextEditingController imeiController = TextEditingController();
   String text = "0/15";
+  String versionName = "";
   String emptyString = "";
   Color textColor = AppColors.grey;
   LabelDetails? labelDetails;
@@ -54,6 +58,9 @@ class _CheckImeiScreenState extends State<CheckImeiScreen> {
   @override
   void initState() {
     super.initState();
+    PackageInfo.fromPlatform().then((value) {
+     versionName = value.version;
+    });
     getLocale().then((languageCode) {
       selectedLng = languageCode;
     });
@@ -121,6 +128,7 @@ class _CheckImeiScreenState extends State<CheckImeiScreen> {
             appBar: hasNetwork
                 ? EirsAppBar(
                     labelDetails: labelDetails,
+                    versionName: versionName,
                     callback: (value) {
                       _appBarActions(value);
                     },
@@ -315,10 +323,12 @@ class _CheckImeiScreenState extends State<CheckImeiScreen> {
                           inputFormatters: [
                             LengthLimitingTextInputFormatter(15),
                           ],
+                          textAlignVertical: TextAlignVertical.center,
                           keyboardType: TextInputType.number,
                           controller: imeiController,
                           autovalidateMode: AutovalidateMode.onUserInteraction,
                           decoration: InputDecoration(
+                              contentPadding: const EdgeInsets.only(left: 10),
                               filled: true,
                               hintText: labelDetails?.enterFifteenDigit ??
                                   emptyString,

@@ -50,6 +50,7 @@ dependencies:
   device_info_plus: ^8.1.0
   sqflite: ^2.2.2
   path_provider: ^2.0.11
+  package_info_plus: ^3.0.3
 
   # retrofit generator is an dio client generator using source_gen and inspired by Chopper and Retrofit.
   retrofit_generator: ^4.1.0+1
@@ -82,7 +83,7 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
-  generate: true
+  #generate: true
 
   # To add assets to your application, add an assets section, like this:
   assets:

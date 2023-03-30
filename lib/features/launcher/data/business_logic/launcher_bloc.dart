@@ -28,6 +28,7 @@ class LauncherBloc extends Bloc<LauncherEvent, LauncherState> {
         }else{
           deviceDetailsReq = _readAndroidBuildData(event.languageType ?? StringConstants.englishCode, await deviceInfoPlugin.androidInfo);
         }
+
         DeviceDetailsRes deviceDetailsRes =
             await eirsRepository.deviceDetailsReq(deviceDetailsReq);
         emit(LauncherLoadedState(deviceDetailsRes));

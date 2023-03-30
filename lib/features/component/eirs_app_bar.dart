@@ -1,3 +1,4 @@
+import 'package:eirs/constants/strings.dart';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +15,7 @@ class EirsAppBar extends StatelessWidget with PreferredSizeWidget {
     Key? key,
     this.autoImplementLeading = true,
     this.labelDetails,
+    this.versionName,
     this.actions,
     this.systemUiOverlayStyle = SystemUiOverlayStyle.dark,
     required this.callback,
@@ -21,6 +23,7 @@ class EirsAppBar extends StatelessWidget with PreferredSizeWidget {
   final Function callback;
   final bool autoImplementLeading;
   final LabelDetails? labelDetails;
+  final String? versionName;
   final List<Widget>? actions;
   final SystemUiOverlayStyle systemUiOverlayStyle;
 
@@ -65,6 +68,13 @@ class EirsAppBar extends StatelessWidget with PreferredSizeWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Text(labelDetails?.knowMore ?? emptyString),
+
+            Padding(padding: const EdgeInsets.only(top: 40),child: Row(
+              children: [
+                Text(labelDetails?.version ?? StringConstants.versionName,style: const TextStyle(fontWeight: FontWeight.w700),),
+                Text("$versionName",style: const TextStyle(fontWeight: FontWeight.w400),)
+              ],
+            ),)
           ],
         ),
         child: Padding(
