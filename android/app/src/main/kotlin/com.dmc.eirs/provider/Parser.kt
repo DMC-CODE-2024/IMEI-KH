@@ -1,4 +1,4 @@
-package com.dmc.eris.eirs.provider
+package com.dmc.eirs.provider
 
 import kotlin.math.ln
 import kotlin.math.pow

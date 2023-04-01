@@ -1,4 +1,4 @@
-package com.dmc.eris.eirs
+package com.dmc.eirs
 
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine

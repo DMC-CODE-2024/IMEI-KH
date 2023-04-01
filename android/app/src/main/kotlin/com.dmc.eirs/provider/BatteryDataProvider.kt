@@ -1,4 +1,4 @@
-package com.dmc.eris.eirs.provider
+package com.dmc.eirs.provider
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -6,8 +6,8 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.os.BatteryManager
 import android.util.Log
-import com.dmc.eris.eirs.R
-import com.dmc.eris.eirs.model.BatteryInfo
+import com.dmc.eirs.R
+import com.dmc.eirs.model.BatteryInfo
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flow
 

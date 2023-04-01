@@ -1,4 +1,4 @@
-package com.dmc.eris.eirs.provider
+package com.dmc.eirs.provider
 
 import android.content.Context
 import android.os.StatFs

@@ -1,4 +1,4 @@
-package com.dmc.eris.eirs.provider
+package com.dmc.eirs.provider
 
 import android.app.ActivityManager
 import android.content.Context

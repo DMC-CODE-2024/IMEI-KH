@@ -1,8 +1,10 @@
-package com.dmc.eris.eirs.provider
+package com.dmc.eirs.provider
 
 import android.os.Build
 import android.util.Log
-import com.dmc.eris.eirs.model.CpuInfo
+import com.dmc.eirs.model.CpuInfo
+import com.dmc.eirs.provider.Settings
+import com.dmc.eirs.provider.cacheHumanReadable
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow

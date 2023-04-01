@@ -1,4 +1,4 @@
-package com.dmc.eris.eirs
+package com.dmc.eirs
 
 import android.content.Context
 import android.content.ContextWrapper

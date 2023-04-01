@@ -1,4 +1,4 @@
-package com.dmc.eris.eirs.provider
+package com.dmc.eirs.provider
 
 class Settings() {
 

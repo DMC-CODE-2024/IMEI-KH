@@ -1,4 +1,4 @@
-package com.dmc.eris.eirs.model
+package com.dmc.eirs.model
 
 data class BatteryInfo(
     val level: String,

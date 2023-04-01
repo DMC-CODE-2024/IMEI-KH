@@ -1,4 +1,4 @@
-package com.dmc.eris.eirs.provider
+package com.dmc.eirs.provider
 
 import android.Manifest
 import android.annotation.SuppressLint
