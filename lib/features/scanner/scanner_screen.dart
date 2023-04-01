@@ -27,7 +27,7 @@ class _ScannerPageState extends State<ScannerPage> {
     formats: [BarcodeFormat.all],
     returnImage: true,
   );
-  bool showDebugInfo = true;
+  bool showScreenTimer = true;
   int successScans = 0;
   int failedScans = 0;
   var uniqueImei = <String, int>{};
@@ -35,6 +35,12 @@ class _ScannerPageState extends State<ScannerPage> {
   int _start = 10;
   bool isTimerStarted = false;
   bool isNavigateNext = false;
+  bool isDetectionStarted = false;
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,14 +56,18 @@ class _ScannerPageState extends State<ScannerPage> {
                 fit: BoxFit.fitHeight,
                 controller: cameraController,
                 onDetect: (capture) {
+                  if (!isDetectionStarted) {
+                    setState(() {
+                      isDetectionStarted = true;
+                    });
+                  }
                   final List<Barcode> barcodes = capture.barcodes;
-                  final Uint8List? image = capture.image;
                   for (final barcode in barcodes) {
                     getScanBarCodeResult(barcode.rawValue);
                   }
                 },
               ),
-              if (showDebugInfo)
+              if (showScreenTimer && isDetectionStarted)
                 Padding(
                   padding: const EdgeInsets.all(5.0),
                   child: Container(

@@ -45,7 +45,7 @@ class CheckImeiScreen extends StatefulWidget {
 class _CheckImeiScreenState extends State<CheckImeiScreen> {
   DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
   Map _source = {ConnectivityResult.none: false};
-  bool hasNetwork = false;
+  bool hasNetwork = true;
   final TextEditingController imeiController = TextEditingController();
   String text = "0/15";
   String versionName = "";
@@ -59,7 +59,7 @@ class _CheckImeiScreenState extends State<CheckImeiScreen> {
   void initState() {
     super.initState();
     PackageInfo.fromPlatform().then((value) {
-     versionName = value.version;
+      versionName = value.version;
     });
     getLocale().then((languageCode) {
       selectedLng = languageCode;
@@ -83,8 +83,8 @@ class _CheckImeiScreenState extends State<CheckImeiScreen> {
           hasNetwork = _source.values.toList()[0] ? true : false;
           break;
         case ConnectivityResult.none:
-        default:
           hasNetwork = false;
+          break;
       }
     }
   }
@@ -142,21 +142,20 @@ class _CheckImeiScreenState extends State<CheckImeiScreen> {
                       callback: (value) {
                         _reloadPage();
                       });
-                } else {
-                  if (state is CheckImeiLoadingState ||
-                      state is LanguageLoadingState) {
-                    return CustomProgressIndicator(
-                        labelDetails: labelDetails, textColor: Colors.black);
-                  }
+                }
+                if (state is CheckImeiLoadingState ||
+                    state is LanguageLoadingState) {
+                  return CustomProgressIndicator(
+                      labelDetails: labelDetails, textColor: Colors.black);
+                }
 
-                  if (state is CheckImeiErrorState ||
-                      state is LanguageErrorState) {
-                    return ErrorPage(
-                        labelDetails: labelDetails,
-                        callback: (value) {
-                          _reloadPage();
-                        });
-                  }
+                if (state is CheckImeiErrorState ||
+                    state is LanguageErrorState) {
+                  return ErrorPage(
+                      labelDetails: labelDetails,
+                      callback: (value) {
+                        _reloadPage();
+                      });
                 }
 
                 return _imeiPageWidget();

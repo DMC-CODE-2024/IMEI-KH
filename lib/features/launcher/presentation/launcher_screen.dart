@@ -8,7 +8,6 @@ import 'package:eirs/features/launcher/data/business_logic/launcher_state.dart';
 import 'package:eirs/features/launcher/data/models/device_details_res.dart';
 import 'package:eirs/helper/connection_status_notifier.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
@@ -31,20 +30,9 @@ class LauncherScreen extends StatefulWidget {
 }
 
 class _LauncherScreenState extends State<LauncherScreen> {
-  static const platform = MethodChannel('com.dmc.eris.eirs/deviceInfo');
   Map _source = {ConnectivityResult.none: false};
   bool hasNetwork = true;
   String selectedLanguage = StringConstants.englishCode;
-
-  Future<void> _getBatteryLevel() async {
-    String batteryLevel;
-    try {
-      final List<dynamic> result = await platform.invokeMethod('getDeviceInfo');
-      print("Device info: ${result.toString()}");
-    } on PlatformException catch (e) {
-      batteryLevel = "Failed to get battery level: '${e.message}'.";
-    }
-  }
 
   Future<void> _initApiReq() async {
     LauncherBloc bloc = BlocProvider.of<LauncherBloc>(context);
@@ -63,8 +51,8 @@ class _LauncherScreenState extends State<LauncherScreen> {
           hasNetwork = _source.values.toList()[0] ? true : false;
           break;
         case ConnectivityResult.none:
-        default:
           hasNetwork = false;
+          break;
       }
       if (hasNetwork) {
         _initApiReq();
@@ -89,24 +77,24 @@ class _LauncherScreenState extends State<LauncherScreen> {
                     callback: (value) {
                       setState(() {});
                     });
-              } else {
-                if (state is LauncherLoadingState) {
-                  return Center(
-                    child: Container(),
-                  );
-                }
-                if (state is LauncherErrorState) {
-                  return ErrorPage(
-                      labelDetails: LabelDetails(),
-                      callback: (value) {
-                        _initApiReq();
-                      });
-                }
-
-                if (state is LauncherLoadedState) {
-                  return _splashWidget(state.deviceDetailsRes.labelDetails);
-                }
               }
+              if (state is LauncherLoadingState) {
+                return Center(
+                  child: Container(),
+                );
+              }
+              if (state is LauncherErrorState) {
+                return ErrorPage(
+                    labelDetails: LabelDetails(),
+                    callback: (value) {
+                      _initApiReq();
+                    });
+              }
+
+              if (state is LauncherLoadedState) {
+                return _splashWidget(state.deviceDetailsRes.labelDetails);
+              }
+
               return Container();
             },
             listener: (context, state) {
