@@ -68,13 +68,21 @@ class EirsAppBar extends StatelessWidget with PreferredSizeWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Text(labelDetails?.knowMore ?? emptyString),
-
-            Padding(padding: const EdgeInsets.only(top: 40),child: Row(
-              children: [
-                Text(labelDetails?.version ?? StringConstants.versionName,style: const TextStyle(fontWeight: FontWeight.w700),),
-                Text("$versionName",style: const TextStyle(fontWeight: FontWeight.w400),)
-              ],
-            ),)
+            Padding(
+              padding: const EdgeInsets.only(top: 40),
+              child: Row(
+                children: [
+                  Text(
+                    labelDetails?.version ?? StringConstants.versionName,
+                    style: const TextStyle(fontWeight: FontWeight.w700),
+                  ),
+                  Text(
+                    " $versionName",
+                    style: const TextStyle(fontWeight: FontWeight.w400),
+                  )
+                ],
+              ),
+            )
           ],
         ),
         child: Padding(

@@ -322,12 +322,15 @@ class _CheckImeiScreenState extends State<CheckImeiScreen> {
                           inputFormatters: [
                             LengthLimitingTextInputFormatter(15),
                           ],
-                          textAlignVertical: TextAlignVertical.center,
+                          textAlign: TextAlign.left,
+                          cursorHeight: 20,
+                          style: const TextStyle(fontSize: 14),
                           keyboardType: TextInputType.number,
                           controller: imeiController,
-                          autovalidateMode: AutovalidateMode.onUserInteraction,
+                          textAlignVertical: TextAlignVertical.center,
                           decoration: InputDecoration(
-                              contentPadding: const EdgeInsets.only(left: 10),
+                              contentPadding: const EdgeInsets.symmetric(
+                                  vertical: 0, horizontal: 10),
                               filled: true,
                               hintText: labelDetails?.enterFifteenDigit ??
                                   emptyString,
