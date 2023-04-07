@@ -305,8 +305,7 @@ class _CheckImeiScreenState extends State<CheckImeiScreen> {
             ),
             Row(
               children: [
-                Flexible(
-                  flex: 1,
+                Expanded(
                   child: Column(
                     children: [
                       SizedBox(
@@ -322,6 +321,7 @@ class _CheckImeiScreenState extends State<CheckImeiScreen> {
                           inputFormatters: [
                             LengthLimitingTextInputFormatter(15),
                           ],
+                          maxLines: 1,
                           textAlign: TextAlign.left,
                           cursorHeight: 20,
                           style: const TextStyle(fontSize: 14),
@@ -356,53 +356,50 @@ class _CheckImeiScreenState extends State<CheckImeiScreen> {
                     ],
                   ),
                 ),
-                Flexible(
-                  flex: 1,
-                  child: Row(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(left: 20),
-                        child: Text(
-                          labelDetails?.or ?? emptyString,
-                          style: const TextStyle(fontSize: 14),
+                Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 20),
+                      child: Text(
+                        labelDetails?.or ?? emptyString,
+                        style: const TextStyle(fontSize: 14),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 30),
+                      child: DescribedFeatureOverlay(
+                        featureId: feature5,
+                        tapTarget: SvgPicture.asset(ImageConstants.scanIcon),
+                        backgroundColor: AppColors.secondary,
+                        contentLocation: ContentLocation.below,
+                        title: Text(
+                          labelDetails?.scanIMEI ?? emptyString,
+                          style: const TextStyle(fontWeight: FontWeight.w700),
+                        ),
+                        description:
+                            Text(labelDetails?.canBeBarcode ?? emptyString),
+                        onOpen: () async {
+                          return true;
+                        },
+                        child: GestureDetector(
+                          onTap: () => _startScanner(),
+                          child: Column(
+                            children: [
+                              SvgPicture.asset(ImageConstants.scanIcon),
+                              Padding(
+                                padding: const EdgeInsets.only(top: 6),
+                                child: Text(
+                                  labelDetails?.scanBar ?? emptyString,
+                                  style: const TextStyle(
+                                      fontSize: 14, color: Colors.black),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 30),
-                        child: DescribedFeatureOverlay(
-                          featureId: feature5,
-                          tapTarget: SvgPicture.asset(ImageConstants.scanIcon),
-                          backgroundColor: AppColors.secondary,
-                          contentLocation: ContentLocation.below,
-                          title: Text(
-                            labelDetails?.scanIMEI ?? emptyString,
-                            style: const TextStyle(fontWeight: FontWeight.w700),
-                          ),
-                          description:
-                              Text(labelDetails?.canBeBarcode ?? emptyString),
-                          onOpen: () async {
-                            return true;
-                          },
-                          child: GestureDetector(
-                            onTap: () => _startScanner(),
-                            child: Column(
-                              children: [
-                                SvgPicture.asset(ImageConstants.scanIcon),
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 6),
-                                  child: Text(
-                                    labelDetails?.scanBar ?? emptyString,
-                                    style: const TextStyle(
-                                        fontSize: 14, color: Colors.black),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
+                    )
+                  ],
                 )
               ],
             ),

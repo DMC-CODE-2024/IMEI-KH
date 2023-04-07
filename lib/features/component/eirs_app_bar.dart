@@ -73,11 +73,11 @@ class EirsAppBar extends StatelessWidget with PreferredSizeWidget {
               child: Row(
                 children: [
                   Text(
-                    labelDetails?.version ?? StringConstants.versionName,
-                    style: const TextStyle(fontWeight: FontWeight.w700),
+                    labelDetails?.appVersion ?? StringConstants.appVersion,
+                    style: const TextStyle(fontWeight: FontWeight.w400),
                   ),
                   Text(
-                    " $versionName",
+                    ": $versionName",
                     style: const TextStyle(fontWeight: FontWeight.w400),
                   )
                 ],

@@ -72,5 +72,5 @@ class StringConstants {
   static const String scanFailedDesc = "Do you want scan again?";
   static const String positiveBtnTxt = "YES";
   static const String negativeBtnTxt = "NO";
-  static const String versionName = "Version:";
+  static const String appVersion = "APP VERSION";
 }
