@@ -1,0 +1,25 @@
+package com.dmc.eirs.model
+
+data class DeviceInfo(
+        val modelName: String?,
+        val deviceName: String?,
+        val manufacturerName: String?,
+        val boardName: String?,
+        val hardwareName: String?,
+        val brandName: String?,
+        val deviceId: String?,
+        val buildFingerPrint: String?,
+        val deviceType: String?,
+        val isUsbHostSupported: Boolean = false,
+        val numberOfSimSlot: Int = 0,
+        val imei: String?,
+        val buildTime: Long,
+        val productName: String?,
+        val codeName: String?,
+        val radioVersion: String?,
+        val displayVersion: String?,
+        val host: String?,
+        val buildUser: String?,
+        val serial: String?,
+        val isRooted: Boolean = false,
+)

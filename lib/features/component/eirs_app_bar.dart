@@ -44,18 +44,11 @@ class EirsAppBar extends StatelessWidget with PreferredSizeWidget {
       elevation: 1,
       centerTitle: false,
       titleSpacing: 0.0,
-      title: Padding(
-        padding: const EdgeInsets.only(left: 5),
-        child: Text(
-          labelDetails?.eirsAppHeader ?? emptyString,
-          style: TextStyle(color: AppColors.secondary, fontSize: 14),
-        ),
-      ),
       leading: DescribedFeatureOverlay(
         featureId: feature1,
         tapTarget: Padding(
           padding: const EdgeInsets.all(30),
-          child: SvgPicture.asset(ImageConstants.splashIcon),
+          child: Image.asset(ImageConstants.splashIcon,width: 67,height: 30,),
         ),
         backgroundColor: AppColors.secondary,
         title: Text(
@@ -89,7 +82,7 @@ class EirsAppBar extends StatelessWidget with PreferredSizeWidget {
           padding: const EdgeInsets.only(left: 15),
           child: Padding(
             padding: const EdgeInsets.all(4),
-            child: SvgPicture.asset(ImageConstants.splashIcon),
+            child: Image.asset(ImageConstants.splashIcon,width: 67,height: 30,),
           ),
         ),
       ),

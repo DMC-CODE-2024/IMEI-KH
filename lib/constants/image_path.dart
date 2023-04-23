@@ -17,8 +17,7 @@ class ImageConstants {
   static const String mobileOffIcon ="assets/images/ic_mobile_off.svg";
   static const String mobileOnIcon ="assets/images/ic_mobile_on.svg";
   static const String coachLanguage ="assets/images/ic_language.svg";
-  static const String splashIcon = "assets/images/ic_splash_icon.svg";
-  static const String boxImei = "assets/images/ic_box_imei.svg";
+  static const String splashIcon = "assets/images/ic_app_logo.png";
   static const String errorImg = "assets/images/ic_error.svg";
   static const String noInternet = "assets/images/ic_no_internet.jpg";
   static const String optionA = "assets/images/ic_option_a.jpg";

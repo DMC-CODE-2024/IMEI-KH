@@ -4,9 +4,51 @@ import android.app.ActivityManager
 import android.content.Context
 import android.os.Environment
 import android.os.StatFs
+import com.dmc.eirs.model.MemoryInfo
+import kotlinx.coroutines.flow.flow
 
 
-class MemoryInformation(private val context: Context) {
+class MemoryDataProvider(private val context: Context) {
+    fun getMemoryInfo() = flow {
+        emit(
+                MemoryInfo(
+                        totalRam = totalRam,
+                        availableRam = availableRam,
+                        usedRam = usedRam,
+                        isExternalMemoryAvailable = isExternalMemoryAvailable,
+                        availableInternalMemorySize = availableInternalMemorySize,
+                        totalInternalMemorySize = totalInternalMemorySize,
+                        usedInternalMemorySize = usedInternalMemorySize,
+                        totalExternalStorageSize = totalExternalStorageSize,
+                        availableExternalStorageSize = availableExternalStorageSize,
+                        usedExternalStorageSize = usedExternalStorageSize
+                )
+        )
+    }
+    /**
+     * To get the total RAM of the device
+     * Remember , these terms :
+     * long kb = 1024
+     * long mb = kb*1024
+     * long Gb = mb * 1024
+     * @return total ram in long
+     */
+    /**
+     * To get the total RAM of the device
+     * Remember , these terms :
+     * long kb = 1024
+     * long mb = kb*1024
+     * long Gb = mb * 1024
+     * @return total ram in long
+     */
+    /**
+     * To get the total RAM of the device
+     * Remember , these terms :
+     * long kb = 1024
+     * long mb = kb*1024
+     * long Gb = mb * 1024
+     * @return total ram in long
+     */
     /**
      * To get the total RAM of the device
      * Remember , these terms :
@@ -22,9 +64,18 @@ class MemoryInformation(private val context: Context) {
      * To get the total available RAM
      * @return remaining ram in long
      */
+
+    /**
+     * To get the total available RAM
+     * @return remaining ram in long
+     */
     val availableRam: Long
         get() = memoryInfo().availMem
 
+    /**
+     * To get the used ram of the device
+     * @return used ram in long
+     */
     /**
      * To get the used ram of the device
      * @return used ram in long
@@ -36,9 +87,17 @@ class MemoryInformation(private val context: Context) {
      * To check if external memory is available or not
      * @return boolean
      */
+    /**
+     * To check if external memory is available or not
+     * @return boolean
+     */
     val isExternalMemoryAvailable: Boolean
         get() = (Environment.getExternalStorageState() == Environment.MEDIA_MOUNTED)
 
+    /**
+     * Get available internal memory size
+     * @return long
+     */
     /**
      * Get available internal memory size
      * @return long
@@ -56,6 +115,10 @@ class MemoryInformation(private val context: Context) {
      * Get total internal memory size
      * @return long
      */
+    /**
+     * Get total internal memory size
+     * @return long
+     */
     val totalInternalMemorySize: Long
         get() {
             val path = Environment.getDataDirectory()
@@ -69,6 +132,10 @@ class MemoryInformation(private val context: Context) {
      * Get the used internal memory size
      * @return long
      */
+    /**
+     * Get the used internal memory size
+     * @return long
+     */
     val usedInternalMemorySize: Long
         get() = if (totalInternalMemorySize > availableInternalMemorySize) {
             totalInternalMemorySize - availableInternalMemorySize
@@ -76,6 +143,10 @@ class MemoryInformation(private val context: Context) {
             -11111111
         }
 
+    /**
+     * Get the available external memory size
+     * @return long (if memory is not available then it will return -111111111
+     */
     /**
      * Get the available external memory size
      * @return long (if memory is not available then it will return -111111111
@@ -97,6 +168,10 @@ class MemoryInformation(private val context: Context) {
      * Get the total external storage available
      * @return long
      */
+    /**
+     * Get the total external storage available
+     * @return long
+     */
     val availableExternalStorageSize: Long
         get() {
             return if (isExternalMemoryAvailable) {
@@ -110,6 +185,10 @@ class MemoryInformation(private val context: Context) {
             }
         }
 
+    /**
+     * Get the used external memory space
+     * @return long
+     */
     /**
      * Get the used external memory space
      * @return long

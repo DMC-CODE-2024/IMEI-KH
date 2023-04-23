@@ -8,7 +8,7 @@ import android.os.BatteryManager
 import android.util.Log
 import com.dmc.eirs.R
 import com.dmc.eirs.model.BatteryInfo
-import kotlinx.coroutines.delay
+import com.dmc.eirs.utils.round2
 import kotlinx.coroutines.flow.flow
 
 class BatteryDataProvider constructor(private val context: Context) {
@@ -43,8 +43,8 @@ class BatteryDataProvider constructor(private val context: Context) {
         val batteryStatus = context.registerReceiver(null, iFilter)
         val temperature = (
                 batteryStatus?.getIntExtra(
-                    BatteryManager.EXTRA_TEMPERATURE,
-                    0
+                        BatteryManager.EXTRA_TEMPERATURE,
+                        0
                 ) ?: 0
                 ) / 10
 
@@ -76,11 +76,11 @@ class BatteryDataProvider constructor(private val context: Context) {
         var capacity = -1.0
         try {
             val powerProfile = Class.forName("com.android.internal.os.PowerProfile")
-                .getConstructor(Context::class.java).newInstance(context)
+                    .getConstructor(Context::class.java).newInstance(context)
             capacity = Class
-                .forName("com.android.internal.os.PowerProfile")
-                .getMethod("getAveragePower", String::class.java)
-                .invoke(powerProfile, "battery.capacity") as Double
+                    .forName("com.android.internal.os.PowerProfile")
+                    .getMethod("getAveragePower", String::class.java)
+                    .invoke(powerProfile, "battery.capacity") as Double
         } catch (e: Exception) {
             Log.e("Error", "occurred", e)
         }
@@ -102,20 +102,17 @@ class BatteryDataProvider constructor(private val context: Context) {
 
     fun getBatteryStatus() = flow {
         val batteryStatus = getBatteryStatusIntent()
-        while (true) {
-            emit(
+        emit(
                 BatteryInfo(
-                    level = getBatteryLevel(batteryStatus),
-                    health = getBatteryHealth(batteryStatus),
-                    voltage = getBatteryVoltage(batteryStatus),
-                    temperature = getBatteryTemperature(),
-                    capacity = getBatteryCapacity(),
-                    technology = getBatteryTechnology(batteryStatus),
-                    isCharging = getIsCharging(batteryStatus),
-                    chargingType = getChargingType(batteryStatus)
+                        level = getBatteryLevel(batteryStatus),
+                        health = getBatteryHealth(batteryStatus),
+                        voltage = getBatteryVoltage(batteryStatus),
+                        temperature = getBatteryTemperature(),
+                        capacity = getBatteryCapacity(),
+                        technology = getBatteryTechnology(batteryStatus),
+                        isCharging = getIsCharging(batteryStatus),
+                        chargingType = getChargingType(batteryStatus)
                 )
-            )
-            delay(1000)
-        }
+        )
     }
 }

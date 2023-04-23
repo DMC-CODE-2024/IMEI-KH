@@ -29,6 +29,7 @@ import '../../component/no_internet_page.dart';
 import '../../history/presentation/device_history_screen.dart';
 import '../../imei_result/presentation/imei_result_screen.dart';
 import '../../launcher/data/models/device_details_res.dart';
+import '../../scanner/data/business_logic/scanner_bloc.dart';
 import '../../scanner/scanner_screen.dart';
 import '../data/business_logic/check_imei_bloc.dart';
 import '../data/business_logic/check_imei_state.dart';
@@ -276,11 +277,14 @@ class _CheckImeiScreenState extends State<CheckImeiScreen> {
   }
 
   Future<void> _startScanner() async {
-    await Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return ScannerPage(
-        labelDetails: labelDetails,
-      );
-    })).then((value) {
+    await Navigator.push(context, MaterialPageRoute(
+      builder: (_) => BlocProvider.value(
+        value: ScannerBloc(),
+        child: const FeatureDiscovery.withProvider(
+            persistenceProvider: NoPersistenceProvider(),
+            child: ScannerPage()),
+      ),
+    )).then((value) {
       if (value == true) {
         _showImeiFailedDialog();
       }

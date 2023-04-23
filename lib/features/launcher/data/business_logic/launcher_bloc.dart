@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:device_info_plus/device_info_plus.dart';
@@ -24,11 +25,15 @@ class LauncherBloc extends Bloc<LauncherEvent, LauncherState> {
         DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
         DeviceDetailsReq deviceDetailsReq;
         if (Platform.isIOS) {
-          deviceDetailsReq = _readIosBuildData(event.languageType ?? StringConstants.englishCode, await deviceInfoPlugin.iosInfo);
-        }else{
-          deviceDetailsReq = _readAndroidBuildData(event.languageType ?? StringConstants.englishCode, await deviceInfoPlugin.androidInfo);
+          deviceDetailsReq = _readIosBuildData(
+              event.languageType ?? StringConstants.englishCode,
+              await deviceInfoPlugin.iosInfo);
+        } else {
+          deviceDetailsReq = _readAndroidBuildData(
+              event.languageType ?? StringConstants.englishCode,
+              await deviceInfoPlugin.androidInfo,
+              event.deviceDetails);
         }
-
         DeviceDetailsRes deviceDetailsRes =
             await eirsRepository.deviceDetailsReq(deviceDetailsReq);
         emit(LauncherLoadedState(deviceDetailsRes));
@@ -38,56 +43,34 @@ class LauncherBloc extends Bloc<LauncherEvent, LauncherState> {
     }
   }
 
-  DeviceDetailsReq _readAndroidBuildData(String languageType, AndroidDeviceInfo androidDeviceInfo) {
+  DeviceDetailsReq _readAndroidBuildData(String languageType,
+      AndroidDeviceInfo androidDeviceInfo, dynamic deviceDetails) {
     return DeviceDetailsReq(
       osType: StringConstants.androidOs,
       deviceId: androidDeviceInfo.id,
       languageType: languageType,
-      deviceDetails: AndroidDeviceDetails(
-          versionCode: androidDeviceInfo.version.sdkInt,
-          versionName: androidDeviceInfo.version.codename,
-          codename: androidDeviceInfo.version.codename,
-          brand: androidDeviceInfo.brand,
-          device: androidDeviceInfo.device,
-          display: androidDeviceInfo.display,
-          hardware: androidDeviceInfo.hardware,
-          id: androidDeviceInfo.id,
-          host: androidDeviceInfo.host,
-          manufacturer: androidDeviceInfo.manufacturer,
-          manufacturermodel: androidDeviceInfo.model,
-          product: androidDeviceInfo.product,
-          fingerprint: androidDeviceInfo.fingerprint,
-          tags: androidDeviceInfo.tags,
-          type: androidDeviceInfo.type,
-          isPhysicalDevice: androidDeviceInfo.isPhysicalDevice,
-          systemFeature: androidDeviceInfo.systemFeatures,
-          serialNumber: androidDeviceInfo.serialNumber,
-          displayWidthInches: androidDeviceInfo.displayMetrics.widthInches,
-          displayHeightInches: androidDeviceInfo.displayMetrics.heightInches,
-          baseOS: androidDeviceInfo.version.baseOS),
+      deviceDetails: jsonDecode(deviceDetails),
     );
   }
 
-
-  DeviceDetailsReq _readIosBuildData(String languageType, IosDeviceInfo iosDeviceInfo) {
+  DeviceDetailsReq _readIosBuildData(
+      String languageType, IosDeviceInfo iosDeviceInfo) {
     return DeviceDetailsReq(
-      osType: StringConstants.iOSOs,
-      deviceId: iosDeviceInfo.identifierForVendor ?? "",
-      languageType: languageType,
-      deviceDetails: IosDeviceDetails(
-          name:iosDeviceInfo.name,
-        systemName:iosDeviceInfo.systemName,
-        systemVersion:iosDeviceInfo.systemVersion,
-        model:iosDeviceInfo.model,
-        localizedModel:iosDeviceInfo.localizedModel,
-        id:iosDeviceInfo.identifierForVendor,
-        isPhysicalDevice:iosDeviceInfo.isPhysicalDevice,
-        sysname:iosDeviceInfo.utsname.sysname,
-        nodename:iosDeviceInfo.utsname.nodename,
-        release:iosDeviceInfo.utsname.release,
-        version:iosDeviceInfo.utsname.version,
-        machine:iosDeviceInfo.utsname.machine
-    ));
+        osType: StringConstants.iOSOs,
+        deviceId: iosDeviceInfo.identifierForVendor ?? "",
+        languageType: languageType,
+        deviceDetails: IosDeviceDetails(
+            name: iosDeviceInfo.name,
+            systemName: iosDeviceInfo.systemName,
+            systemVersion: iosDeviceInfo.systemVersion,
+            model: iosDeviceInfo.model,
+            localizedModel: iosDeviceInfo.localizedModel,
+            id: iosDeviceInfo.identifierForVendor,
+            isPhysicalDevice: iosDeviceInfo.isPhysicalDevice,
+            sysname: iosDeviceInfo.utsname.sysname,
+            nodename: iosDeviceInfo.utsname.nodename,
+            release: iosDeviceInfo.utsname.release,
+            version: iosDeviceInfo.utsname.version,
+            machine: iosDeviceInfo.utsname.machine));
   }
-
 }

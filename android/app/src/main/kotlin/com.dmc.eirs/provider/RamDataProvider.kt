@@ -3,6 +3,7 @@ package com.dmc.eirs.provider
 import android.app.ActivityManager
 import android.util.Log
 import com.dmc.eirs.model.RamInfo
+import com.dmc.eirs.utils.Settings
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow

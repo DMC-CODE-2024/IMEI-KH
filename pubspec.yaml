@@ -102,9 +102,8 @@ flutter:
     - assets/images/ic_mobile_off.svg
     - assets/images/ic_mobile_on.svg
     - assets/images/ic_language.svg
-    - assets/images/ic_splash_icon.svg
+    - assets/images/ic_app_logo.png
     - assets/images/ic_localization.svg
-    - assets/images/ic_box_imei.svg
     - assets/images/ic_error.svg
     - assets/images/ic_no_internet.jpg
     - assets/images/ic_option_a.jpg

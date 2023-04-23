@@ -3,8 +3,8 @@ package com.dmc.eirs.provider
 import android.os.Build
 import android.util.Log
 import com.dmc.eirs.model.CpuInfo
-import com.dmc.eirs.provider.Settings
-import com.dmc.eirs.provider.cacheHumanReadable
+import com.dmc.eirs.utils.Settings
+import com.dmc.eirs.utils.cacheHumanReadable
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -15,9 +15,7 @@ import java.io.FileFilter
 import java.io.RandomAccessFile
 import java.util.regex.Pattern
 
-class CpuDataProvider(
-    private val settings: Settings
-) {
+class CpuDataProvider(private val settings: Settings) {
     external fun initLibrary(): Boolean
 
     external fun getCpuName(): String

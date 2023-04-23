@@ -8,23 +8,51 @@ import android.os.Build
 import android.telephony.SubscriptionManager
 import android.telephony.TelephonyManager
 import android.text.TextUtils
-import androidx.annotation.RequiresApi
 import androidx.annotation.RequiresPermission
+import com.dmc.eirs.model.DeviceInfo
+import kotlinx.coroutines.flow.flow
 import java.io.File
 
 
-class DeviceInformation(private val context: Context) {
+class DeviceDataProvider(private val context: Context) {
+    fun getDeviceInfo() = flow {
+        emit(
+                DeviceInfo(
+                        modelName = modelName,
+                        deviceName = deviceName,
+                        manufacturerName = manufacturerName,
+                        boardName = boardName,
+                        hardwareName = hardwareName,
+                        brandName = brandName,
+                        deviceId = deviceId,
+                        buildFingerPrint = buildFingerPrint,
+                        deviceType = deviceType,
+                        isUsbHostSupported = isUsbHostSupported,
+                        numberOfSimSlot = numberOfSimSlot,
+                        imei = null,
+                        buildTime = buildTime,
+                        productName = productName,
+                        codeName = codeName,
+                        radioVersion = radioVersion,
+                        displayVersion = displayVersion,
+                        host = host,
+                        buildUser = buildUser,
+                        serial = serial,
+                        isRooted = isRooted
+                )
+        )
+    }
 
     /**
      * It returns the device model name
      */
-    val modelName: String
+    private val modelName: String
         get() = Build.MODEL
 
     /**
      * It returns the consumer friendly device name
      */
-    val deviceName: String
+    private val deviceName: String
         get() {
             val manufacture = Build.MANUFACTURER
             val model = Build.MODEL
@@ -36,19 +64,19 @@ class DeviceInformation(private val context: Context) {
         }
 
     /** Returns the device manafacturer name  */
-    val manufacturerName: String
+    private val manufacturerName: String
         get() = Build.MANUFACTURER
 
     /** Returns the board name of the device  */
-    val boardName: String
+    private val boardName: String
         get() = Build.BOARD
 
     /** Returns the hardware name of the device  */
-    val hardwareName: String
+    private val hardwareName: String
         get() = Build.HARDWARE
 
     /** Returns the brand name of the device  */
-    val brandName: String
+    private val brandName: String
         get() = Build.BRAND
 
     /** Returns the android device id   */
@@ -57,40 +85,38 @@ class DeviceInformation(private val context: Context) {
         get() = android.provider.Settings.Secure.getString(context.contentResolver, android.provider.Settings.Secure.ANDROID_ID)
 
     /** Returns the build fingerprint of the android device  */
-    val buildFingerPrint: String
+    private val buildFingerPrint: String
         get() = Build.FINGERPRINT
 
     /** Returns Phone type either it is GSM  or CDMA or SIP  */
-    val deviceType: String
+    private val deviceType: String
         get() {
             val telephonyManager =
-                context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
-            val phoneType = telephonyManager.phoneType
-            return if (phoneType == TelephonyManager.PHONE_TYPE_CDMA) {
-                "CDMA"
-            } else if (phoneType == TelephonyManager.PHONE_TYPE_GSM) {
-                "GSM"
-            } else if (phoneType == TelephonyManager.PHONE_TYPE_SIP) {
-                "SIP"
-            } else {
-                ""
+                    context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
+            return when (telephonyManager.phoneType) {
+                TelephonyManager.PHONE_TYPE_CDMA -> {
+                    "CDMA"
+                }
+                TelephonyManager.PHONE_TYPE_GSM -> {
+                    "GSM"
+                }
+                TelephonyManager.PHONE_TYPE_SIP -> {
+                    "SIP"
+                }
+                else -> {
+                    ""
+                }
             }
         }
 
     /** Checks whether USB Host is supported or not  */
-    val isUsbHostSupported: Boolean
-        get() = context.getPackageManager()
-            .hasSystemFeature(PackageManager.FEATURE_USB_HOST)// A method have to be implemented to get number of simSlot in less than Lollipop
+    private val isUsbHostSupported: Boolean
+        get() = context.packageManager
+                .hasSystemFeature(PackageManager.FEATURE_USB_HOST)// A method have to be implemented to get number of simSlot in less than Lollipop
 
     /** Returns the number of sim slot available in android device  */
-    val numberOfSimSlot: Int
-        get() = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
-            val subscriptionManager = SubscriptionManager.from(context)
-            subscriptionManager.activeSubscriptionInfoCountMax
-        } else {
-            // A method have to be implemented to get number of simSlot in less than Lollipop
-            1
-        }
+    private val numberOfSimSlot: Int
+        get() = SubscriptionManager.from(context).activeSubscriptionInfoCountMax
 
     /*
        * Returns the device imei number of the particular slot
@@ -98,51 +124,50 @@ class DeviceInformation(private val context: Context) {
        * To access Imei in android sdk version more than 29 ,
        * Special permissions should be required ..
        */
-    @RequiresApi(api = Build.VERSION_CODES.M)
     @SuppressLint("MissingPermission", "HardwareIds")
     @Deprecated("")
     @RequiresPermission(Manifest.permission.READ_PHONE_STATE)
     fun getImei(slotNumber: Int): String {
         val telephonyManager =
-            context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
+                context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
         return telephonyManager.getDeviceId(slotNumber)
     }
 
     /*
        * Returns build time
        */
-    val buildTime: Long
+    private val buildTime: Long
         get() = Build.TIME
-    val productName: String
+    private val productName: String
         get() = Build.PRODUCT
-    val codeName: String
+    private val codeName: String
         get() = Build.VERSION.CODENAME
-    val radioVersion: String
+    private val radioVersion: String
         get() = Build.getRadioVersion()
-    val displayVersion: String
+    private val displayVersion: String
         get() = Build.DISPLAY
-    val host: String
+    private val host: String
         get() = Build.HOST
-    val buildUser: String
+    private val buildUser: String
         get() = Build.USER
-    val serial: String
+    private val serial: String
         get() = Build.SERIAL
 
     /**
      * It will check whether device is rooted or not
      * @return boolean
      */
-    val isRooted: Boolean
+    private val isRooted: Boolean
         get() {
             val locations = arrayOf(
-                "/sbin",
-                "/system/bin",
-                "/system/xbin/",
-                "/system/sd/xbin",
-                "/system/bin/failsafe/",
-                "/data/local/xbin/",
-                "/data/local/bin/",
-                "/data/local/"
+                    "/sbin",
+                    "/system/bin",
+                    "/system/xbin/",
+                    "/system/sd/xbin",
+                    "/system/bin/failsafe/",
+                    "/data/local/xbin/",
+                    "/data/local/bin/",
+                    "/data/local/"
             )
             for (location in locations) {
                 if (File(location + "su").exists()) {

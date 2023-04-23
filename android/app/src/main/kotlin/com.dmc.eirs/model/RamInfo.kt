@@ -1,6 +1,6 @@
 package com.dmc.eirs.model
 
-import com.dmc.eirs.provider.humanReadableByteCount
+import com.dmc.eirs.utils.humanReadableByteCount
 
 data class RamInfo(
     val total: Long = 0L,

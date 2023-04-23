@@ -9,23 +9,50 @@ import android.util.DisplayMetrics
 import android.view.Surface
 import android.view.WindowManager
 import androidx.annotation.RequiresApi
+import com.dmc.eirs.model.DisplayInfo
+import kotlinx.coroutines.flow.flow
+import kotlin.math.pow
+import kotlin.math.sqrt
 
 
-class DisplayInformation(private val context: Context) {
+class DisplayDataProvider(private val context: Context) {
+    @RequiresApi(Build.VERSION_CODES.R)
+    fun getDisplayInfo() = flow {
+        emit(
+                DisplayInfo(
+                        displayHeight = displayHeight,
+                        displayWidth = displayWidth,
+                        navigationBarHeight = navigationBarHeight,
+                        physicalSize = physicalSize,
+                        fontScale = fontScale,
+                        refreshRate = refreshRate,
+                        orientation = orientation,
+                        rotation = rotation,
+                        isHdrCapable = isHdrCapable,
+                        isNightModeActive = isNightModeActive,
+                        isScreenRound = isScreenRound,
+                        isScreenWideColorGamut = isScreenWideColorGamut,
+                        isBrightnessAutoMode = isBrightnessAutoMode,
+                        brightnessLevel = brightnessLevel,
+                        screenTimeout = screenTimeout
+                )
+        )
+    }
+
     /**
      * To get the resolution of the device's display's height
      * It does include the navigation bar height
      * If you wanted to remove navigation bar height then subtract display height and navigation height
      * @return display height in pixels
      */
-    val displayHeight: Int
+    private val displayHeight: Int
         get() = (context.resources.displayMetrics.heightPixels) + navigationBarHeight
 
     /**
      * To get the resolution of the device's  display's width
      * @return display width in pixels
      */
-    val displayWidth: Int
+    private val displayWidth: Int
         get() = context.resources.displayMetrics.widthPixels
 
     /**
@@ -33,54 +60,51 @@ class DisplayInformation(private val context: Context) {
      * So this method can be used to get the navigation bar height
      * @return navigationBarHeight
      */
-    val navigationBarHeight: Int
+    private val navigationBarHeight: Int
         get() {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                val metrics = DisplayMetrics()
-                val windowManager =
+            val metrics = DisplayMetrics()
+            val windowManager =
                     context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
-                windowManager.defaultDisplay.getMetrics(metrics)
-                val usableHeight = metrics.heightPixels
-                windowManager.defaultDisplay.getRealMetrics(metrics)
-                val realHeight = metrics.heightPixels
-                return if (realHeight > usableHeight) {
-                    realHeight - usableHeight
-                } else {
-                    0
-                }
+            windowManager.defaultDisplay.getMetrics(metrics)
+            val usableHeight = metrics.heightPixels
+            windowManager.defaultDisplay.getRealMetrics(metrics)
+            val realHeight = metrics.heightPixels
+            return if (realHeight > usableHeight) {
+                realHeight - usableHeight
+            } else {
+                0
             }
-            return 0
         }
 
     /**
      * To get the physical size of the device
      * @return physicalSize in double
      */
-    val physicalSize: Double
+    private val physicalSize: Double
         get() {
             val dm = DisplayMetrics()
             val windowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
             windowManager.defaultDisplay.getMetrics(dm)
-            val x = Math.pow((displayWidth / dm.xdpi).toDouble(), 2.0)
-            val y = Math.pow((displayHeight / dm.ydpi).toDouble(), 2.0)
-            return Math.sqrt(x + y)
+            val x = (displayWidth / dm.xdpi).toDouble().pow(2.0)
+            val y = (displayHeight / dm.ydpi).toDouble().pow(2.0)
+            return sqrt(x + y)
         }
 
     /**
      * To get the font scale of the display
      * @return font scale in float
      */
-    val fontScale: Float
+    private val fontScale: Float
         get() = context.resources.configuration.fontScale
 
     /**
      * To get the device's display's refresh rate in frame per second
      * @return display refresh rate in float
      */
-    val refreshRate: Float
+    private val refreshRate: Float
         get() {
             val display =
-                (context.getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay
+                    (context.getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay
             return display.refreshRate
         }
 
@@ -91,7 +115,7 @@ class DisplayInformation(private val context: Context) {
      * Undefined ---- 0
      * @return orientation in the int
      */
-    val orientation: Int
+    private val orientation: Int
         get() = context.resources.configuration.orientation//-90
     //+90
     /**
@@ -99,10 +123,10 @@ class DisplayInformation(private val context: Context) {
      * This will give orientation like normal and reverse
      * @return rotation angle in integer
      */
-    val rotation: Int
+    private val rotation: Int
         get() {
             val windowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
-            var angle = 0
+            val angle: Int
             val rotation = windowManager.defaultDisplay.rotation
             angle = when (rotation) {
                 Surface.ROTATION_90 -> 90 //-90
@@ -120,8 +144,7 @@ class DisplayInformation(private val context: Context) {
     @get:RequiresApi(api = Build.VERSION_CODES.O)
     val isHdrCapable: Boolean
         get() {
-            var configuration = Configuration()
-            configuration = context.resources.configuration
+            val configuration: Configuration = context.resources.configuration
             return configuration.isScreenHdr
         }
 
@@ -132,8 +155,7 @@ class DisplayInformation(private val context: Context) {
     @get:RequiresApi(api = Build.VERSION_CODES.R)
     val isNightModeActive: Boolean
         get() {
-            var configuration = Configuration()
-            configuration = context.resources.configuration
+            val configuration: Configuration = context.resources.configuration
             return configuration.isNightModeActive
         }
 
@@ -141,11 +163,9 @@ class DisplayInformation(private val context: Context) {
      * To check if Screen is rounded or not
      * @return status of the rounded screen in boolean
      */
-    @get:RequiresApi(api = Build.VERSION_CODES.M)
-    val isScreenRound: Boolean
+    private val isScreenRound: Boolean
         get() {
-            var configuration = Configuration()
-            configuration = context.resources.configuration
+            val configuration: Configuration = context.resources.configuration
             return configuration.isScreenRound
         }
 
@@ -156,8 +176,7 @@ class DisplayInformation(private val context: Context) {
     @get:RequiresApi(api = Build.VERSION_CODES.O)
     val isScreenWideColorGamut: Boolean
         get() {
-            var configuration = Configuration()
-            configuration = context.resources.configuration
+            val configuration: Configuration = context.resources.configuration
             return configuration.isScreenWideColorGamut
         }
 
@@ -165,17 +184,13 @@ class DisplayInformation(private val context: Context) {
      * To check if automatic brightness mode is active or not
      * @return boolean (if autoMode then true else false)
      */
-    val isBrightnessAutoMode: Boolean
+    private val isBrightnessAutoMode: Boolean
         get() = try {
             val brightnesses = Settings.System.getInt(
-                context.contentResolver,
-                Settings.System.SCREEN_BRIGHTNESS_MODE
+                    context.contentResolver,
+                    Settings.System.SCREEN_BRIGHTNESS_MODE
             )
-            if (brightnesses == 1) {
-                true
-            } else {
-                false
-            }
+            brightnesses == 1
         } catch (e: SettingNotFoundException) {
             e.printStackTrace()
             false
@@ -188,35 +203,36 @@ class DisplayInformation(private val context: Context) {
      * again change them to automatic
      * @return brightness level from 0 to 225
      */
-    val brightnessLevel: Int
+    private val brightnessLevel: Int
         get() {
-            val contentResolver = context.contentResolver
+       /*     val contentResolver = context.contentResolver
             var a = 0
             var mode = 0
             try {
                 mode =
-                    Settings.System.getInt(contentResolver, Settings.System.SCREEN_BRIGHTNESS_MODE)
+                        Settings.System.getInt(contentResolver, Settings.System.SCREEN_BRIGHTNESS_MODE)
             } catch (e: SettingNotFoundException) {
                 e.printStackTrace()
             }
             if (mode == Settings.System.SCREEN_BRIGHTNESS_MODE_AUTOMATIC) {
                 a = 1
                 Settings.System.putInt(
-                    contentResolver,
-                    Settings.System.SCREEN_BRIGHTNESS_MODE,
-                    Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL
+                        contentResolver,
+                        Settings.System.SCREEN_BRIGHTNESS_MODE,
+                        Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL
                 )
             }
             val brightnessLevel =
-                Settings.System.getInt(contentResolver, Settings.System.SCREEN_BRIGHTNESS, 125)
+                    Settings.System.getInt(contentResolver, Settings.System.SCREEN_BRIGHTNESS, 125)
             if (a == 1) {
                 Settings.System.putInt(
-                    contentResolver,
-                    Settings.System.SCREEN_BRIGHTNESS_MODE,
-                    Settings.System.SCREEN_BRIGHTNESS_MODE_AUTOMATIC
+                        contentResolver,
+                        Settings.System.SCREEN_BRIGHTNESS_MODE,
+                        Settings.System.SCREEN_BRIGHTNESS_MODE_AUTOMATIC
                 )
-            }
-            return brightnessLevel
+            }*/
+            //return brightnessLevel
+            return 0
         }
 
     /**
@@ -227,18 +243,18 @@ class DisplayInformation(private val context: Context) {
         val contentResolver = context.contentResolver
         try {
             val mode =
-                Settings.System.getInt(contentResolver, Settings.System.SCREEN_BRIGHTNESS_MODE)
+                    Settings.System.getInt(contentResolver, Settings.System.SCREEN_BRIGHTNESS_MODE)
             if (mode == Settings.System.SCREEN_BRIGHTNESS_MODE_AUTOMATIC) {
                 Settings.System.putInt(
-                    contentResolver,
-                    Settings.System.SCREEN_BRIGHTNESS_MODE,
-                    Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL
+                        contentResolver,
+                        Settings.System.SCREEN_BRIGHTNESS_MODE,
+                        Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL
                 )
             } else {
                 Settings.System.putInt(
-                    contentResolver,
-                    Settings.System.SCREEN_BRIGHTNESS_MODE,
-                    Settings.System.SCREEN_BRIGHTNESS_MODE_AUTOMATIC
+                        contentResolver,
+                        Settings.System.SCREEN_BRIGHTNESS_MODE,
+                        Settings.System.SCREEN_BRIGHTNESS_MODE_AUTOMATIC
                 )
             }
         } catch (e: SettingNotFoundException) {
@@ -250,7 +266,7 @@ class DisplayInformation(private val context: Context) {
      * To get the screen timeout value of the android device
      * @return int (will return 0 if exception is caught)
      */
-    val screenTimeout: Int
+    private val screenTimeout: Int
         get() {
             return try {
                 Settings.System.getInt(context.contentResolver, Settings.System.SCREEN_OFF_TIMEOUT)

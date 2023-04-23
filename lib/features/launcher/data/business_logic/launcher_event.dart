@@ -4,5 +4,6 @@ abstract class LauncherEvent {
 
 class LauncherInitEvent extends LauncherEvent {
   String? languageType;
-  LauncherInitEvent({this.languageType});
+  String? deviceDetails;
+  LauncherInitEvent({this.languageType,this.deviceDetails});
 }

@@ -8,8 +8,8 @@ import 'package:eirs/features/launcher/data/business_logic/launcher_state.dart';
 import 'package:eirs/features/launcher/data/models/device_details_res.dart';
 import 'package:eirs/helper/connection_status_notifier.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants/image_path.dart';
@@ -32,12 +32,30 @@ class LauncherScreen extends StatefulWidget {
 class _LauncherScreenState extends State<LauncherScreen> {
   Map _source = {ConnectivityResult.none: false};
   bool hasNetwork = true;
+  bool isDeviceDetailReqInvoked = false;
   String selectedLanguage = StringConstants.englishCode;
+  static const platform = MethodChannel('com.dmc.eirs/deviceInfo');
+  String? deviceDetails;
+
+  @override
+  void initState() {
+    super.initState();
+    _getDeviceDetails();
+  }
+
+  Future<void> _getDeviceDetails() async {
+    try {
+      deviceDetails = await platform.invokeMethod('getDeviceInfo');
+    } on PlatformException catch (e) {
+      e.stacktrace;
+    }
+  }
 
   Future<void> _initApiReq() async {
     LauncherBloc bloc = BlocProvider.of<LauncherBloc>(context);
     String selectedLng = await getLocale();
-    bloc.add(LauncherInitEvent(languageType: selectedLng));
+    bloc.add(LauncherInitEvent(
+        languageType: selectedLng, deviceDetails: deviceDetails));
   }
 
   void updateNetworkStatus(Map<dynamic, dynamic> source) async {
@@ -54,7 +72,8 @@ class _LauncherScreenState extends State<LauncherScreen> {
           hasNetwork = false;
           break;
       }
-      if (hasNetwork) {
+      if (hasNetwork && !isDeviceDetailReqInvoked) {
+        isDeviceDetailReqInvoked = true;
         _initApiReq();
       }
     }
@@ -80,7 +99,7 @@ class _LauncherScreenState extends State<LauncherScreen> {
               }
               if (state is LauncherLoadingState) {
                 return Center(
-                  child: Container(),
+                  child: _splashWidget(LabelDetails()),
                 );
               }
               if (state is LauncherErrorState) {
@@ -95,7 +114,7 @@ class _LauncherScreenState extends State<LauncherScreen> {
                 return _splashWidget(state.deviceDetailsRes.labelDetails);
               }
 
-              return Container();
+              return _splashWidget(LabelDetails());
             },
             listener: (context, state) {
               if (state is LauncherLoadedState) {
@@ -122,13 +141,10 @@ class _LauncherScreenState extends State<LauncherScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                SvgPicture.asset(ImageConstants.splashIcon),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(30, 20, 30, 0),
-                  child: Text(labelDetails?.eirsApp ?? "",
-                      style:
-                          TextStyle(fontSize: 24, color: AppColors.secondary),
-                      textAlign: TextAlign.center),
+                Image.asset(
+                  ImageConstants.splashIcon,
+                  width: 210,
+                  height: 100,
                 )
               ],
             ),

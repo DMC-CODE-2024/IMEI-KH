@@ -1,19 +1,22 @@
 import 'dart:async';
 
 import 'package:eirs/features/launcher/data/models/device_details_res.dart';
+import 'package:eirs/features/scanner/data/business_logic/scanner_bloc.dart';
+import 'package:eirs/features/scanner/data/business_logic/scanner_event.dart';
+import 'package:eirs/features/scanner/data/business_logic/scanner_state.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
+import 'package:provider/provider.dart';
 
+import '../../helper/app_states_notifier.dart';
 import '../check_multi_imei/data/business_logic/check_multi_imei_bloc.dart';
 import '../check_multi_imei/presentation/imei_list.dart';
 import '../component/app_bar_with_title.dart';
 
 class ScannerPage extends StatefulWidget {
-  const ScannerPage({super.key, required this.labelDetails});
-
-  final LabelDetails? labelDetails;
+  const ScannerPage({super.key});
 
   @override
   State<ScannerPage> createState() => _ScannerPageState();
@@ -36,10 +39,13 @@ class _ScannerPageState extends State<ScannerPage> {
   bool isTimerStarted = false;
   bool isNavigateNext = false;
   bool isDetectionStarted = false;
+  Uint8List? capturedImg;
+  LabelDetails? labelDetails;
 
   @override
-  void initState() {
-    super.initState();
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    labelDetails = Provider.of<AppStatesNotifier>(context).value;
   }
 
   @override
@@ -47,20 +53,24 @@ class _ScannerPageState extends State<ScannerPage> {
     final isCameraSupported = defaultTargetPlatform == TargetPlatform.iOS ||
         defaultTargetPlatform == TargetPlatform.android;
     return Scaffold(
-      appBar: AppBarWithTitleOnly(title: widget.labelDetails?.scanCode ?? ""),
-      body: Builder(
-        builder: (context) {
+      appBar: AppBarWithTitleOnly(title: labelDetails?.scanCode ?? ""),
+      body: BlocConsumer<ScannerBloc, ScannerState>(
+        builder: (context, state) {
           return Stack(
             children: [
               MobileScanner(
                 fit: BoxFit.fitHeight,
                 controller: cameraController,
+                onScannerStarted:(onStart) {
+
+                },
                 onDetect: (capture) {
                   if (!isDetectionStarted) {
                     setState(() {
                       isDetectionStarted = true;
                     });
                   }
+                  capturedImg = capture.image;
                   final List<Barcode> barcodes = capture.barcodes;
                   for (final barcode in barcodes) {
                     getScanBarCodeResult(barcode.rawValue);
@@ -92,6 +102,7 @@ class _ScannerPageState extends State<ScannerPage> {
             ],
           );
         },
+        listener: (context, state) {},
       ),
     );
   }
@@ -124,7 +135,10 @@ class _ScannerPageState extends State<ScannerPage> {
     stopTimer();
     isNavigateNext = true;
     if (uniqueImei.isEmpty) {
-      return Navigator.pop(context, true);
+      ScannerBloc bloc = BlocProvider.of<ScannerBloc>(context);
+      bloc.add(ScannerInitEvent(imgBytes: capturedImg));
+      // return Navigator.pop(context, true);
+      return;
     }
     Navigator.of(context)
         .push(
