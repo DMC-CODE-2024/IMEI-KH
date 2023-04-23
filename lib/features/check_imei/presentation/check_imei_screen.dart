@@ -1,5 +1,6 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:device_info_plus/device_info_plus.dart';
+import 'package:eirs/features/component/about_app_info_dialog.dart';
 import 'package:eirs/features/component/custom_progress_indicator.dart';
 import 'package:eirs/features/component/imei_scan_failed_dialog.dart';
 import 'package:eirs/features/history/data/business_logic/device_history_bloc.dart';
@@ -225,6 +226,17 @@ class _CheckImeiScreenState extends State<CheckImeiScreen> {
     }
   }
 
+  void _showAboutAppInfoDialog() {
+    showDialog(
+        barrierColor: Colors.black26,
+        context: context,
+        builder: (context) {
+          return AboutAppInfoDialog(
+            labelDetails: labelDetails,
+          );
+        });
+  }
+
   void _showLocalizationDialog() {
     showDialog(
         barrierColor: Colors.black26,
@@ -277,14 +289,16 @@ class _CheckImeiScreenState extends State<CheckImeiScreen> {
   }
 
   Future<void> _startScanner() async {
-    await Navigator.push(context, MaterialPageRoute(
-      builder: (_) => BlocProvider.value(
-        value: ScannerBloc(),
-        child: const FeatureDiscovery.withProvider(
-            persistenceProvider: NoPersistenceProvider(),
-            child: ScannerPage()),
-      ),
-    )).then((value) {
+    await Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => BlocProvider.value(
+            value: ScannerBloc(),
+            child: const FeatureDiscovery.withProvider(
+                persistenceProvider: NoPersistenceProvider(),
+                child: ScannerPage()),
+          ),
+        )).then((value) {
       if (value == true) {
         _showImeiFailedDialog();
       }
