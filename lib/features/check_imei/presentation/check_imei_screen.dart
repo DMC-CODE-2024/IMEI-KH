@@ -202,6 +202,9 @@ class _CheckImeiScreenState extends State<CheckImeiScreen> {
 
   void _appBarActions(AppBarActions values) {
     switch (values) {
+      case AppBarActions.appLogo:
+        _showAboutAppInfoDialog();
+        break;
       case AppBarActions.localization:
         _showLocalizationDialog();
         break;

@@ -18,4 +18,6 @@ class ImageConstants {
   static const String errorImg = "assets/images/ic_error.svg";
   static const String noInternet = "assets/images/ic_no_internet.jpg";
   static const String optionA = "assets/images/ic_option_a.jpg";
+  static const String appBarIcon = "assets/images/ic_app_bar_icon.jpg";
+
 }

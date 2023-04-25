@@ -1,3 +1,4 @@
+import 'package:eirs/constants/strings.dart';
 import 'package:flutter/material.dart';
 
 import '../../constants/image_path.dart';
@@ -37,27 +38,30 @@ class _AboutAppInfoDialogState extends State<AboutAppInfoDialog> {
               height: 60,
             ),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
               child: Text(
-                "Developed by Ministry of Post and Telecommunications, this application will verify any mobile device by its IMEI number. IMEI KH App will provide status  of mobile device (Invalid/Blocklist) and other information like manufacturer, band name and model name of the given IMEI. While purchasing a mobile devices, the genuineness of those mobile devices can be verified by using IMEI KH App.",
-                style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
+                widget.labelDetails?.checkImeiMesssage ??
+                    StringConstants.aboutApp,
+                style:
+                    const TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
               ),
             ),
             Align(
-                alignment: Alignment.centerRight,
-                child: InkWell(
-                  onTap: () => Navigator.pop(context),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8),
-                    child: Text(
-                      widget.labelDetails?.ok ?? "",
-                      style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400,
-                          color: AppColors.primaryColor),
-                    ),
+              alignment: Alignment.centerRight,
+              child: InkWell(
+                onTap: () => Navigator.pop(context),
+                child: Padding(
+                  padding: const EdgeInsets.all(8),
+                  child: Text(
+                    widget.labelDetails?.ok ?? "",
+                    style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w400,
+                        color: AppColors.primaryColor),
                   ),
-                ))
+                ),
+              ),
+            )
           ],
         ),
       ),

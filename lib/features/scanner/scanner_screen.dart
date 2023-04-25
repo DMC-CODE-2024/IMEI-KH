@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:eirs/features/launcher/data/models/device_details_res.dart';
 import 'package:eirs/features/scanner/data/business_logic/scanner_bloc.dart';
-import 'package:eirs/features/scanner/data/business_logic/scanner_event.dart';
 import 'package:eirs/features/scanner/data/business_logic/scanner_state.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -39,7 +38,7 @@ class _ScannerPageState extends State<ScannerPage> {
   bool isTimerStarted = false;
   bool isNavigateNext = false;
   bool isDetectionStarted = false;
-  Uint8List? capturedImg;
+  //Uint8List? capturedImg;
   LabelDetails? labelDetails;
 
   @override
@@ -61,16 +60,14 @@ class _ScannerPageState extends State<ScannerPage> {
               MobileScanner(
                 fit: BoxFit.fitHeight,
                 controller: cameraController,
-                onScannerStarted:(onStart) {
-
-                },
+                onScannerStarted: (onStart) {},
                 onDetect: (capture) {
                   if (!isDetectionStarted) {
                     setState(() {
                       isDetectionStarted = true;
                     });
                   }
-                  capturedImg = capture.image;
+                  //capturedImg = capture.image;
                   final List<Barcode> barcodes = capture.barcodes;
                   for (final barcode in barcodes) {
                     getScanBarCodeResult(barcode.rawValue);
@@ -135,10 +132,9 @@ class _ScannerPageState extends State<ScannerPage> {
     stopTimer();
     isNavigateNext = true;
     if (uniqueImei.isEmpty) {
-      ScannerBloc bloc = BlocProvider.of<ScannerBloc>(context);
-      bloc.add(ScannerInitEvent(imgBytes: capturedImg));
-      // return Navigator.pop(context, true);
-      return;
+      /* ScannerBloc bloc = BlocProvider.of<ScannerBloc>(context);
+      bloc.add(ScannerInitEvent(imgBytes: capturedImg));*/
+      return Navigator.pop(context, true);
     }
     Navigator.of(context)
         .push(

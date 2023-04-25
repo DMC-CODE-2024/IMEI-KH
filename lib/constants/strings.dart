@@ -73,4 +73,5 @@ class StringConstants {
   static const String positiveBtnTxt = "YES";
   static const String negativeBtnTxt = "NO";
   static const String appVersion = "APP VERSION";
+  static const String aboutApp =  "Developed by Ministry of Post and Telecommunications, this application will verify any mobile device by its IMEI number. IMEI KH App will provide status  of mobile device (Invalid/Blocklist) and other information like manufacturer, band name and model name of the given IMEI. While purchasing a mobile devices, the genuineness of those mobile devices can be verified by using IMEI KH App.";
 }

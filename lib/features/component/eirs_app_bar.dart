@@ -48,7 +48,11 @@ class EirsAppBar extends StatelessWidget with PreferredSizeWidget {
         featureId: feature1,
         tapTarget: Padding(
           padding: const EdgeInsets.all(30),
-          child: Image.asset(ImageConstants.splashIcon,width: 67,height: 30,),
+          child: Image.asset(
+            ImageConstants.splashIcon,
+            width: 67,
+            height: 30,
+          ),
         ),
         backgroundColor: AppColors.secondary,
         title: Text(
@@ -78,13 +82,15 @@ class EirsAppBar extends StatelessWidget with PreferredSizeWidget {
             )
           ],
         ),
-        child: Padding(
-          padding: const EdgeInsets.only(left: 15),
-          child: Padding(
-            padding: const EdgeInsets.all(4),
-            child: Image.asset(ImageConstants.splashIcon,width: 67,height: 30,),
+          child: IconButton(
+            onPressed: () => callback.call(AppBarActions.appLogo),
+            icon: Image.asset(
+              ImageConstants.splashIcon,
+              fit: BoxFit.cover,
+              width: 120,
+              height: 20,
+            ),
           ),
-        ),
       ),
       actions: <Widget>[
         Row(
@@ -156,4 +162,4 @@ class EirsAppBar extends StatelessWidget with PreferredSizeWidget {
   Size get preferredSize => const Size.fromHeight(60);
 }
 
-enum AppBarActions { localization, history, info }
+enum AppBarActions { localization, history, info, appLogo }
