@@ -380,14 +380,14 @@ class _CheckImeiScreenState extends State<CheckImeiScreen> {
                 Row(
                   children: [
                     Padding(
-                      padding: const EdgeInsets.only(left: 20),
+                      padding: const EdgeInsets.only(left: 10),
                       child: Text(
                         labelDetails?.or ?? emptyString,
                         style: const TextStyle(fontSize: 14),
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(left: 30),
+                      padding: const EdgeInsets.only(left: 15),
                       child: DescribedFeatureOverlay(
                         featureId: feature5,
                         tapTarget: SvgPicture.asset(ImageConstants.scanIcon),
