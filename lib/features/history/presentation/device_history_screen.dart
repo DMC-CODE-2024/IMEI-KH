@@ -46,7 +46,10 @@ class _DeviceHistoryScreenState extends State<DeviceHistoryScreen> {
                 labelDetails: labelDetails, textColor: Colors.black);
           }
           if (state is DeviceHistoryLoadedState) {
-            return _listWidget(state.deviceHistory);
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: _listWidget(state.deviceHistory),
+            );
           }
           if (state is NoDataDeviceHistoryState) {
             return Center(
@@ -81,18 +84,22 @@ class _DeviceHistoryScreenState extends State<DeviceHistoryScreen> {
         int isValidImei = deviceDetail[DatabaseHelper.columnIsValid];
         if (isValidImei == 1) {
           return Padding(
-            padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+            padding: const EdgeInsets.only(top: 5),
             child: _validImeiWidget(
-                context,
-                key,
-                deviceDetail[DatabaseHelper.columnDate],
-                deviceDetail[DatabaseHelper.columnTime],
-                json.decode(deviceDetail[DatabaseHelper.columnDeviceDetails])),
+              context,
+              key,
+              deviceDetail[DatabaseHelper.columnDate],
+              deviceDetail[DatabaseHelper.columnTime],
+              json.decode(
+                deviceDetail[DatabaseHelper.columnDeviceDetails],
+              ),
+            ),
           );
         } else {
           return Padding(
-            padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+            padding: const EdgeInsets.only(top: 5),
             child: _invalidImeiWidget(
+                context,
                 key,
                 deviceDetail[DatabaseHelper.columnDate],
                 deviceDetail[DatabaseHelper.columnTime],
@@ -154,12 +161,12 @@ Widget _validImeiWidget(BuildContext context, String imei, String date,
                   )
                 ],
               ),
-              children: [_listWidget(deviceDetails)],
+              children: [_deviceInfoListWidget(deviceDetails)],
             ))),
   );
 }
 
-Widget _listWidget(Map<String, dynamic> values) {
+Widget _deviceInfoListWidget(Map<String, dynamic> values) {
   return ListView.builder(
     shrinkWrap: true,
     itemCount: values.length,
@@ -194,8 +201,8 @@ Widget _listWidget(Map<String, dynamic> values) {
   );
 }
 
-Widget _invalidImeiWidget(
-    String imei, String date, String time, LabelDetails? labelDetails) {
+Widget _invalidImeiWidget(BuildContext context, String imei, String date,
+    String time, LabelDetails? labelDetails) {
   return Container(
     color: AppColors.historyBg,
     padding: const EdgeInsets.all(15),
@@ -241,11 +248,14 @@ Widget _invalidImeiWidget(
                       TextStyle(fontSize: 14, color: AppColors.historyTxtColor),
                 ),
               ),
-              Text(
-                labelDetails?.imeiNotPer3gpp ?? "",
-                style:
-                    TextStyle(fontSize: 14, color: AppColors.historyTxtColor),
-              )
+              SizedBox(
+                width: MediaQuery.of(context).size.width - 100,
+                child: Text(
+                  labelDetails?.imeiNotPer3gpp ?? "",
+                  style:
+                      TextStyle(fontSize: 14, color: AppColors.historyTxtColor),
+                ),
+              ),
             ],
           ),
         ),
