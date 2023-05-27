@@ -100,11 +100,12 @@ flutter:
     - assets/images/ic_mobile_off.svg
     - assets/images/ic_mobile_on.svg
     - assets/images/ic_app_logo.png
-    - assets/images/ic_localization.svg
+    - assets/images/ic_english.png
     - assets/images/ic_error.svg
     - assets/images/ic_no_internet.jpg
     - assets/images/ic_option_a.jpg
     - assets/images/ic_app_bar_icon.jpg
+    - assets/images/ic_khmer.png
 
   #   - images/a_dot_ham.jpeg
 
@@ -120,10 +121,10 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   fonts:
-     - family: OpenSans
-       fonts:
-         - asset: assets/fonts/OpenSans-Bold.ttf
-         - asset: assets/fonts/OpenSans-Regular.ttf
+    - family: OpenSans
+      fonts:
+        - asset: assets/fonts/OpenSans-Bold.ttf
+        - asset: assets/fonts/OpenSans-Regular.ttf
 
   #   - family: Trajan Pro
   #     fonts:

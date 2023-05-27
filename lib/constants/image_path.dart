@@ -3,7 +3,7 @@ class ImageConstants {
 
   static const String timeIcon ="assets/images/ic_time.svg";
   static const String infoIcon ="assets/images/ic_info.svg";
-  static const String localizationIcon ="assets/images/ic_localization.svg";
+  static const String englishIconAppbar ="assets/images/ic_english.png";
   static const String scanIcon ="assets/images/ic_transform.svg";
   static const String deviceInfo ="assets/images/ic_device_info.jpg";
   static const String crossIcon ="assets/images/ic_cross.svg";
@@ -19,5 +19,6 @@ class ImageConstants {
   static const String noInternet = "assets/images/ic_no_internet.jpg";
   static const String optionA = "assets/images/ic_option_a.jpg";
   static const String appBarIcon = "assets/images/ic_app_bar_icon.jpg";
+  static const String khmerIconAppbar = "assets/images/ic_khmer.png";
 
 }

@@ -56,6 +56,7 @@ class _CheckImeiScreenState extends State<CheckImeiScreen> {
   LabelDetails? labelDetails;
   String selectedLng = StringConstants.englishCode;
   bool reloadPage = false;
+  bool isEnglish = true;
 
   @override
   void initState() {
@@ -133,8 +134,7 @@ class _CheckImeiScreenState extends State<CheckImeiScreen> {
                     versionName: versionName,
                     callback: (value) {
                       _appBarActions(value);
-                    },
-                  )
+                    })
                 : _appBarWithTitle(),
             body: BlocConsumer<CheckImeiBloc, CheckImeiState>(
               builder: (context, state) {
@@ -172,6 +172,16 @@ class _CheckImeiScreenState extends State<CheckImeiScreen> {
                 if (state is LanguageLoadedState) {
                   selectedLng = state.deviceDetailsRes.languageType ??
                       StringConstants.englishCode;
+                  switch (selectedLng) {
+                    case StringConstants.englishCode:
+                      isEnglish = true;
+                      break;
+                    case StringConstants.khmerCode:
+                      isEnglish = false;
+                      break;
+                  }
+                  Provider.of<AppStatesNotifier>(context, listen: false)
+                      .updateLanguageState(isEnglish);
                   Provider.of<AppStatesNotifier>(context, listen: false)
                       .updateState(state.deviceDetailsRes.labelDetails);
                 }

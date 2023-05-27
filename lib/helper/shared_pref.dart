@@ -1,14 +1,12 @@
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:eirs/main.dart';
 
 const String selectedLang = "selectedLang";
 
 Future setLocale(String languageCode) async {
-  SharedPreferences _prefs = await SharedPreferences.getInstance();
-  await _prefs.setString(selectedLang, languageCode);
+  await sharedPref.setString(selectedLang, languageCode);
 }
 
 Future<String> getLocale() async {
-  SharedPreferences _prefs = await SharedPreferences.getInstance();
-  String languageCode = _prefs.getString(selectedLang) ?? 'en';
+  String languageCode = sharedPref.getString(selectedLang) ?? 'en';
   return languageCode;
 }

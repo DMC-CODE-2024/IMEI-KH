@@ -4,6 +4,7 @@ import '../features/launcher/data/models/device_details_res.dart';
 
 class AppStatesNotifier extends ChangeNotifier {
   LabelDetails? _value;
+  bool _isEnglish = true;
 
   AppStatesNotifier();
 
@@ -16,4 +17,14 @@ class AppStatesNotifier extends ChangeNotifier {
   }
 
   LabelDetails? get value => _value;
+
+  void updateLanguageState(bool status) {
+    if (_isEnglish == status) {
+      return;
+    }
+    _isEnglish = status;
+    notifyListeners();
+  }
+
+  bool get languageStatus => _isEnglish;
 }

@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'constants/strings.dart';
 import 'features/launcher/presentation/launcher_screen.dart';
@@ -17,6 +18,7 @@ const String feature1 = 'feature1',
     feature4 = 'feature4',
     feature5 = 'feature5';
 final dbHelper = DatabaseHelper();
+late final SharedPreferences sharedPref;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -27,7 +29,7 @@ Future<void> main() async {
       statusBarIconBrightness: Brightness.dark,
     ),
   );
-
+  sharedPref = await SharedPreferences.getInstance();
   // initialize the database
   await dbHelper.init();
   runApp(MyApp());

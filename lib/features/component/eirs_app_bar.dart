@@ -4,28 +4,69 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:provider/provider.dart';
 
 import '../../constants/image_path.dart';
+import '../../helper/app_states_notifier.dart';
+import '../../helper/shared_pref.dart';
 import '../../main.dart';
 import '../../theme/colors.dart';
 import '../launcher/data/models/device_details_res.dart';
 
-class EirsAppBar extends StatelessWidget with PreferredSizeWidget {
-  const EirsAppBar({
-    Key? key,
-    this.autoImplementLeading = true,
-    this.labelDetails,
-    this.versionName,
-    this.actions,
-    this.systemUiOverlayStyle = SystemUiOverlayStyle.dark,
-    required this.callback,
-  }) : super(key: key);
+class EirsAppBar extends StatefulWidget implements PreferredSizeWidget {
+  const EirsAppBar(
+      {Key? key,
+      this.autoImplementLeading = true,
+      this.labelDetails,
+      this.versionName,
+      this.actions,
+      this.systemUiOverlayStyle = SystemUiOverlayStyle.dark,
+      required this.callback})
+      : super(key: key);
   final Function callback;
   final bool autoImplementLeading;
   final LabelDetails? labelDetails;
   final String? versionName;
   final List<Widget>? actions;
   final SystemUiOverlayStyle systemUiOverlayStyle;
+
+  @override
+  State<StatefulWidget> createState() {
+    return _EirsAppBarState();
+  }
+
+  @override
+  Size get preferredSize => const Size.fromHeight(60);
+}
+
+class _EirsAppBarState extends State<EirsAppBar> {
+  bool isEnglish = true;
+
+  @override
+  void initState() {
+    super.initState();
+    getLocale().then((languageCode) {
+      switch (languageCode) {
+        case StringConstants.englishCode:
+          setState(() {
+            isEnglish = true;
+          });
+          break;
+        case StringConstants.khmerCode:
+          setState(() {
+            isEnglish = false;
+          });
+          break;
+      }
+      setState(() {});
+    });
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    isEnglish = Provider.of<AppStatesNotifier>(context).languageStatus;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +97,7 @@ class EirsAppBar extends StatelessWidget with PreferredSizeWidget {
         ),
         backgroundColor: AppColors.secondary,
         title: Text(
-          labelDetails?.aboutUs ?? emptyString,
+          widget.labelDetails?.aboutUs ?? emptyString,
           style: const TextStyle(fontWeight: FontWeight.w700),
         ),
         overflowMode: feature1OverflowMode,
@@ -64,17 +105,18 @@ class EirsAppBar extends StatelessWidget with PreferredSizeWidget {
         description: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text(labelDetails?.knowMore ?? emptyString),
+            Text(widget.labelDetails?.knowMore ?? emptyString),
             Padding(
               padding: const EdgeInsets.only(top: 40),
               child: Row(
                 children: [
                   Text(
-                    labelDetails?.appVersion ?? StringConstants.appVersion,
+                    widget.labelDetails?.appVersion ??
+                        StringConstants.appVersion,
                     style: const TextStyle(fontWeight: FontWeight.w400),
                   ),
                   Text(
-                    ": $versionName",
+                    ": ${widget.versionName}",
                     style: const TextStyle(fontWeight: FontWeight.w400),
                   )
                 ],
@@ -82,26 +124,30 @@ class EirsAppBar extends StatelessWidget with PreferredSizeWidget {
             )
           ],
         ),
-          child: IconButton(
-            onPressed: () => callback.call(AppBarActions.appLogo),
-            icon: Image.asset(
-              ImageConstants.splashIcon,
-              fit: BoxFit.cover,
-              width: 120,
-              height: 20,
-            ),
+        child: IconButton(
+          onPressed: () => widget.callback.call(AppBarActions.appLogo),
+          icon: Image.asset(
+            ImageConstants.splashIcon,
+            fit: BoxFit.cover,
+            width: 120,
+            height: 20,
           ),
+        ),
       ),
       actions: <Widget>[
         Row(
           children: [
             DescribedFeatureOverlay(
               featureId: feature2,
-              tapTarget: SvgPicture.asset(ImageConstants.infoIcon),
+              tapTarget: SvgPicture.asset(
+                ImageConstants.infoIcon,
+                width: 24,
+                height: 24,
+              ),
               backgroundColor: AppColors.secondary,
               contentLocation: ContentLocation.below,
               title: Text(
-                labelDetails?.clickToWatch ?? emptyString,
+                widget.labelDetails?.clickToWatch ?? emptyString,
                 style: const TextStyle(fontWeight: FontWeight.w700),
               ),
               onComplete: action,
@@ -109,46 +155,71 @@ class EirsAppBar extends StatelessWidget with PreferredSizeWidget {
                 return true;
               },
               child: IconButton(
-                icon: SvgPicture.asset(ImageConstants.infoIcon),
-                onPressed: () => callback.call(AppBarActions.info),
+                icon: SvgPicture.asset(
+                  ImageConstants.infoIcon,
+                  width: 24,
+                  height: 24,
+                ),
+                onPressed: () => widget.callback.call(AppBarActions.info),
               ),
             ),
             DescribedFeatureOverlay(
               featureId: feature3,
-              tapTarget: SvgPicture.asset(ImageConstants.timeIcon),
+              tapTarget: SvgPicture.asset(
+                ImageConstants.timeIcon,
+                width: 24,
+                height: 24,
+              ),
               backgroundColor: AppColors.secondary,
               contentLocation: ContentLocation.below,
               title: Text(
-                labelDetails?.history ?? emptyString,
+                widget.labelDetails?.history ?? emptyString,
                 style: const TextStyle(fontWeight: FontWeight.w700),
               ),
-              description: Text(labelDetails?.getList ?? emptyString),
+              description: Text(widget.labelDetails?.getList ?? emptyString),
               onComplete: action,
               onOpen: () async {
                 return true;
               },
               child: IconButton(
-                onPressed: () => callback.call(AppBarActions.history),
-                icon: SvgPicture.asset(ImageConstants.timeIcon),
+                onPressed: () => widget.callback.call(AppBarActions.history),
+                icon: SvgPicture.asset(
+                  ImageConstants.timeIcon,
+                  width: 24,
+                  height: 24,
+                ),
               ),
             ),
             DescribedFeatureOverlay(
               featureId: feature4,
-              tapTarget: SvgPicture.asset(ImageConstants.localizationIcon),
+              tapTarget: Image.asset(
+                isEnglish
+                    ? ImageConstants.englishIconAppbar
+                    : ImageConstants.khmerIconAppbar,
+                width: 24,
+                height: 24,
+              ),
               backgroundColor: AppColors.secondary,
               contentLocation: ContentLocation.below,
               title: Text(
-                labelDetails?.language ?? emptyString,
+                widget.labelDetails?.language ?? emptyString,
                 style: const TextStyle(fontWeight: FontWeight.w700),
               ),
-              description: Text(labelDetails?.changeAppLanguage ?? emptyString),
+              description:
+                  Text(widget.labelDetails?.changeAppLanguage ?? emptyString),
               onComplete: action,
               onOpen: () async {
                 return true;
               },
               child: IconButton(
-                onPressed: () => callback.call(AppBarActions.localization),
-                icon: SvgPicture.asset(ImageConstants.localizationIcon),
+                onPressed: () =>
+                    widget.callback.call(AppBarActions.localization),
+                icon: Image.asset(
+                    isEnglish
+                        ? ImageConstants.englishIconAppbar
+                        : ImageConstants.khmerIconAppbar,
+                    width: 24,
+                    height: 24),
               ),
             ),
           ],
@@ -157,9 +228,6 @@ class EirsAppBar extends StatelessWidget with PreferredSizeWidget {
       backgroundColor: Colors.white,
     );
   }
-
-  @override
-  Size get preferredSize => const Size.fromHeight(60);
 }
 
 enum AppBarActions { localization, history, info, appLogo }
