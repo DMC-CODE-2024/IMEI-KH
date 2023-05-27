@@ -249,7 +249,7 @@ Widget _invalidImeiWidget(BuildContext context, String imei, String date,
                 ),
               ),
               SizedBox(
-                width: MediaQuery.of(context).size.width - 100,
+                width: MediaQuery.of(context).size.width - 95,
                 child: Text(
                   labelDetails?.imeiNotPer3gpp ?? "",
                   style:
