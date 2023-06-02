@@ -117,52 +117,54 @@ Widget _validImeiWidget(BuildContext context, String imei, String date,
     color: AppColors.historyBg,
     padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
     child: Theme(
-        data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
-        child: ListTileTheme(
-            contentPadding: const EdgeInsets.all(0),
-            child: ExpansionTile(
-              title: Row(
-                children: [
-                  SvgPicture.asset(ImageConstants.mobileOnIcon),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 12),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "${StringConstants.imei}  $imei",
-                          style: TextStyle(
-                              fontSize: 14, color: AppColors.historyTxtColor),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 6),
-                          child: Row(
-                            children: [
-                              Text(
-                                date,
-                                style: TextStyle(
-                                    fontSize: 14,
-                                    color: AppColors.dateTimeTxtColor),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(left: 15),
-                                child: Text(
-                                  time,
-                                  style: TextStyle(
-                                      fontSize: 12,
-                                      color: AppColors.dateTimeTxtColor),
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                      ],
+      data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+      child: ListTileTheme(
+        contentPadding: const EdgeInsets.all(0),
+        child: ExpansionTile(
+          title: Row(
+            children: [
+              SvgPicture.asset(ImageConstants.mobileOnIcon),
+              Padding(
+                padding: const EdgeInsets.only(left: 12),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "${StringConstants.imei}  $imei",
+                      style: TextStyle(
+                          fontSize: 14, color: AppColors.historyTxtColor),
                     ),
-                  )
-                ],
-              ),
-              children: [_deviceInfoListWidget(deviceDetails)],
-            ))),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 6),
+                      child: Row(
+                        children: [
+                          Text(
+                            date,
+                            style: TextStyle(
+                                fontSize: 14,
+                                color: AppColors.dateTimeTxtColor),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 15),
+                            child: Text(
+                              time,
+                              style: TextStyle(
+                                  fontSize: 12,
+                                  color: AppColors.dateTimeTxtColor),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              )
+            ],
+          ),
+          children: [_deviceInfoListWidget(deviceDetails)],
+        ),
+      ),
+    ),
   );
 }
 
@@ -202,6 +204,86 @@ Widget _deviceInfoListWidget(Map<String, dynamic> values) {
 }
 
 Widget _invalidImeiWidget(BuildContext context, String imei, String date,
+    String time, LabelDetails? labelDetails) {
+  return Container(
+    color: AppColors.historyBg,
+    padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+    child: Theme(
+      data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+      child: ListTileTheme(
+        contentPadding: const EdgeInsets.all(0),
+        child: ExpansionTile(
+          title: Row(
+            children: [
+              SvgPicture.asset(ImageConstants.mobileOffIcon),
+              Padding(
+                padding: const EdgeInsets.only(left: 12),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "${labelDetails?.invalid}  $imei",
+                      style:
+                      TextStyle(fontSize: 14, color: AppColors.historyTxtColor),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 6),
+                      child: Row(
+                        children: [
+                          Text(
+                            date,
+                            style: TextStyle(
+                                fontSize: 14,
+                                color: AppColors.dateTimeTxtColor),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 15),
+                            child: Text(
+                              time,
+                              style: TextStyle(
+                                  fontSize: 12,
+                                  color: AppColors.dateTimeTxtColor),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              )
+            ],
+          ),
+          children: <Widget>[
+            ListTile(
+              title:   Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(top: 15, bottom: 10),
+                    child: Text(
+                      labelDetails?.remark ?? "",
+                      style:
+                      TextStyle(fontSize: 14, color: AppColors.historyTxtColor),
+                    ),
+                  ),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width - 95,
+                    child: Text(
+                      labelDetails?.imeiNotPer3gpp ?? "",
+                      style:
+                      TextStyle(fontSize: 14, color: AppColors.historyTxtColor),
+                    ),
+                  ),
+                ],
+              ),
+            )
+          ],
+        ),
+      ),
+    ),
+  );
+}
+/*Widget _invalidImeiWidget(BuildContext context, String imei, String date,
     String time, LabelDetails? labelDetails) {
   return Container(
     color: AppColors.historyBg,
@@ -262,4 +344,4 @@ Widget _invalidImeiWidget(BuildContext context, String imei, String date,
       ],
     ),
   );
-}
+}*/
