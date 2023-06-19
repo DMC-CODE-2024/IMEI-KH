@@ -16,7 +16,6 @@ import kotlin.math.sqrt
 
 
 class DisplayDataProvider(private val context: Context) {
-    @RequiresApi(Build.VERSION_CODES.R)
     fun getDisplayInfo() = flow {
         emit(
                 DisplayInfo(
@@ -141,22 +140,29 @@ class DisplayDataProvider(private val context: Context) {
      * To check Hdr Capabilities of the screen
      * @return hdr capabilities in boolean
      */
-    @get:RequiresApi(api = Build.VERSION_CODES.O)
-    val isHdrCapable: Boolean
+    private val isHdrCapable: Boolean
         get() {
             val configuration: Configuration = context.resources.configuration
-            return configuration.isScreenHdr
+            return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                configuration.isScreenHdr
+            } else false
         }
 
     /**
      * To check if night mode is active or not
      * @return status of night mode in boolean
      */
-    @get:RequiresApi(api = Build.VERSION_CODES.R)
-    val isNightModeActive: Boolean
+
+    private val isNightModeActive: Boolean
         get() {
             val configuration: Configuration = context.resources.configuration
-            return configuration.isNightModeActive
+            return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                configuration.isNightModeActive
+            } else {
+                configuration.uiMode and
+                        Configuration.UI_MODE_NIGHT_MASK ==
+                        Configuration.UI_MODE_NIGHT_YES
+            }
         }
 
     /**
@@ -173,11 +179,12 @@ class DisplayDataProvider(private val context: Context) {
      * To check if screen wide color gamut or not
      * @return boolean
      */
-    @get:RequiresApi(api = Build.VERSION_CODES.O)
-    val isScreenWideColorGamut: Boolean
+    private val isScreenWideColorGamut: Boolean
         get() {
             val configuration: Configuration = context.resources.configuration
-            return configuration.isScreenWideColorGamut
+            return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                configuration.isScreenWideColorGamut
+            } else false
         }
 
     /**
@@ -205,32 +212,32 @@ class DisplayDataProvider(private val context: Context) {
      */
     private val brightnessLevel: Int
         get() {
-       /*     val contentResolver = context.contentResolver
-            var a = 0
-            var mode = 0
-            try {
-                mode =
-                        Settings.System.getInt(contentResolver, Settings.System.SCREEN_BRIGHTNESS_MODE)
-            } catch (e: SettingNotFoundException) {
-                e.printStackTrace()
-            }
-            if (mode == Settings.System.SCREEN_BRIGHTNESS_MODE_AUTOMATIC) {
-                a = 1
-                Settings.System.putInt(
-                        contentResolver,
-                        Settings.System.SCREEN_BRIGHTNESS_MODE,
-                        Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL
-                )
-            }
-            val brightnessLevel =
-                    Settings.System.getInt(contentResolver, Settings.System.SCREEN_BRIGHTNESS, 125)
-            if (a == 1) {
-                Settings.System.putInt(
-                        contentResolver,
-                        Settings.System.SCREEN_BRIGHTNESS_MODE,
-                        Settings.System.SCREEN_BRIGHTNESS_MODE_AUTOMATIC
-                )
-            }*/
+            /*     val contentResolver = context.contentResolver
+                 var a = 0
+                 var mode = 0
+                 try {
+                     mode =
+                             Settings.System.getInt(contentResolver, Settings.System.SCREEN_BRIGHTNESS_MODE)
+                 } catch (e: SettingNotFoundException) {
+                     e.printStackTrace()
+                 }
+                 if (mode == Settings.System.SCREEN_BRIGHTNESS_MODE_AUTOMATIC) {
+                     a = 1
+                     Settings.System.putInt(
+                             contentResolver,
+                             Settings.System.SCREEN_BRIGHTNESS_MODE,
+                             Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL
+                     )
+                 }
+                 val brightnessLevel =
+                         Settings.System.getInt(contentResolver, Settings.System.SCREEN_BRIGHTNESS, 125)
+                 if (a == 1) {
+                     Settings.System.putInt(
+                             contentResolver,
+                             Settings.System.SCREEN_BRIGHTNESS_MODE,
+                             Settings.System.SCREEN_BRIGHTNESS_MODE_AUTOMATIC
+                     )
+                 }*/
             //return brightnessLevel
             return 0
         }

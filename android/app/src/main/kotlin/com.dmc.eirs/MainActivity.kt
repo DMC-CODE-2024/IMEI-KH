@@ -9,6 +9,7 @@ import com.google.gson.Gson
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class MainActivity : FlutterActivity() {
@@ -42,6 +43,9 @@ class MainActivity : FlutterActivity() {
                     }
                     sensorInfo.getSensorInfo().collect { sensorInfo ->
                         deviceDetailsBuilder.setSensorInfo(sensorInfo)
+                    }
+                    cameraInfo.getCameraInformation().collect{cameraInfo->
+                        deviceDetailsBuilder.setCameraInfo(cameraInfo)
                     }
                 }
                 result.success(Gson().toJson(deviceDetailsBuilder.build()))

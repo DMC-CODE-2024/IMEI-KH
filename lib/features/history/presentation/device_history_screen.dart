@@ -112,7 +112,7 @@ class _DeviceHistoryScreenState extends State<DeviceHistoryScreen> {
 }
 
 Widget _validImeiWidget(BuildContext context, String imei, String date,
-    String time, Map<String, dynamic> deviceDetails) {
+    String time, Map<String, dynamic>? deviceDetails) {
   return Container(
     color: AppColors.historyBg,
     padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
@@ -161,7 +161,7 @@ Widget _validImeiWidget(BuildContext context, String imei, String date,
               )
             ],
           ),
-          children: [_deviceInfoListWidget(deviceDetails)],
+          children: [if(deviceDetails!=null) _deviceInfoListWidget(deviceDetails) ],
         ),
       ),
     ),
@@ -259,7 +259,7 @@ Widget _invalidImeiWidget(BuildContext context, String imei, String date,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only(top: 15, bottom: 10),
+                    padding: const EdgeInsets.only(top: 10, bottom: 10),
                     child: Text(
                       labelDetails?.remark ?? "",
                       style:
@@ -283,65 +283,3 @@ Widget _invalidImeiWidget(BuildContext context, String imei, String date,
     ),
   );
 }
-/*Widget _invalidImeiWidget(BuildContext context, String imei, String date,
-    String time, LabelDetails? labelDetails) {
-  return Container(
-    color: AppColors.historyBg,
-    padding: const EdgeInsets.all(15),
-    child: Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        SvgPicture.asset(ImageConstants.mobileOffIcon),
-        Padding(
-          padding: const EdgeInsets.only(left: 12),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "${labelDetails?.invalid}  $imei",
-                style:
-                    TextStyle(fontSize: 14, color: AppColors.historyTxtColor),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 6),
-                child: Row(
-                  children: [
-                    Text(
-                      date,
-                      style: TextStyle(
-                          fontSize: 14, color: AppColors.dateTimeTxtColor),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 15),
-                      child: Text(
-                        time,
-                        style: TextStyle(
-                            fontSize: 12, color: AppColors.dateTimeTxtColor),
-                      ),
-                    )
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 15, bottom: 10),
-                child: Text(
-                  labelDetails?.remark ?? "",
-                  style:
-                      TextStyle(fontSize: 14, color: AppColors.historyTxtColor),
-                ),
-              ),
-              SizedBox(
-                width: MediaQuery.of(context).size.width - 95,
-                child: Text(
-                  labelDetails?.imeiNotPer3gpp ?? "",
-                  style:
-                      TextStyle(fontSize: 14, color: AppColors.historyTxtColor),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ],
-    ),
-  );
-}*/
