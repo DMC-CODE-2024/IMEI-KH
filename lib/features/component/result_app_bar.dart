@@ -6,7 +6,7 @@ import '../../constants/image_path.dart';
 import '../../theme/colors.dart';
 import 'eirs_app_bar.dart';
 
-class ResultAppBar extends StatelessWidget with PreferredSizeWidget {
+class ResultAppBar extends StatelessWidget implements PreferredSizeWidget {
   const ResultAppBar(
       {Key? key,
       this.autoImplementLeading = true,
