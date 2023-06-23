@@ -30,7 +30,6 @@ class CheckImeiBloc extends Bloc<CheckImeiEvent, CheckImeiState> {
           try {
             CheckImeiReq checkImeiReq = CheckImeiReq(
                 imei: event.inputImei ?? "",
-                operator: "smart",
                 language: event.languageType ?? StringConstants.englishCode,
                 channel: "phone");
             CheckImeiRes checkImeiRes =

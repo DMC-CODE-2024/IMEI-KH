@@ -40,7 +40,6 @@ class CheckMultiImeiBloc
                 final key = mapEntry.key;
                 CheckImeiReq checkImeiReq = CheckImeiReq(
                     imei: key,
-                    operator: "smart",
                     language: event.languageType ?? StringConstants.englishCode,
                     channel: "phone");
                 CheckImeiRes checkImeiRes =
