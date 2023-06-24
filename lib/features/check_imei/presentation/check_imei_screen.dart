@@ -371,7 +371,7 @@ class _CheckImeiScreenState extends State<CheckImeiScreen> {
                                   emptyString,
                               hintStyle: const TextStyle(fontSize: 10),
                               fillColor: Colors.white70,
-                              enabledBorder: InputBorders.enabled,
+                              enabledBorder: (textColor == Colors.green) ? InputBorders.focused : InputBorders.enabled,
                               errorBorder: InputBorders.error,
                               focusedErrorBorder: InputBorders.error,
                               border: InputBorders.border,
