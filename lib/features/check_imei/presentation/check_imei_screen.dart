@@ -344,7 +344,11 @@ class _CheckImeiScreenState extends State<CheckImeiScreen> {
                         child: TextFormField(
                           onChanged: (value) => {
                             setState(() {
-                              if (value.length == 15) textColor = Colors.green;
+                              if (value.length == 15) {
+                                textColor = Colors.green;
+                              } else {
+                                textColor = Colors.grey;
+                              }
                               text = "${value.length}/15";
                             })
                           },
@@ -371,7 +375,9 @@ class _CheckImeiScreenState extends State<CheckImeiScreen> {
                               errorBorder: InputBorders.error,
                               focusedErrorBorder: InputBorders.error,
                               border: InputBorders.border,
-                              focusedBorder: InputBorders.focused),
+                              focusedBorder: (textColor == Colors.green)
+                                  ? InputBorders.focused
+                                  : InputBorders.border),
                         ),
                       ),
                       Align(
