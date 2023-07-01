@@ -60,19 +60,19 @@ class DatabaseHelper {
     return exists == 1;
   }
 
-  Future updateDateTime(
+  Future updateDeviceDetails(String deviceDetails,
       String timestamp, String date, String time, String imei) async {
     var res = await _db.rawQuery(
-        ''' UPDATE $table SET $columnTimeStamp = ? , $columnDate = ? , $columnTime = ? WHERE $columnImei = ? ''',
-        [timestamp, date, time, imei]);
+        ''' UPDATE $table SET $columnTimeStamp = ? , $columnDate = ? , $columnTime = ? , $columnDeviceDetails = ?  WHERE $columnImei = ? ''',
+        [timestamp, date, time, deviceDetails, imei]);
     return res;
   }
 
-  Future updateDateTimeWithDeviceDetails(String deviceDetails, String timestamp,
+  Future updateDeviceDetailsWithStatus(String deviceDetails, int status, String timestamp,
       String date, String time, String imei) async {
     var res = await _db.rawQuery(
-        ''' UPDATE $table SET $columnTimeStamp = ? , $columnDate = ? , $columnTime = ? , $columnDeviceDetails = ? WHERE $columnImei = ? ''',
-        [timestamp, date, time, deviceDetails, imei]);
+        ''' UPDATE $table SET $columnTimeStamp = ? , $columnDate = ? , $columnTime = ? , $columnDeviceDetails = ? , $columnIsValid = ? WHERE $columnImei = ? ''',
+        [timestamp, date, time, deviceDetails, status, imei]);
     return res;
   }
 

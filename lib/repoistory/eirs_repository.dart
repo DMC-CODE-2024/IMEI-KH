@@ -67,15 +67,24 @@ class EirsRepository {
         Map<String, dynamic> deviceDetails = existingData.first;
         int existingStatus = deviceDetails.values.elementAt(3);
         if (deviceStatus != existingStatus) {
-          await dbHelper.updateDateTimeWithDeviceDetails(
-              jsonEncode(checkImeiRes.result?.deviceDetails),
+          await dbHelper.updateDeviceDetailsWithStatus(
+              isValidImei
+                  ? jsonEncode(checkImeiRes.result?.deviceDetails)
+                  : checkImeiRes.result?.message ?? "null",
+              deviceStatus,
               "${dt.millisecondsSinceEpoch}",
               dateFormatter.format(dt),
               timeFormatter.format(dt),
               imei);
         } else {
-          await dbHelper.updateDateTime("${dt.millisecondsSinceEpoch}",
-              dateFormatter.format(dt), timeFormatter.format(dt), imei);
+          await dbHelper.updateDeviceDetails(
+              isValidImei
+                  ? jsonEncode(checkImeiRes.result?.deviceDetails)
+                  : checkImeiRes.result?.message ?? "null",
+              "${dt.millisecondsSinceEpoch}",
+              dateFormatter.format(dt),
+              timeFormatter.format(dt),
+              imei);
         }
       }
     }
