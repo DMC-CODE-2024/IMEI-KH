@@ -161,7 +161,7 @@ class _ImeiResultScreenState extends State<ImeiResultScreen> {
       );
     } else {
       return Container(
-        height: 220,
+        height: 245,
       );
     }
   }
