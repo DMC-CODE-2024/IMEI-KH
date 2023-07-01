@@ -103,6 +103,7 @@ class _DeviceHistoryScreenState extends State<DeviceHistoryScreen> {
                 key,
                 deviceDetail[DatabaseHelper.columnDate],
                 deviceDetail[DatabaseHelper.columnTime],
+                deviceDetail[DatabaseHelper.columnDeviceDetails],
                 labelDetails),
           );
         }
@@ -161,7 +162,9 @@ Widget _validImeiWidget(BuildContext context, String imei, String date,
               )
             ],
           ),
-          children: [if(deviceDetails!=null) _deviceInfoListWidget(deviceDetails) ],
+          children: [
+            if (deviceDetails != null) _deviceInfoListWidget(deviceDetails)
+          ],
         ),
       ),
     ),
@@ -204,7 +207,13 @@ Widget _deviceInfoListWidget(Map<String, dynamic> values) {
 }
 
 Widget _invalidImeiWidget(BuildContext context, String imei, String date,
-    String time, LabelDetails? labelDetails) {
+    String time, String? errorMsg, LabelDetails? labelDetails) {
+  var invalidImeiMsg = labelDetails?.imeiNotPer3gpp ?? "";
+  if (errorMsg == "null" || errorMsg == null) {
+    labelDetails?.imeiNotPer3gpp;
+  } else {
+    invalidImeiMsg = errorMsg;
+  }
   return Container(
     color: AppColors.historyBg,
     padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
@@ -223,8 +232,8 @@ Widget _invalidImeiWidget(BuildContext context, String imei, String date,
                   children: [
                     Text(
                       "${labelDetails?.invalid}  $imei",
-                      style:
-                      TextStyle(fontSize: 14, color: AppColors.historyTxtColor),
+                      style: TextStyle(
+                          fontSize: 14, color: AppColors.historyTxtColor),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(top: 6),
@@ -255,23 +264,23 @@ Widget _invalidImeiWidget(BuildContext context, String imei, String date,
           ),
           children: <Widget>[
             ListTile(
-              title:   Column(
+              title: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
                     padding: const EdgeInsets.only(top: 10, bottom: 10),
                     child: Text(
                       labelDetails?.remark ?? "",
-                      style:
-                      TextStyle(fontSize: 14, color: AppColors.historyTxtColor),
+                      style: TextStyle(
+                          fontSize: 14, color: AppColors.historyTxtColor),
                     ),
                   ),
                   SizedBox(
                     width: MediaQuery.of(context).size.width - 95,
                     child: Text(
-                      labelDetails?.imeiNotPer3gpp ?? "",
-                      style:
-                      TextStyle(fontSize: 14, color: AppColors.historyTxtColor),
+                      invalidImeiMsg,
+                      style: TextStyle(
+                          fontSize: 14, color: AppColors.historyTxtColor),
                     ),
                   ),
                 ],

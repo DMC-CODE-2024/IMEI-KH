@@ -1,5 +1,6 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:device_info_plus/device_info_plus.dart';
+import 'package:eirs/features/check_imei/data/models/check_imei_res.dart';
 import 'package:eirs/features/component/about_app_info_dialog.dart';
 import 'package:eirs/features/component/custom_progress_indicator.dart';
 import 'package:eirs/features/component/imei_scan_failed_dialog.dart';
@@ -103,18 +104,12 @@ class _CheckImeiScreenState extends State<CheckImeiScreen> {
       elevation: 1,
       centerTitle: false,
       titleSpacing: 0.0,
-      title: Padding(
-        padding: const EdgeInsets.only(left: 5),
-        child: Text(
-          labelDetails?.eirsAppHeader ?? emptyString,
-          style: TextStyle(color: AppColors.secondary, fontSize: 14),
-        ),
-      ),
       leading: Padding(
-        padding: const EdgeInsets.only(left: 15),
-        child: Padding(
-          padding: const EdgeInsets.all(4),
-          child: SvgPicture.asset(ImageConstants.splashIcon),
+        padding: const EdgeInsets.only(left: 10),
+        child: Image.asset(
+          ImageConstants.splashIcon,
+          width: 67,
+          height: 30,
         ),
       ),
     );
@@ -164,9 +159,7 @@ class _CheckImeiScreenState extends State<CheckImeiScreen> {
               },
               listener: (context, state) {
                 if (state is CheckImeiLoadedState) {
-                  _navigateResultScreen(
-                      state.checkImeiRes.result?.deviceDetails,
-                      state.checkImeiRes.result?.validImei ?? false);
+                  _navigateResultScreen(state.checkImeiRes.result);
                 }
 
                 if (state is LanguageLoadedState) {
@@ -191,23 +184,27 @@ class _CheckImeiScreenState extends State<CheckImeiScreen> {
         });
   }
 
-  void _navigateResultScreen(Map<String, dynamic>? data, bool isValidImei) {
-    Navigator.of(context)
-        .push(MaterialPageRoute(
-            builder: (context) => ImeiResultScreen(
-                labelDetails: labelDetails,
-                scanImei: imeiController.text,
-                data: data,
-                isValidImei: isValidImei)))
-        .then((value) {
-      if (value == true) {
-        setState(() {
-          imeiController.clear();
-          text = "0/15";
-          textColor = AppColors.grey;
-        });
-      }
-    });
+  void _navigateResultScreen(CheckImeiResult? checkImeiResult) {
+    if (checkImeiResult != null) {
+      Navigator.of(context)
+          .push(
+        MaterialPageRoute(
+          builder: (context) => ImeiResultScreen(
+              labelDetails: labelDetails,
+              scanImei: imeiController.text,
+              checkImeiResult: checkImeiResult),
+        ),
+      )
+          .then((value) {
+        if (value == true) {
+          setState(() {
+            imeiController.clear();
+            text = "0/15";
+            textColor = AppColors.grey;
+          });
+        }
+      });
+    }
   }
 
   void _appBarActions(AppBarActions values) {
@@ -371,7 +368,9 @@ class _CheckImeiScreenState extends State<CheckImeiScreen> {
                                   emptyString,
                               hintStyle: const TextStyle(fontSize: 10),
                               fillColor: Colors.white70,
-                              enabledBorder: (textColor == Colors.green) ? InputBorders.focused : InputBorders.enabled,
+                              enabledBorder: (textColor == Colors.green)
+                                  ? InputBorders.focused
+                                  : InputBorders.enabled,
                               errorBorder: InputBorders.error,
                               focusedErrorBorder: InputBorders.error,
                               border: InputBorders.border,

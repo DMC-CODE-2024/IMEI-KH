@@ -50,7 +50,9 @@ class EirsRepository {
       Map<String, dynamic>? deviceDetails = checkImeiRes.result?.deviceDetails;
       Map<String, dynamic> row = {
         DatabaseHelper.columnImei: imei,
-        DatabaseHelper.columnDeviceDetails: jsonEncode(deviceDetails),
+        DatabaseHelper.columnDeviceDetails: isValidImei
+            ? jsonEncode(deviceDetails)
+            : checkImeiRes.result?.message,
         DatabaseHelper.columnIsValid: isValidImei ? 1 : 0,
         DatabaseHelper.columnTimeStamp: "${dt.millisecondsSinceEpoch}",
         DatabaseHelper.columnDate: dateFormatter.format(dt),

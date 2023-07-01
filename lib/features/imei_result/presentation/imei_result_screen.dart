@@ -1,4 +1,5 @@
 import 'package:eirs/constants/strings.dart';
+import 'package:eirs/features/check_imei/data/models/check_imei_res.dart';
 import 'package:eirs/features/component/result_app_bar.dart';
 import 'package:eirs/features/imei_result/data/models/device_details.dart';
 import 'package:eirs/features/imei_result/presentation/widget/device_details_list.dart';
@@ -20,13 +21,11 @@ class ImeiResultScreen extends StatefulWidget {
       {super.key,
       required this.labelDetails,
       required this.scanImei,
-      required this.data,
-      required this.isValidImei});
+      required this.checkImeiResult});
 
   final LabelDetails? labelDetails;
   final String scanImei;
-  final Map<String, dynamic>? data;
-  final bool isValidImei;
+  final CheckImeiResult checkImeiResult;
 
   @override
   State<ImeiResultScreen> createState() => _ImeiResultScreenState();
@@ -52,14 +51,14 @@ class _ImeiResultScreenState extends State<ImeiResultScreen> {
           );
         },
         backButtonCallBack: () {
-          Navigator.pop(context, widget.isValidImei);
+          Navigator.pop(context, widget.checkImeiResult.validImei);
         },
       ),
       body: WillPopScope(
         onWillPop: () {
           //on Back button press, you can use WillPopScope for another purpose also.
           Navigator.pop(
-              context, widget.isValidImei); //return data along with pop
+              context, widget.checkImeiResult.validImei); //return data along with pop
           return Future(
               () => false); //onWillPop is Future<bool> so return false
         },
@@ -87,20 +86,20 @@ class _ImeiResultScreenState extends State<ImeiResultScreen> {
                         padding: const EdgeInsets.symmetric(vertical: 35),
                         child: Column(
                           children: [
-                            SvgPicture.asset((widget.isValidImei == true)
+                            SvgPicture.asset((widget.checkImeiResult.validImei == true)
                                 ? ImageConstants.imeiValidIcon
                                 : ImageConstants.imeiInValidIcon),
                             Padding(
                               padding:
                                   const EdgeInsets.symmetric(vertical: 10.0),
                               child: Text(
-                                (widget.isValidImei == true)
+                                (widget.checkImeiResult.validImei == true)
                                     ? widget.labelDetails?.valid ?? emptyString
                                     : widget.labelDetails?.invalid ??
                                         emptyString,
                                 style: TextStyle(
                                     fontSize: 24.0,
-                                    color: (widget.isValidImei == true)
+                                    color: (widget.checkImeiResult.validImei == true)
                                         ? Colors.green
                                         : Colors.red),
                               ),
@@ -124,11 +123,12 @@ class _ImeiResultScreenState extends State<ImeiResultScreen> {
                         ),
                       ],
                     ),
-                    if (widget.isValidImei && widget.data != null)
-                      DeviceDetailList(data: widget.data!)
+                    if (widget.checkImeiResult.validImei && widget.checkImeiResult.deviceDetails != null)
+                      DeviceDetailList(data: widget.checkImeiResult.deviceDetails!)
                     else
                       InvalidImeiResult(
                         labelDetails: widget.labelDetails,
+                        errorMsg: widget.checkImeiResult.message,
                       ),
                     Container(
                       margin: const EdgeInsets.only(top: 30),
@@ -137,7 +137,7 @@ class _ImeiResultScreenState extends State<ImeiResultScreen> {
                         child: Text(
                             widget.labelDetails?.checkOtherImei ?? emptyString),
                         onPressed: () =>
-                            {Navigator.pop(context, widget.isValidImei)},
+                            {Navigator.pop(context, widget.checkImeiResult.validImei)},
                       ),
                     ),
                   ],
@@ -155,7 +155,7 @@ class _ImeiResultScreenState extends State<ImeiResultScreen> {
   }
 
   Widget _emptyWidget() {
-    if (widget.isValidImei) {
+    if (widget.checkImeiResult.validImei) {
       return Container(
         height: 125,
       );

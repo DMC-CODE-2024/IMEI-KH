@@ -7,9 +7,11 @@ class InvalidImeiResult extends StatelessWidget {
   const InvalidImeiResult({
     Key? key,
     this.labelDetails,
+     this.errorMsg
   }) : super(key: key);
 
   final LabelDetails? labelDetails;
+  final String? errorMsg;
 
   @override
   Widget build(BuildContext context) {
@@ -34,14 +36,14 @@ class InvalidImeiResult extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(top: 20),
                 child: Text(
-                  labelDetails?.imeiNotPer3gpp ?? "",
+                  errorMsg ?? labelDetails?.imeiNotPer3gpp ?? "",
                   style: TextStyle(fontSize: 14.0, color: AppColors.black),
                 ),
               ),
             ],
           ),
         ),
-        Container(
+      /*  Container(
           width: double.infinity,
           margin: const EdgeInsets.only(top: 20.0),
           padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 25),
@@ -54,7 +56,7 @@ class InvalidImeiResult extends StatelessWidget {
             labelDetails?.callToAction ?? "",
             style: TextStyle(fontSize: 14, color: AppColors.grey),
           ),
-        )
+        )*/
       ],
     );
   }
