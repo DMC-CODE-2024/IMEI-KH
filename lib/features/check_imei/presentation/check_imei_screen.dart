@@ -106,10 +106,13 @@ class _CheckImeiScreenState extends State<CheckImeiScreen> {
       titleSpacing: 0.0,
       leading: Padding(
         padding: const EdgeInsets.only(left: 10),
-        child: Image.asset(
-          ImageConstants.splashIcon,
-          width: 67,
-          height: 30,
+        child: GestureDetector(
+          onTap: () => {_showAboutAppInfoDialog()},
+          child: Image.asset(
+            ImageConstants.splashIcon,
+            width: 67,
+            height: 30,
+          ),
         ),
       ),
     );
