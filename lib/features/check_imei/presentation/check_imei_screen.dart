@@ -21,7 +21,7 @@ import '../../../constants/strings.dart';
 import '../../../helper/shared_pref.dart';
 import '../../../main.dart';
 import '../../../theme/colors.dart';
-import '../../component/button.dart';
+import '../../component/button_opacity.dart';
 import '../../component/eirs_app_bar.dart';
 import '../../component/error_page.dart';
 import '../../component/input_borders.dart';
@@ -441,8 +441,9 @@ class _CheckImeiScreenState extends State<CheckImeiScreen> {
             ),
             Container(
               margin: const EdgeInsets.only(top: 30),
-              child: AppButton(
+              child: AppButtonOpacity(
                 isLoading: false,
+                isEnable: (textColor == Colors.green) ? true : false,
                 child: Text(labelDetails?.checkIMEI ?? emptyString),
                 onPressed: () => _checkImei(context),
               ),
