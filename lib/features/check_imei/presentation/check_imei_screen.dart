@@ -51,6 +51,7 @@ class _CheckImeiScreenState extends State<CheckImeiScreen> {
   bool hasNetwork = true;
   final TextEditingController imeiController = TextEditingController();
   String text = "0/15";
+  int inputTextLength = 0;
   String versionName = "";
   String emptyString = "";
   Color textColor = AppColors.grey;
@@ -203,6 +204,7 @@ class _CheckImeiScreenState extends State<CheckImeiScreen> {
           setState(() {
             imeiController.clear();
             text = "0/15";
+            inputTextLength = 0;
             textColor = AppColors.grey;
           });
         }
@@ -349,6 +351,7 @@ class _CheckImeiScreenState extends State<CheckImeiScreen> {
                               } else {
                                 textColor = Colors.grey;
                               }
+                              inputTextLength = value.length;
                               text = "${value.length}/15";
                             })
                           },
@@ -446,7 +449,7 @@ class _CheckImeiScreenState extends State<CheckImeiScreen> {
               margin: const EdgeInsets.only(top: 30),
               child: AppButtonOpacity(
                 isLoading: false,
-                isEnable: (textColor == Colors.green) ? true : false,
+                isEnable: (inputTextLength > 0) ? true : false,
                 child: Text(labelDetails?.checkIMEI ?? emptyString),
                 onPressed: () => _checkImei(context),
               ),
