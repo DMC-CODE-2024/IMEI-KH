@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:eirs/features/launcher/data/models/device_details_res.dart';
 import 'package:eirs/features/scanner/data/business_logic/scanner_bloc.dart';
 import 'package:eirs/features/scanner/data/business_logic/scanner_state.dart';
+import 'package:eirs/features/scanner/scanner_overlay.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
@@ -12,6 +14,7 @@ import '../../helper/app_states_notifier.dart';
 import '../check_multi_imei/data/business_logic/check_multi_imei_bloc.dart';
 import '../check_multi_imei/presentation/imei_list.dart';
 import '../component/app_bar_with_title.dart';
+import 'barcode_overlay.dart';
 
 class ScannerPage extends StatefulWidget {
   const ScannerPage({super.key});
@@ -37,7 +40,9 @@ class _ScannerPageState extends State<ScannerPage> {
   bool isTimerStarted = false;
   bool isNavigateNext = false;
   bool isDetectionStarted = false;
-
+  Barcode? barcode;
+  BarcodeCapture? captureBarcode;
+  MobileScannerArguments? arguments;
   //Uint8List? capturedImg;
   LabelDetails? labelDetails;
 
@@ -49,6 +54,13 @@ class _ScannerPageState extends State<ScannerPage> {
 
   @override
   Widget build(BuildContext context) {
+    final scanWindow = Rect.fromCenter(
+      center: MediaQuery.of(context).size.center(Offset.zero),
+      width: 300,
+      height: 200,
+    );
+    final isCameraSupported = defaultTargetPlatform == TargetPlatform.iOS ||
+        defaultTargetPlatform == TargetPlatform.android;
     return Scaffold(
       appBar: AppBarWithTitleOnly(title: labelDetails?.scanCode ?? ""),
       body: BlocConsumer<ScannerBloc, ScannerState>(
@@ -57,14 +69,21 @@ class _ScannerPageState extends State<ScannerPage> {
             children: [
               MobileScanner(
                 fit: BoxFit.fitHeight,
+                scanWindow: scanWindow,
                 controller: cameraController,
-                onScannerStarted: (onStart) {},
+                onScannerStarted:  (arguments) {
+                  setState(() {
+                    this.arguments = arguments;
+                  });
+                },
                 onDetect: (capture) {
                   if (!isDetectionStarted) {
                     setState(() {
                       isDetectionStarted = true;
                     });
                   }
+                  /*captureBarcode = capture;
+                  setState(() => barcode = capture.barcodes.first);*/
                   //capturedImg = capture.image;
                   final List<Barcode> barcodes = capture.barcodes;
                   for (final barcode in barcodes) {
@@ -94,6 +113,11 @@ class _ScannerPageState extends State<ScannerPage> {
                     ),
                   ),
                 ),
+              // if (barcode != null && barcode?.corners != null && arguments != null)
+              //   CustomPaint(painter: BarcodeOverlay(barcode: barcode!, arguments: arguments!, boxFit: BoxFit.contain, capture: captureBarcode!),),
+              CustomPaint(
+                painter: ScannerOverlay(scanWindow),
+              ),
             ],
           );
         },
