@@ -21,6 +21,11 @@ class EirsRepository {
   EirsRepository._internal();
 
   // Save device details
+  Future<dynamic> preInitReq(String deviceId) async {
+    return await EirsApiClient(Dio()).preInit(deviceId);
+  }
+
+  // Save device details
   Future<dynamic> deviceDetailsReq(DeviceDetailsReq deviceDetailsReq) async {
     return await EirsApiClient(Dio()).deviceDetailReq(deviceDetailsReq);
   }

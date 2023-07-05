@@ -3,4 +3,5 @@ class EirsApis {
   static const String test = 'test';
   static const String checkImei = 'services/checkIMEI';
   static const String languageRetriever = 'dialectRetreiver';
+  static const String preInit = 'service/preInit';
 }

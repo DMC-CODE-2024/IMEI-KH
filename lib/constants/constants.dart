@@ -5,3 +5,6 @@ const int pageRefresh = 0;
 const int checkImeiReq = 1;
 const int languageReq = 2;
 const int checkMultiImeiReq = 3;
+
+const int preInitReqCode = 1;
+const int initReqCode = 2;

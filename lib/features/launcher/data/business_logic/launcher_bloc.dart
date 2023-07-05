@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:device_info_plus/device_info_plus.dart';
+import 'package:eirs/constants/constants.dart';
 import 'package:eirs/constants/strings.dart';
 import 'package:eirs/features/launcher/data/business_logic/launcher_state.dart';
 import 'package:eirs/features/launcher/data/models/device_details_req.dart';
@@ -19,6 +20,67 @@ class LauncherBloc extends Bloc<LauncherEvent, LauncherState> {
   }
 
   void mapEventToState(LauncherEvent event, Emitter<LauncherState> emit) async {
+    if (event is LauncherInitEvent) {
+      DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
+      if (event.requestCode == preInitReqCode) {
+        emit(LauncherPreInitLoadingState());
+        try {
+          DeviceDetailsReq deviceDetailsReq;
+          if (Platform.isIOS) {
+            deviceDetailsReq = _readIosBuildData(
+                event.languageType ?? StringConstants.englishCode,
+                await deviceInfoPlugin.iosInfo);
+          } else {
+            deviceDetailsReq = _readAndroidBuildData(
+                event.languageType ?? StringConstants.englishCode,
+                await deviceInfoPlugin.androidInfo,
+                event.deviceDetails);
+          }
+          DeviceDetailsRes deviceDetailsRes =
+              await eirsRepository.preInitReq(deviceDetailsReq.deviceId);
+          print("${deviceDetailsRes.toJson()}");
+          emit(LauncherPreInitLoadedState());
+        } catch (e) {
+          emit(LauncherPreInitErrorState(e.toString()));
+        }
+      } else {
+        emit(LauncherLoadingState());
+        try {
+          DeviceDetailsReq deviceDetailsReq;
+          if (Platform.isIOS) {
+            deviceDetailsReq = _readIosBuildData(
+                event.languageType ?? StringConstants.englishCode,
+                await deviceInfoPlugin.iosInfo);
+          } else {
+            deviceDetailsReq = _readAndroidBuildData(
+                event.languageType ?? StringConstants.englishCode,
+                await deviceInfoPlugin.androidInfo,
+                event.deviceDetails);
+          }
+          DeviceDetailsRes deviceDetailsRes =
+              await eirsRepository.deviceDetailsReq(deviceDetailsReq);
+          emit(LauncherLoadedState(deviceDetailsRes));
+        } catch (e) {
+          emit(LauncherErrorState(e.toString()));
+        }
+      }
+    }
+  }
+
+  void preInitMapEventToState(
+      LauncherEvent event, Emitter<LauncherState> emit) async {
+    emit(LauncherPreInitLoadingState());
+    if (event is LauncherInitEvent) {
+      try {
+        emit(LauncherPreInitLoadedState());
+      } catch (e) {
+        emit(LauncherPreInitErrorState(e.toString()));
+      }
+    }
+  }
+
+  void initMapEventToState(
+      LauncherEvent event, Emitter<LauncherState> emit) async {
     emit(LauncherLoadingState());
     if (event is LauncherInitEvent) {
       try {

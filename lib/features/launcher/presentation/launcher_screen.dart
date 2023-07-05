@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:eirs/constants/constants.dart';
 import 'package:eirs/constants/routes.dart';
 import 'package:eirs/features/component/error_page.dart';
 import 'package:eirs/features/launcher/data/business_logic/launcher_bloc.dart';
@@ -40,7 +41,8 @@ class _LauncherScreenState extends State<LauncherScreen> {
   @override
   void initState() {
     super.initState();
-    _getDeviceDetails();
+    _preInitApiReq();
+    // _getDeviceDetails();
   }
 
   Future<void> _getDeviceDetails() async {
@@ -51,11 +53,15 @@ class _LauncherScreenState extends State<LauncherScreen> {
     }
   }
 
+  Future<void> _preInitApiReq() async {
+  BlocProvider.of<LauncherBloc>(context).add(LauncherInitEvent(requestCode: preInitReqCode));
+  }
+
   Future<void> _initApiReq() async {
     LauncherBloc bloc = BlocProvider.of<LauncherBloc>(context);
     String selectedLng = await getLocale();
     bloc.add(LauncherInitEvent(
-        languageType: selectedLng, deviceDetails: deviceDetails));
+       requestCode: initReqCode, languageType: selectedLng, deviceDetails: deviceDetails));
   }
 
   void updateNetworkStatus(Map<dynamic, dynamic> source) async {
@@ -97,26 +103,37 @@ class _LauncherScreenState extends State<LauncherScreen> {
                       setState(() {});
                     });
               }
-              if (state is LauncherLoadingState) {
-                return Center(
-                  child: _splashWidget(LabelDetails()),
-                );
-              }
-              if (state is LauncherErrorState) {
+
+              if (state is LauncherPreInitLoadingState) {
+                return Container();
+              } else if (state is LauncherPreInitLoadedState) {
+                return Container();
+              } else if (state is LauncherPreInitErrorState) {
                 return ErrorPage(
                     labelDetails: LabelDetails(),
                     callback: (value) {
                       _initApiReq();
                     });
-              }
-
-              if (state is LauncherLoadedState) {
+              } else if (state is LauncherLoadingState) {
+                return Center(
+                  child: _splashWidget(LabelDetails()),
+                );
+              } else if (state is LauncherErrorState) {
+                return ErrorPage(
+                    labelDetails: LabelDetails(),
+                    callback: (value) {
+                      _initApiReq();
+                    });
+              } else if (state is LauncherLoadedState) {
                 return _splashWidget(state.deviceDetailsRes.labelDetails);
               }
 
               return _splashWidget(LabelDetails());
             },
             listener: (context, state) {
+              if(state is LauncherPreInitLoadedState){
+                _getDeviceDetails();
+              }
               if (state is LauncherLoadedState) {
                 Future.delayed(const Duration(seconds: 2), () {
                   Provider.of<AppStatesNotifier>(context, listen: false)
