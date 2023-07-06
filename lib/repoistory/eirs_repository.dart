@@ -23,21 +23,21 @@ class EirsRepository {
 
   // Save device details
   Future<dynamic> preInitReq(String deviceId) async {
-    return await EirsApiClient(dio:Dio()).service.preInit(deviceId);
+    return await EirsApiClient(Dio(),baseUrl: baseUrl).preInit(deviceId);
   }
 
   // Save device details
   Future<dynamic> deviceDetailsReq(DeviceDetailsReq deviceDetailsReq) async {
-    return await EirsApiClient(dio:Dio()).service.deviceDetailReq(deviceDetailsReq);
+    return await EirsApiClient(Dio(),baseUrl: baseUrl).deviceDetailReq(deviceDetailsReq);
   }
 
   // check imei
   Future<dynamic> checkImei(CheckImeiReq checkImeiReq) async {
-    return await EirsApiClient(dio:Dio()).service.checkImei(checkImeiReq);
+    return await EirsApiClient(Dio(),baseUrl: baseUrl).checkImei(checkImeiReq);
   }
 
   Future<dynamic> getLanguage(String featureName, String language) async {
-    return await EirsApiClient(dio:Dio()).service.languageRetriever(featureName, language);
+    return await EirsApiClient(Dio(),baseUrl: baseUrl).languageRetriever(featureName, language);
   }
 
   Future<List<Map<String, dynamic>>> getDeviceHistory() async {

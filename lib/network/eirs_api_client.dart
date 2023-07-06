@@ -13,9 +13,7 @@ part 'eirs_api_client.g.dart';
 
 @RestApi()
 abstract class EirsApiClient {
-  factory EirsApiClient({required Dio dio}) = _EirsApiClient;
-
-  final service = EirsApiClient(dio: Dio(BaseOptions(baseUrl: baseUrl)));
+  factory EirsApiClient( Dio dio,{String baseUrl}) = _EirsApiClient;
 
   @POST(EirsApis.deviceDetails)
   Future<DeviceDetailsRes> deviceDetailReq(
