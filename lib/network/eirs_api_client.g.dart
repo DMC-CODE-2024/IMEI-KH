@@ -12,9 +12,7 @@ class _EirsApiClient implements EirsApiClient {
   _EirsApiClient(
     this._dio, {
     this.baseUrl,
-  }) {
-    baseUrl ??= 'http://159.223.159.153:9504/eirs/';
-  }
+  });
 
   final Dio _dio;
 
@@ -35,7 +33,7 @@ class _EirsApiClient implements EirsApiClient {
     )
             .compose(
               _dio.options,
-              'MobileDeviceDetails/save',
+              '/eirs/MobileDeviceDetails/save',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -64,7 +62,7 @@ class _EirsApiClient implements EirsApiClient {
     )
             .compose(
               _dio.options,
-              'dialectRetreiver',
+              '/eirs/dialectRetreiver',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -93,7 +91,7 @@ class _EirsApiClient implements EirsApiClient {
     )
             .compose(
               _dio.options,
-              'services/checkIMEI',
+              '/eirs/services/checkIMEI',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -116,7 +114,7 @@ class _EirsApiClient implements EirsApiClient {
     )
             .compose(
               _dio.options,
-              'service/preInit',
+              '/eirs/service/preInit',
               queryParameters: queryParameters,
               data: _data,
             )
