@@ -8,6 +8,5 @@ const int checkMultiImeiReq = 3;
 
 const int preInitReqCode = 1;
 const int initReqCode = 2;
-
 String defaultUrl = "http://159.223.159.153:9504";
 String baseUrl = defaultUrl;

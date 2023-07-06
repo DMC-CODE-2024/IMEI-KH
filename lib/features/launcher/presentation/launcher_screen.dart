@@ -110,9 +110,9 @@ class _LauncherScreenState extends State<LauncherScreen> {
               }
 
               if (state is LauncherPreInitLoadingState) {
-                return Container();
+                return Center(child: _splashWidget(LabelDetails()));
               } else if (state is LauncherPreInitLoadedState) {
-                return Container();
+                return Center(child: _splashWidget(LabelDetails()));
               } else if (state is LauncherPreInitErrorState) {
                 return ErrorPage(
                     labelDetails: LabelDetails(),
@@ -130,10 +130,10 @@ class _LauncherScreenState extends State<LauncherScreen> {
                       _initApiReq();
                     });
               } else if (state is LauncherLoadedState) {
-                return _splashWidget(state.deviceDetailsRes.labelDetails);
+                return Center(
+                    child: _splashWidget(state.deviceDetailsRes.labelDetails));
               }
-
-              return _splashWidget(LabelDetails());
+              return Center(child: _splashWidget(LabelDetails()));
             },
             listener: (context, state) {
               if (state is LauncherPreInitLoadedState) {
