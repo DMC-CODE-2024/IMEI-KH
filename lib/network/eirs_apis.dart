@@ -1,7 +1,7 @@
 class EirsApis {
-  static const String deviceDetails = 'MobileDeviceDetails/save';
+  static const String deviceDetails = '/eirs/MobileDeviceDetails/save';
   static const String test = 'test';
-  static const String checkImei = 'services/checkIMEI';
-  static const String languageRetriever = 'dialectRetreiver';
-  static const String preInit = 'service/preInit';
+  static const String checkImei = '/eirs/services/checkIMEI';
+  static const String languageRetriever = '/eirs/dialectRetreiver';
+  static const String preInit = '/eirs/service/preInit';
 }

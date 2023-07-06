@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:eirs/constants/constants.dart';
 import 'package:eirs/features/launcher/data/models/device_details_req.dart';
 import 'package:eirs/network/eirs_api_client.dart';
 import 'package:intl/intl.dart';
@@ -22,21 +23,21 @@ class EirsRepository {
 
   // Save device details
   Future<dynamic> preInitReq(String deviceId) async {
-    return await EirsApiClient(Dio()).preInit(deviceId);
+    return await EirsApiClient(Dio(),baseUrl).preInit(deviceId);
   }
 
   // Save device details
   Future<dynamic> deviceDetailsReq(DeviceDetailsReq deviceDetailsReq) async {
-    return await EirsApiClient(Dio()).deviceDetailReq(deviceDetailsReq);
+    return await EirsApiClient(Dio(),baseUrl).deviceDetailReq(deviceDetailsReq);
   }
 
   // check imei
   Future<dynamic> checkImei(CheckImeiReq checkImeiReq) async {
-    return await EirsApiClient(Dio()).checkImei(checkImeiReq);
+    return await EirsApiClient(Dio(),baseUrl).checkImei(checkImeiReq);
   }
 
   Future<dynamic> getLanguage(String featureName, String language) async {
-    return await EirsApiClient(Dio()).languageRetriever(featureName, language);
+    return await EirsApiClient(Dio(),baseUrl).languageRetriever(featureName, language);
   }
 
   Future<List<Map<String, dynamic>>> getDeviceHistory() async {

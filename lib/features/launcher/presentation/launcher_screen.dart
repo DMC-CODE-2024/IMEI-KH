@@ -41,8 +41,7 @@ class _LauncherScreenState extends State<LauncherScreen> {
   @override
   void initState() {
     super.initState();
-    _preInitApiReq();
-    // _getDeviceDetails();
+    _getDeviceDetails();
   }
 
   Future<void> _getDeviceDetails() async {
@@ -54,14 +53,19 @@ class _LauncherScreenState extends State<LauncherScreen> {
   }
 
   Future<void> _preInitApiReq() async {
-  BlocProvider.of<LauncherBloc>(context).add(LauncherInitEvent(requestCode: preInitReqCode));
+    BlocProvider.of<LauncherBloc>(context).add(LauncherInitEvent(
+        requestCode: preInitReqCode,
+        languageType: await getLocale(),
+        deviceDetails: deviceDetails));
   }
 
   Future<void> _initApiReq() async {
     LauncherBloc bloc = BlocProvider.of<LauncherBloc>(context);
     String selectedLng = await getLocale();
     bloc.add(LauncherInitEvent(
-       requestCode: initReqCode, languageType: selectedLng, deviceDetails: deviceDetails));
+        requestCode: initReqCode,
+        languageType: selectedLng,
+        deviceDetails: deviceDetails));
   }
 
   void updateNetworkStatus(Map<dynamic, dynamic> source) async {
@@ -80,7 +84,8 @@ class _LauncherScreenState extends State<LauncherScreen> {
       }
       if (hasNetwork && !isDeviceDetailReqInvoked) {
         isDeviceDetailReqInvoked = true;
-        _initApiReq();
+        //_initApiReq();
+        _preInitApiReq();
       }
     }
   }
@@ -131,8 +136,8 @@ class _LauncherScreenState extends State<LauncherScreen> {
               return _splashWidget(LabelDetails());
             },
             listener: (context, state) {
-              if(state is LauncherPreInitLoadedState){
-                _getDeviceDetails();
+              if (state is LauncherPreInitLoadedState) {
+                _initApiReq();
               }
               if (state is LauncherLoadedState) {
                 Future.delayed(const Duration(seconds: 2), () {

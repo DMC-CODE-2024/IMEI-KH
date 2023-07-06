@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:eirs/constants/constants.dart';
 import 'package:eirs/features/launcher/data/models/device_details_req.dart';
 import 'package:eirs/features/launcher/data/models/device_details_res.dart';
 import 'package:eirs/features/launcher/data/models/pre_init_res.dart';
@@ -10,9 +11,9 @@ import 'eirs_apis.dart';
 
 part 'eirs_api_client.g.dart';
 
-@RestApi(baseUrl: "http://159.223.159.153:9504/eirs/")
+@RestApi()
 abstract class EirsApiClient {
-  factory EirsApiClient(Dio dio, {String baseUrl}) = _EirsApiClient;
+  factory EirsApiClient(Dio dio, String baseUrl) = _EirsApiClient;
 
   @POST(EirsApis.deviceDetails)
   Future<DeviceDetailsRes> deviceDetailReq(

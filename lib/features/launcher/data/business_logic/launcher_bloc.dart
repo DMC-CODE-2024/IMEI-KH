@@ -7,6 +7,7 @@ import 'package:eirs/constants/strings.dart';
 import 'package:eirs/features/launcher/data/business_logic/launcher_state.dart';
 import 'package:eirs/features/launcher/data/models/device_details_req.dart';
 import 'package:eirs/features/launcher/data/models/device_details_res.dart';
+import 'package:eirs/features/launcher/data/models/pre_init_res.dart';
 import 'package:eirs/repoistory/eirs_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -14,6 +15,7 @@ import 'launcher_event.dart';
 
 class LauncherBloc extends Bloc<LauncherEvent, LauncherState> {
   EirsRepository eirsRepository = EirsRepository();
+  DeviceDetailsReq? deviceDetailsReq;
 
   LauncherBloc() : super(LauncherInitialState()) {
     on<LauncherInitEvent>(mapEventToState);
@@ -22,46 +24,38 @@ class LauncherBloc extends Bloc<LauncherEvent, LauncherState> {
   void mapEventToState(LauncherEvent event, Emitter<LauncherState> emit) async {
     if (event is LauncherInitEvent) {
       DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
-      if (event.requestCode == preInitReqCode) {
-        emit(LauncherPreInitLoadingState());
-        try {
-          DeviceDetailsReq deviceDetailsReq;
-          if (Platform.isIOS) {
-            deviceDetailsReq = _readIosBuildData(
-                event.languageType ?? StringConstants.englishCode,
-                await deviceInfoPlugin.iosInfo);
-          } else {
-            deviceDetailsReq = _readAndroidBuildData(
-                event.languageType ?? StringConstants.englishCode,
-                await deviceInfoPlugin.androidInfo,
-                event.deviceDetails);
-          }
-          DeviceDetailsRes deviceDetailsRes =
-              await eirsRepository.preInitReq(deviceDetailsReq.deviceId);
-          print("${deviceDetailsRes.toJson()}");
-          emit(LauncherPreInitLoadedState());
-        } catch (e) {
-          emit(LauncherPreInitErrorState(e.toString()));
+      if (deviceDetailsReq == null) {
+        if (Platform.isIOS) {
+          deviceDetailsReq = _readIosBuildData(
+              event.languageType ?? StringConstants.englishCode,
+              await deviceInfoPlugin.iosInfo);
+        } else {
+          deviceDetailsReq = _readAndroidBuildData(
+              event.languageType ?? StringConstants.englishCode,
+              await deviceInfoPlugin.androidInfo,
+              event.deviceDetails);
         }
-      } else {
-        emit(LauncherLoadingState());
-        try {
-          DeviceDetailsReq deviceDetailsReq;
-          if (Platform.isIOS) {
-            deviceDetailsReq = _readIosBuildData(
-                event.languageType ?? StringConstants.englishCode,
-                await deviceInfoPlugin.iosInfo);
-          } else {
-            deviceDetailsReq = _readAndroidBuildData(
-                event.languageType ?? StringConstants.englishCode,
-                await deviceInfoPlugin.androidInfo,
-                event.deviceDetails);
+      }
+      var deviceId = deviceDetailsReq?.deviceId;
+      if (deviceDetailsReq != null && deviceId != null) {
+        if (event.requestCode == preInitReqCode) {
+          emit(LauncherPreInitLoadingState());
+          try {
+            PreInitRes preInitRes = await eirsRepository.preInitReq(deviceId);
+            baseUrl = preInitRes.baseUrl ?? defaultUrl;
+            emit(LauncherPreInitLoadedState());
+          } catch (e) {
+            emit(LauncherPreInitErrorState(e.toString()));
           }
-          DeviceDetailsRes deviceDetailsRes =
-              await eirsRepository.deviceDetailsReq(deviceDetailsReq);
-          emit(LauncherLoadedState(deviceDetailsRes));
-        } catch (e) {
-          emit(LauncherErrorState(e.toString()));
+        } else {
+          emit(LauncherLoadingState());
+          try {
+            DeviceDetailsRes deviceDetailsRes =
+                await eirsRepository.deviceDetailsReq(deviceDetailsReq!);
+            emit(LauncherLoadedState(deviceDetailsRes));
+          } catch (e) {
+            emit(LauncherErrorState(e.toString()));
+          }
         }
       }
     }
