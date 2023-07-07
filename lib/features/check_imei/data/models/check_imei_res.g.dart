@@ -24,12 +24,14 @@ Map<String, dynamic> _$CheckImeiResToJson(CheckImeiRes instance) =>
 
 CheckImeiResult _$CheckImeiResultFromJson(Map<String, dynamic> json) =>
     CheckImeiResult()
+      ..complianceStatus = json['complianceStatus'] as String?
       ..message = json['message'] as String?
       ..deviceDetails = json['deviceDetails'] as Map<String, dynamic>?
       ..validImei = json['validImei'] as bool;
 
 Map<String, dynamic> _$CheckImeiResultToJson(CheckImeiResult instance) =>
     <String, dynamic>{
+      'complianceStatus': instance.complianceStatus,
       'message': instance.message,
       'deviceDetails': instance.deviceDetails,
       'validImei': instance.validImei,
