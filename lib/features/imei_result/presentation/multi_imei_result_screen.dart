@@ -1,4 +1,3 @@
-import 'package:eirs/features/check_imei/presentation/check_imei_screen.dart';
 import 'package:eirs/features/check_multi_imei/data/models/multi_imei_res.dart';
 import 'package:eirs/features/launcher/data/models/device_details_res.dart';
 import 'package:flutter/material.dart';
@@ -70,14 +69,15 @@ class _MultiImeiResultScreenState extends State<MultiImeiResultScreen> {
                         child: validImeiList(
                             multiImeiRes.checkImeiRes.result?.deviceDetails ??
                                 {},
-                            multiImeiRes.imei),
+                            multiImeiRes.imei,
+                            multiImeiRes.checkImeiRes.result?.complianceStatus,
+                            multiImeiRes.checkImeiRes.result?.message),
                       );
                     } else {
                       return Padding(
                         padding: const EdgeInsets.symmetric(vertical: 10),
-                        child: invalidImeiList(
-                          multiImeiRes.imei,
-                        ),
+                        child: invalidImeiList(multiImeiRes.imei,
+                            multiImeiRes.checkImeiRes.result?.complianceStatus),
                       );
                     }
                   }),
@@ -87,7 +87,8 @@ class _MultiImeiResultScreenState extends State<MultiImeiResultScreen> {
                   isLoading: false,
                   child: Text(widget.labelDetails?.checkOtherImei ?? ""),
                   onPressed: () => {
-                  Navigator.pushNamedAndRemoveUntil(context, Routes.IMEI_SCREEN, (route) => false)
+                    Navigator.pushNamedAndRemoveUntil(
+                        context, Routes.IMEI_SCREEN, (route) => false)
                   },
                 ),
               ),
@@ -116,7 +117,8 @@ class _MultiImeiResultScreenState extends State<MultiImeiResultScreen> {
     }
   }
 
-  Widget validImeiList(Map<String, dynamic> data, String imei) {
+  Widget validImeiList(Map<String, dynamic> data, String imei,
+      String? complianceStatus, String? message) {
     return Container(
       decoration: BoxDecoration(
         color: AppColors.validBg,
@@ -135,15 +137,22 @@ class _MultiImeiResultScreenState extends State<MultiImeiResultScreen> {
                 children: [
                   SvgPicture.asset(ImageConstants.imeiValidIcon),
                   Padding(
-                    padding: const EdgeInsets.only(top: 10.0, bottom: 15),
+                    padding: const EdgeInsets.only(top: 10.0, bottom: 5),
                     child: Text(
-                      widget.labelDetails?.valid ?? "",
-                      style:
-                          const TextStyle(fontSize: 24.0, color: Colors.green),
+                      complianceStatus ?? "",
+                      style: const TextStyle(
+                          fontSize: 16.0,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.green),
                     ),
                   ),
+                  Text(
+                    message ?? "",
+                    style: TextStyle(fontSize: 14.0, color: AppColors.black),
+                  ),
                   Padding(
-                    padding: const EdgeInsets.only(left: 15.0, bottom: 15),
+                    padding: const EdgeInsets.only(
+                        top: 30.0, left: 15.0, bottom: 15),
                     child: Row(
                       children: [
                         const Text(
@@ -211,7 +220,7 @@ class _MultiImeiResultScreenState extends State<MultiImeiResultScreen> {
     );
   }
 
-  Widget invalidImeiList(String imei) {
+  Widget invalidImeiList(String imei, String? complianceStatus) {
     return Container(
       decoration: BoxDecoration(
         color: AppColors.inVlidBg,
@@ -228,8 +237,11 @@ class _MultiImeiResultScreenState extends State<MultiImeiResultScreen> {
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 10.0),
               child: Text(
-                widget.labelDetails?.invalid ?? "",
-                style: const TextStyle(fontSize: 24.0, color: Colors.red),
+                complianceStatus ?? "",
+                style: const TextStyle(
+                    fontSize: 16.0,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.red),
               ),
             ),
             Padding(
