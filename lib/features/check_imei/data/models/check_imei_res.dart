@@ -19,6 +19,7 @@ class CheckImeiRes {
 
 @JsonSerializable()
 class CheckImeiResult {
+  String? complianceStatus;
   String? message;
   Map<String, dynamic>? deviceDetails;
   bool validImei = false;

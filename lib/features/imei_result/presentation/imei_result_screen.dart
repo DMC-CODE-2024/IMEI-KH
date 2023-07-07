@@ -103,7 +103,13 @@ class _ImeiResultScreenState extends State<ImeiResultScreen> {
                                         ? Colors.green
                                         : Colors.red),
                               ),
-                            )
+                            ),
+
+                            (widget.checkImeiResult.validImei == true)? Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 8.0),
+                              child: Text(widget.checkImeiResult.complianceStatus ?? emptyString,
+                                style: TextStyle(fontSize: 16.0, color: AppColors.black),
+                            ),):Container()
                           ],
                         ),
                       ),
