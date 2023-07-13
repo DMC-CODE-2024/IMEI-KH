@@ -53,6 +53,7 @@ class EirsRepository {
     var dateFormatter = DateFormat('yyyy-MM-dd');
     var timeFormatter = DateFormat('HH:mm');
     bool isValidImei = checkImeiRes.result?.validImei ?? false;
+    String? statusColor = checkImeiRes.result?.statusColor;
     if (!isRecordExist) {
       // row to insert
       Map<String, dynamic>? deviceDetails = checkImeiRes.result?.deviceDetails;
@@ -62,7 +63,8 @@ class EirsRepository {
         DatabaseHelper.columnMessage: checkImeiRes.result?.message,
         DatabaseHelper.columnCompliantStatus:
             checkImeiRes.result?.complianceStatus,
-        DatabaseHelper.columnStatusColor: checkImeiRes.result?.statusColor,
+        DatabaseHelper.columnStatusColor: (statusColor != null) ? statusColor
+            : (isValidImei) ? validStatusColor : invalidStatusColor,
         DatabaseHelper.columnIsValid: isValidImei ? 1 : 0,
         DatabaseHelper.columnTimeStamp: "${dt.millisecondsSinceEpoch}",
         DatabaseHelper.columnDate: dateFormatter.format(dt),
@@ -73,7 +75,6 @@ class EirsRepository {
       int deviceStatus = isValidImei ? 1 : 0;
       List<Map<String, dynamic>> existingData =
           await dbHelper.getImeiData(imei);
-      String? statusColor = checkImeiRes.result?.statusColor;
       if (existingData.isNotEmpty) {
         Map<String, dynamic> deviceDetails = existingData.first;
         int existingStatus = deviceDetails.values.elementAt(5);
