@@ -105,10 +105,10 @@ class _DeviceHistoryScreenState extends State<DeviceHistoryScreen> {
               key,
               deviceDetail[DatabaseHelper.columnDate],
               deviceDetail[DatabaseHelper.columnTime],
-              deviceDetail[DatabaseHelper.columnDeviceDetails],
               labelDetails,
               deviceDetail[DatabaseHelper.columnCompliantStatus],
               deviceDetail[DatabaseHelper.columnStatusColor],
+              deviceDetail[DatabaseHelper.columnMessage],
             ),
           );
         }
@@ -250,15 +250,15 @@ Widget _invalidImeiWidget(
     String imei,
     String date,
     String time,
-    String? errorMsg,
     LabelDetails? labelDetails,
     String? compliantStatus,
-    String? statusColor) {
+    String? statusColor,
+    String? message) {
   var invalidImeiMsg = labelDetails?.imeiNotPer3gpp ?? "";
-  if (errorMsg == "null" || errorMsg == null) {
+  if (message == "null" || message == null) {
     labelDetails?.imeiNotPer3gpp;
   } else {
-    invalidImeiMsg = errorMsg;
+    invalidImeiMsg = message;
   }
   return Container(
     color: AppColors.historyBg,
@@ -333,14 +333,11 @@ Widget _invalidImeiWidget(
                           fontSize: 14, color: AppColors.historyTxtColor),
                     ),
                   ),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width - 95,
-                    child: Text(
+                  Text(
                       invalidImeiMsg,
                       style: TextStyle(
                           fontSize: 14, color: AppColors.historyTxtColor),
                     ),
-                  ),
                 ],
               ),
             )
