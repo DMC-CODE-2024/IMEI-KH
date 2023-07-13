@@ -282,7 +282,7 @@ Widget _invalidImeiWidget(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "${labelDetails?.invalid}  $imei",
+                      "${StringConstants.imei}  $imei",
                       style: TextStyle(
                           fontSize: 14, color: AppColors.historyTxtColor),
                     ),
