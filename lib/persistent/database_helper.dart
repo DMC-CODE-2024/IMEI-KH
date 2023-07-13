@@ -9,7 +9,10 @@ class DatabaseHelper {
   static const columnId = '_id';
   static const columnImei = 'imei';
   static const columnDeviceDetails = 'device_details';
+  static const columnCompliantStatus = 'compliant_status';
+  static const columnStatusColor = 'status_color';
   static const columnIsValid = 'is_valid';
+  static const columnMessage = 'message';
   static const columnDate = 'date';
   static const columnTime = 'time';
   static const columnTimeStamp = 'timestamp';
@@ -34,7 +37,10 @@ class DatabaseHelper {
             $columnId INTEGER PRIMARY KEY,
             $columnImei TEXT NOT NULL,
             $columnDeviceDetails TEXT NOT NULL,
+            $columnCompliantStatus TEXT NOT NULL,
+            $columnStatusColor TEXT NOT NULL,
             $columnIsValid INTEGER NOT NULL,
+            $columnMessage TEXT NOT NULL,
             $columnTimeStamp TEXT NOT NULL,
             $columnDate TEXT NOT NULL,
             $columnTime TEXT NOT NULL
@@ -60,19 +66,53 @@ class DatabaseHelper {
     return exists == 1;
   }
 
-  Future updateDeviceDetails(String deviceDetails,
-      String timestamp, String date, String time, String imei) async {
+  Future updateDeviceDetails(
+      String? deviceDetails,
+      String? compliantStatus,
+      String? message,
+      String? statusColor,
+      String? timestamp,
+      String? date,
+      String? time,
+      String? imei) async {
     var res = await _db.rawQuery(
-        ''' UPDATE $table SET $columnTimeStamp = ? , $columnDate = ? , $columnTime = ? , $columnDeviceDetails = ?  WHERE $columnImei = ? ''',
-        [timestamp, date, time, deviceDetails, imei]);
+        ''' UPDATE $table SET $columnTimeStamp = ? , $columnDate = ? , $columnTime = ? , $columnDeviceDetails = ? , $columnMessage = ? , $columnCompliantStatus = ? , $columnStatusColor = ?  WHERE $columnImei = ? ''',
+        [
+          timestamp,
+          date,
+          time,
+          deviceDetails,
+          message,
+          compliantStatus,
+          statusColor,
+          imei
+        ]);
     return res;
   }
 
-  Future updateDeviceDetailsWithStatus(String deviceDetails, int status, String timestamp,
-      String date, String time, String imei) async {
+  Future updateDeviceDetailsWithStatus(
+      String? deviceDetails,
+      String? message,
+      String? compliantStatus,
+      String? statusColor,
+      int status,
+      String? timestamp,
+      String? date,
+      String? time,
+      String? imei) async {
     var res = await _db.rawQuery(
-        ''' UPDATE $table SET $columnTimeStamp = ? , $columnDate = ? , $columnTime = ? , $columnDeviceDetails = ? , $columnIsValid = ? WHERE $columnImei = ? ''',
-        [timestamp, date, time, deviceDetails, status, imei]);
+        ''' UPDATE $table SET $columnTimeStamp = ? , $columnDate = ? , $columnTime = ? , $columnDeviceDetails = ? , $columnMessage = ? , $columnCompliantStatus = ? , $columnStatusColor = ? , $columnIsValid = ? WHERE $columnImei = ? ''',
+        [
+          timestamp,
+          date,
+          time,
+          deviceDetails,
+          message,
+          compliantStatus,
+          statusColor,
+          status,
+          imei
+        ]);
     return res;
   }
 

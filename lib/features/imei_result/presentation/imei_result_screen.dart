@@ -1,3 +1,4 @@
+import 'package:eirs/constants/constants.dart';
 import 'package:eirs/constants/strings.dart';
 import 'package:eirs/features/check_imei/data/models/check_imei_res.dart';
 import 'package:eirs/features/component/result_app_bar.dart';
@@ -10,6 +11,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../../../constants/image_path.dart';
+import '../../../theme/hex_color.dart';
 import '../../component/button.dart';
 import '../../component/need_any_help_widget.dart';
 import '../../history/data/business_logic/device_history_bloc.dart';
@@ -37,6 +39,8 @@ class _ImeiResultScreenState extends State<ImeiResultScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var statusColor = widget.checkImeiResult.statusColor;
+    var isValidImei = widget.checkImeiResult.validImei;
     return Scaffold(
       appBar: ResultAppBar(
         title: widget.labelDetails?.result ?? emptyString,
@@ -51,14 +55,13 @@ class _ImeiResultScreenState extends State<ImeiResultScreen> {
           );
         },
         backButtonCallBack: () {
-          Navigator.pop(context, widget.checkImeiResult.validImei);
+          Navigator.pop(context, isValidImei);
         },
       ),
       body: WillPopScope(
         onWillPop: () {
           //on Back button press, you can use WillPopScope for another purpose also.
-          Navigator.pop(context,
-              widget.checkImeiResult.validImei); //return data along with pop
+          Navigator.pop(context, isValidImei); //return data along with pop
           return Future(
               () => false); //onWillPop is Future<bool> so return false
         },
@@ -87,32 +90,38 @@ class _ImeiResultScreenState extends State<ImeiResultScreen> {
                         child: Column(
                           children: [
                             SvgPicture.asset(
-                                (widget.checkImeiResult.validImei == true)
-                                    ? ImageConstants.imeiValidIcon
-                                    : ImageConstants.imeiInValidIcon),
+                              (isValidImei)
+                                  ? ImageConstants.validIcon
+                                  : ImageConstants.invalidIcon,
+                              color: HexColor((statusColor != null)
+                                  ? statusColor
+                                  : (isValidImei)
+                                      ? validStatusColor
+                                      : invalidStatusColor),
+                            ),
                             Padding(
-                              padding: (widget.checkImeiResult.validImei ==
-                                      true)
+                              padding: (isValidImei)
                                   ? const EdgeInsets.only(
-                                      top: 10.0, bottom: 5.0)
+                                      top: 10.0, bottom: 8.0)
                                   : const EdgeInsets.symmetric(vertical: 10.0),
                               child: Text(
-                                widget.checkImeiResult.complianceStatus ??
-                                    emptyString,
-                                style:  TextStyle(
+                                widget.checkImeiResult.complianceStatus ?? emptyString,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
                                     fontSize: 16.0,
-                                    fontWeight: FontWeight.w600,
-                                    color: (widget.checkImeiResult.validImei == true)
-                                        ? Colors.green
-                                        : Colors.red),
+                                    fontWeight: FontWeight.w400,
+                                    color: AppColors.black),
                               ),
                             ),
-                            (widget.checkImeiResult.validImei == true)
+                            (isValidImei)
                                 ? Text(
                                     widget.checkImeiResult.message ??
                                         emptyString,
+                                    textAlign: TextAlign.center,
                                     style: TextStyle(
-                                        fontSize: 14.0, color: AppColors.black),
+                                        fontSize: 15.0,
+                                        fontWeight: FontWeight.w400,
+                                        color: AppColors.black),
                                   )
                                 : Container()
                           ],
@@ -134,7 +143,7 @@ class _ImeiResultScreenState extends State<ImeiResultScreen> {
                         ),
                       ],
                     ),
-                    if (widget.checkImeiResult.validImei &&
+                    if (isValidImei &&
                         widget.checkImeiResult.deviceDetails != null)
                       DeviceDetailList(
                           data: widget.checkImeiResult.deviceDetails!)
@@ -149,10 +158,7 @@ class _ImeiResultScreenState extends State<ImeiResultScreen> {
                         isLoading: false,
                         child: Text(
                             widget.labelDetails?.checkOtherImei ?? emptyString),
-                        onPressed: () => {
-                          Navigator.pop(
-                              context, widget.checkImeiResult.validImei)
-                        },
+                        onPressed: () => {Navigator.pop(context, isValidImei)},
                       ),
                     ),
                   ],

@@ -23,21 +23,23 @@ class EirsRepository {
 
   // Save device details
   Future<dynamic> preInitReq(String deviceId) async {
-    return await EirsApiClient(Dio(),baseUrl: baseUrl).preInit(deviceId);
+    return await EirsApiClient(Dio(), baseUrl: baseUrl).preInit(deviceId);
   }
 
   // Save device details
   Future<dynamic> deviceDetailsReq(DeviceDetailsReq deviceDetailsReq) async {
-    return await EirsApiClient(Dio(),baseUrl: baseUrl).deviceDetailReq(deviceDetailsReq);
+    return await EirsApiClient(Dio(), baseUrl: baseUrl)
+        .deviceDetailReq(deviceDetailsReq);
   }
 
   // check imei
   Future<dynamic> checkImei(CheckImeiReq checkImeiReq) async {
-    return await EirsApiClient(Dio(),baseUrl: baseUrl).checkImei(checkImeiReq);
+    return await EirsApiClient(Dio(), baseUrl: baseUrl).checkImei(checkImeiReq);
   }
 
   Future<dynamic> getLanguage(String featureName, String language) async {
-    return await EirsApiClient(Dio(),baseUrl: baseUrl).languageRetriever(featureName, language);
+    return await EirsApiClient(Dio(), baseUrl: baseUrl)
+        .languageRetriever(featureName, language);
   }
 
   Future<List<Map<String, dynamic>>> getDeviceHistory() async {
@@ -56,9 +58,11 @@ class EirsRepository {
       Map<String, dynamic>? deviceDetails = checkImeiRes.result?.deviceDetails;
       Map<String, dynamic> row = {
         DatabaseHelper.columnImei: imei,
-        DatabaseHelper.columnDeviceDetails: isValidImei
-            ? jsonEncode(deviceDetails)
-            : checkImeiRes.result?.message,
+        DatabaseHelper.columnDeviceDetails: jsonEncode(deviceDetails),
+        DatabaseHelper.columnMessage: checkImeiRes.result?.message,
+        DatabaseHelper.columnCompliantStatus:
+            checkImeiRes.result?.complianceStatus,
+        DatabaseHelper.columnStatusColor: checkImeiRes.result?.statusColor,
         DatabaseHelper.columnIsValid: isValidImei ? 1 : 0,
         DatabaseHelper.columnTimeStamp: "${dt.millisecondsSinceEpoch}",
         DatabaseHelper.columnDate: dateFormatter.format(dt),
@@ -69,14 +73,20 @@ class EirsRepository {
       int deviceStatus = isValidImei ? 1 : 0;
       List<Map<String, dynamic>> existingData =
           await dbHelper.getImeiData(imei);
+      String? statusColor = checkImeiRes.result?.statusColor;
       if (existingData.isNotEmpty) {
         Map<String, dynamic> deviceDetails = existingData.first;
-        int existingStatus = deviceDetails.values.elementAt(3);
+        int existingStatus = deviceDetails.values.elementAt(5);
         if (deviceStatus != existingStatus) {
           await dbHelper.updateDeviceDetailsWithStatus(
-              isValidImei
-                  ? jsonEncode(checkImeiRes.result?.deviceDetails)
-                  : checkImeiRes.result?.message ?? "null",
+              jsonEncode(checkImeiRes.result?.deviceDetails),
+              checkImeiRes.result?.message,
+              checkImeiRes.result?.complianceStatus,
+              (statusColor != null)
+                  ? statusColor
+                  : (isValidImei)
+                      ? validStatusColor
+                      : invalidStatusColor,
               deviceStatus,
               "${dt.millisecondsSinceEpoch}",
               dateFormatter.format(dt),
@@ -84,9 +94,14 @@ class EirsRepository {
               imei);
         } else {
           await dbHelper.updateDeviceDetails(
-              isValidImei
-                  ? jsonEncode(checkImeiRes.result?.deviceDetails)
-                  : checkImeiRes.result?.message ?? "null",
+              jsonEncode(checkImeiRes.result?.deviceDetails),
+              checkImeiRes.result?.complianceStatus,
+              checkImeiRes.result?.message,
+              (statusColor != null)
+                  ? statusColor
+                  : (isValidImei)
+                      ? validStatusColor
+                      : invalidStatusColor,
               "${dt.millisecondsSinceEpoch}",
               dateFormatter.format(dt),
               timeFormatter.format(dt),

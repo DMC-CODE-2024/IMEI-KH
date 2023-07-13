@@ -42,7 +42,8 @@ class LauncherBloc extends Bloc<LauncherEvent, LauncherState> {
           emit(LauncherPreInitLoadingState());
           try {
             PreInitRes preInitRes = await eirsRepository.preInitReq(deviceId);
-            baseUrl = preInitRes.baseUrl ?? defaultUrl;
+            //baseUrl = preInitRes.baseUrl ?? defaultUrl;
+            baseUrl = "http://159.223.159.153:9509";
             emit(LauncherPreInitLoadedState());
           } catch (e) {
             emit(LauncherPreInitErrorState(e.toString()));

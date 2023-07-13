@@ -106,6 +106,8 @@ flutter:
     - assets/images/ic_option_a.jpg
     - assets/images/ic_app_bar_icon.jpg
     - assets/images/ic_khmer.png
+    - assets/images/invalid.svg
+    - assets/images/valid.svg
 
   #   - images/a_dot_ham.jpeg
 

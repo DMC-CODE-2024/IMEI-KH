@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:eirs/constants/constants.dart';
 import 'package:eirs/features/component/app_bar_with_title.dart';
 import 'package:eirs/features/component/error_page.dart';
 import 'package:eirs/features/history/data/business_logic/device_history_bloc.dart';
@@ -14,6 +15,7 @@ import '../../../constants/image_path.dart';
 import '../../../constants/strings.dart';
 import '../../../helper/app_states_notifier.dart';
 import '../../../persistent/database_helper.dart';
+import '../../../theme/hex_color.dart';
 import '../../component/custom_progress_indicator.dart';
 import '../../launcher/data/models/device_details_res.dart';
 import '../data/business_logic/device_history_event.dart';
@@ -86,25 +88,28 @@ class _DeviceHistoryScreenState extends State<DeviceHistoryScreen> {
           return Padding(
             padding: const EdgeInsets.only(top: 5),
             child: _validImeiWidget(
-              context,
-              key,
-              deviceDetail[DatabaseHelper.columnDate],
-              deviceDetail[DatabaseHelper.columnTime],
-              json.decode(
-                deviceDetail[DatabaseHelper.columnDeviceDetails],
-              ),
-            ),
+                context,
+                key,
+                deviceDetail[DatabaseHelper.columnDate],
+                deviceDetail[DatabaseHelper.columnTime],
+                json.decode(deviceDetail[DatabaseHelper.columnDeviceDetails]),
+                deviceDetail[DatabaseHelper.columnCompliantStatus],
+                deviceDetail[DatabaseHelper.columnMessage],
+                deviceDetail[DatabaseHelper.columnStatusColor]),
           );
         } else {
           return Padding(
             padding: const EdgeInsets.only(top: 5),
             child: _invalidImeiWidget(
-                context,
-                key,
-                deviceDetail[DatabaseHelper.columnDate],
-                deviceDetail[DatabaseHelper.columnTime],
-                deviceDetail[DatabaseHelper.columnDeviceDetails],
-                labelDetails),
+              context,
+              key,
+              deviceDetail[DatabaseHelper.columnDate],
+              deviceDetail[DatabaseHelper.columnTime],
+              deviceDetail[DatabaseHelper.columnDeviceDetails],
+              labelDetails,
+              deviceDetail[DatabaseHelper.columnCompliantStatus],
+              deviceDetail[DatabaseHelper.columnStatusColor],
+            ),
           );
         }
       },
@@ -112,8 +117,15 @@ class _DeviceHistoryScreenState extends State<DeviceHistoryScreen> {
   }
 }
 
-Widget _validImeiWidget(BuildContext context, String imei, String date,
-    String time, Map<String, dynamic>? deviceDetails) {
+Widget _validImeiWidget(
+    BuildContext context,
+    String imei,
+    String date,
+    String time,
+    Map<String, dynamic>? deviceDetails,
+    String? compliantStatus,
+    String? message,
+    String? statusColor) {
   return Container(
     color: AppColors.historyBg,
     padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
@@ -124,7 +136,12 @@ Widget _validImeiWidget(BuildContext context, String imei, String date,
         child: ExpansionTile(
           title: Row(
             children: [
-              SvgPicture.asset(ImageConstants.mobileOnIcon),
+              SvgPicture.asset(
+                ImageConstants.validIcon,
+                color: HexColor(statusColor ?? validStatusColor),
+                width: 40,
+                height: 40,
+              ),
               Padding(
                 padding: const EdgeInsets.only(left: 12),
                 child: Column(
@@ -163,7 +180,29 @@ Widget _validImeiWidget(BuildContext context, String imei, String date,
             ],
           ),
           children: [
-            if (deviceDetails != null) _deviceInfoListWidget(deviceDetails)
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 8.0),
+                  child: Text(
+                    compliantStatus ?? "",
+                    style: TextStyle(
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.w400,
+                        color: AppColors.black),
+                  ),
+                ),
+                Text(
+                  message ?? "",
+                  style: TextStyle(
+                      fontSize: 15.0,
+                      fontWeight: FontWeight.w400,
+                      color: AppColors.black),
+                ),
+                if (deviceDetails != null) _deviceInfoListWidget(deviceDetails)
+              ],
+            ),
           ],
         ),
       ),
@@ -206,8 +245,15 @@ Widget _deviceInfoListWidget(Map<String, dynamic> values) {
   );
 }
 
-Widget _invalidImeiWidget(BuildContext context, String imei, String date,
-    String time, String? errorMsg, LabelDetails? labelDetails) {
+Widget _invalidImeiWidget(
+    BuildContext context,
+    String imei,
+    String date,
+    String time,
+    String? errorMsg,
+    LabelDetails? labelDetails,
+    String? compliantStatus,
+    String? statusColor) {
   var invalidImeiMsg = labelDetails?.imeiNotPer3gpp ?? "";
   if (errorMsg == "null" || errorMsg == null) {
     labelDetails?.imeiNotPer3gpp;
@@ -224,7 +270,12 @@ Widget _invalidImeiWidget(BuildContext context, String imei, String date,
         child: ExpansionTile(
           title: Row(
             children: [
-              SvgPicture.asset(ImageConstants.mobileOffIcon),
+              SvgPicture.asset(
+                ImageConstants.invalidIcon,
+                color: HexColor(statusColor ?? invalidStatusColor),
+                width: 40,
+                height: 40,
+              ),
               Padding(
                 padding: const EdgeInsets.only(left: 12),
                 child: Column(
@@ -267,6 +318,13 @@ Widget _invalidImeiWidget(BuildContext context, String imei, String date,
               title: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  Text(
+                    compliantStatus ?? "",
+                    style: TextStyle(
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.w400,
+                        color: AppColors.black),
+                  ),
                   Padding(
                     padding: const EdgeInsets.only(top: 10, bottom: 10),
                     child: Text(

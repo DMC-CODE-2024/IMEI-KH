@@ -20,5 +20,7 @@ class ImageConstants {
   static const String optionA = "assets/images/ic_option_a.jpg";
   static const String appBarIcon = "assets/images/ic_app_bar_icon.jpg";
   static const String khmerIconAppbar = "assets/images/ic_khmer.png";
+  static const String invalidIcon = "assets/images/invalid.svg";
+  static const String validIcon = "assets/images/valid.svg";
 
 }

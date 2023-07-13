@@ -27,7 +27,8 @@ CheckImeiResult _$CheckImeiResultFromJson(Map<String, dynamic> json) =>
       ..complianceStatus = json['complianceStatus'] as String?
       ..message = json['message'] as String?
       ..deviceDetails = json['deviceDetails'] as Map<String, dynamic>?
-      ..validImei = json['validImei'] as bool;
+      ..validImei = json['validImei'] as bool
+      ..statusColor = json['symbol_color'] as String?;
 
 Map<String, dynamic> _$CheckImeiResultToJson(CheckImeiResult instance) =>
     <String, dynamic>{
@@ -35,4 +36,5 @@ Map<String, dynamic> _$CheckImeiResultToJson(CheckImeiResult instance) =>
       'message': instance.message,
       'deviceDetails': instance.deviceDetails,
       'validImei': instance.validImei,
+      'symbol_color': instance.statusColor,
     };
