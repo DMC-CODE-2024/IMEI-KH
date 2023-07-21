@@ -1,5 +1,6 @@
 import 'package:eirs/constants/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
@@ -10,9 +11,10 @@ import '../../../helper/app_states_notifier.dart';
 import '../../../helper/shared_pref.dart';
 import '../../../theme/colors.dart';
 import '../../component/app_bar_with_title.dart';
-import '../../component/button.dart';
+import '../../component/button_opacity.dart';
 import '../../component/custom_progress_indicator.dart';
 import '../../component/error_page.dart';
+import '../../component/input_borders.dart';
 import '../../imei_result/presentation/multi_imei_result_screen.dart';
 import '../../launcher/data/models/device_details_res.dart';
 import '../data/business_logic/check_multi_imei_bloc.dart';
@@ -33,11 +35,11 @@ class ImeiListPage extends StatefulWidget {
 }
 
 class _ImeiListPageState extends State<ImeiListPage> {
-  int selectedIndex = -1;
-  String selectedImei = "";
   String emptyString = "";
+  bool enableCheckImeiButton = true;
   LabelDetails? labelDetails;
   String selectedLng = StringConstants.englishCode;
+  final Map<String, TextEditingController> _controllerMap = {};
 
   @override
   void initState() {
@@ -45,12 +47,6 @@ class _ImeiListPageState extends State<ImeiListPage> {
     getLocale().then((languageCode) {
       selectedLng = languageCode;
     });
-    if (widget.data.isNotEmpty) {
-      selectedIndex = 0;
-      selectedImei = widget.data.keys.elementAt(0);
-    } else {
-      selectedImei = "";
-    }
   }
 
   @override
@@ -127,11 +123,21 @@ class _ImeiListPageState extends State<ImeiListPage> {
                 )
               ],
             ),
-            _listWidget(data),
+            (widget.data.length > 3)
+                ? SingleChildScrollView(
+                    child: SizedBox(
+                      height: MediaQuery.of(context).size.height / 3,
+                      child: _listWidget(data),
+                    ),
+                  )
+                : SingleChildScrollView(
+                    child: _listWidget(data),
+                  ),
             Container(height: 20),
-            AppButton(
+            AppButtonOpacity(
               width: 200,
               isLoading: false,
+              isEnable: enableCheckImeiButton,
               child: Text(labelDetails?.check ?? emptyString),
               onPressed: () => _checkImei(context),
             )
@@ -141,40 +147,48 @@ class _ImeiListPageState extends State<ImeiListPage> {
     );
   }
 
+  bool validInputImeiField() {
+    bool isValidImei = true;
+    _controllerMap.forEach((key, value) {
+      if (value.text.length < 15) {
+        isValidImei = false;
+        return;
+      }
+    });
+    return isValidImei;
+  }
+
   Widget _listWidget(Map<String, dynamic> values) {
     return ListView.builder(
+      physics: const ClampingScrollPhysics(),
       shrinkWrap: true,
+      scrollDirection: Axis.vertical,
       itemCount: values.length,
       itemBuilder: (BuildContext context, int index) {
         String key = values.keys.elementAt(index);
-        return InkWell(
-          onTap: () => _getSelectedItem(index, values.keys.elementAt(index)),
-          child: ListTile(
-            title: Text("${StringConstants.imei} ${index + 1}"),
-            subtitle: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Expanded(
-                      child: Container(
-                    padding: const EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.blue),
-                      borderRadius: const BorderRadius.all(
-                        Radius.circular(5.0),
-                      ),
-                    ),
-                    child: Text(key),
-                  )),
-                  InkWell(
-                    onTap: () => _removeItemFromMap(key),
-                    child: Padding(
-                        padding: const EdgeInsets.all(10),
-                        child: SvgPicture.asset(ImageConstants.crossIcon)),
-                  )
-                ],
-              ),
+        final controller = _getControllerOf(key);
+        controller.addListener(() {
+          setState(() {
+            enableCheckImeiButton = validInputImeiField();
+          });
+        });
+        return ListTile(
+          title: Text("${StringConstants.imei} ${index + 1}"),
+          subtitle: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Expanded(
+                  child: _inputFieldWidget(controller),
+                ),
+                InkWell(
+                  onTap: () => _removeItemFromMap(key),
+                  child: Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: SvgPicture.asset(ImageConstants.crossIcon)),
+                )
+              ],
             ),
           ),
         );
@@ -182,29 +196,80 @@ class _ImeiListPageState extends State<ImeiListPage> {
     );
   }
 
-  void _removeItemFromMap(String key) {
-    widget.data.remove(key);
-    if (widget.data.isNotEmpty) {
-      selectedIndex = 0;
-      selectedImei = widget.data.keys.elementAt(0);
-    } else {
-      selectedImei = "";
-      return Navigator.pop(context);
+  TextEditingController _getControllerOf(String name) {
+    var controller = _controllerMap[name];
+    if (controller == null) {
+      controller = TextEditingController(text: name);
+      _controllerMap[name] = controller;
     }
-    setState(() => {});
+    return controller;
   }
 
-  void _getSelectedItem(int index, String selectedImei) {
-    this.selectedImei = selectedImei;
-    setState(() => {selectedIndex = index});
+  Widget _inputFieldWidget(TextEditingController imeiController) {
+    return SizedBox(
+      height: 40,
+      child: TextFormField(
+        enableInteractiveSelection: true,
+        inputFormatters: [
+          LengthLimitingTextInputFormatter(15),
+        ],
+        maxLines: 1,
+        textAlign: TextAlign.left,
+        cursorHeight: 20,
+        style: const TextStyle(fontSize: 14),
+        keyboardType: TextInputType.number,
+        controller: imeiController,
+        textAlignVertical: TextAlignVertical.center,
+        decoration: InputDecoration(
+            contentPadding:
+                const EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+            filled: true,
+            hintText: labelDetails?.enterFifteenDigit ?? emptyString,
+            hintStyle: const TextStyle(fontSize: 10),
+            fillColor: Colors.white70,
+            enabledBorder: (imeiController.text.length == 15)
+                ? InputBorders.focused
+                : InputBorders.enabled,
+            errorBorder: InputBorders.error,
+            focusedErrorBorder: InputBorders.error,
+            border: InputBorders.border,
+            focusedBorder: (imeiController.text.length == 15)
+                ? InputBorders.focused
+                : InputBorders.border),
+      ),
+    );
+  }
+
+  void _showErrorMsg(String errorMsg) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text(
+        errorMsg,
+        style: const TextStyle(color: Colors.red, fontSize: 16),
+      ),
+    ));
+  }
+
+  void _removeItemFromMap(String key) {
+    widget.data.remove(key);
+    _controllerMap.remove(key);
+    if (widget.data.isEmpty) {
+      return Navigator.pop(context);
+    }
+    setState(() {
+      enableCheckImeiButton = validInputImeiField();
+    });
   }
 
   void _checkImei(BuildContext context) {
-    if (selectedImei.isEmpty) {
+    List<String> imeiList = [];
+    _controllerMap.forEach((key, value) {
+      imeiList.add(value.text);
+    });
+    if (imeiList.isEmpty) {
       return _showErrorMsg(labelDetails?.noImeiSelected ?? emptyString);
     }
     BlocProvider.of<CheckMultiImeiBloc>(context).add(CheckMultiImeiInitEvent(
-        imeiMap: widget.data,
+        imeiMap: imeiList,
         languageType: selectedLng,
         requestCode: checkMultiImeiReq));
   }
@@ -212,16 +277,6 @@ class _ImeiListPageState extends State<ImeiListPage> {
   void _reloadPage() {
     BlocProvider.of<CheckMultiImeiBloc>(context)
         .add(CheckMultiImeiInitEvent(requestCode: pageRefresh));
-  }
-
-  void _showErrorMsg(String errorMsg) {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      backgroundColor: Colors.red,
-      content: Text(
-        errorMsg,
-        style: const TextStyle(color: Colors.white, fontSize: 16),
-      ),
-    ));
   }
 
   void _navigateResultScreen(List<MultiImeiRes> imeiResList) {

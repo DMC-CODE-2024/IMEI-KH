@@ -31,22 +31,22 @@ class CheckMultiImeiBloc
           if (imeiResponseList.isNotEmpty) {
             imeiResponseList.clear();
           }
-          Map<String, int>? imeiMap = event.imeiMap;
-          if (imeiMap == null || imeiMap.isEmpty) {
+          List<String>? imeiList = event.imeiMap;
+          if (imeiList == null || imeiList.isEmpty) {
             emit(CheckMultiImeiErrorState(StringConstants.emptyImeiError));
           } else {
-            for (final mapEntry in imeiMap.entries) {
+            for (final imei in imeiList) {
               try {
-                final key = mapEntry.key;
+                final inputImei = imei;
                 CheckImeiReq checkImeiReq = CheckImeiReq(
-                    imei: key,
+                    imei: inputImei,
                     language: event.languageType ?? StringConstants.englishCode,
                     channel: "phone");
                 CheckImeiRes checkImeiRes =
                     await eirsRepository.checkImei(checkImeiReq);
-                eirsRepository.insertDeviceDetail(key, checkImeiRes);
+                eirsRepository.insertDeviceDetail(inputImei, checkImeiRes);
                 imeiResponseList
-                    .add(MultiImeiRes(imei: key, checkImeiRes: checkImeiRes));
+                    .add(MultiImeiRes(imei: inputImei, checkImeiRes: checkImeiRes));
               } catch (e) {
                 if (kDebugMode) {
                   print(e.toString());

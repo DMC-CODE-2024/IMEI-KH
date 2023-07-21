@@ -3,7 +3,7 @@ abstract class CheckMultiImeiEvent {
 }
 
 class CheckMultiImeiInitEvent extends CheckMultiImeiEvent {
-  Map<String, int>? imeiMap;
+  List<String>? imeiMap;
   String? languageType;
   int requestCode;
   CheckMultiImeiInitEvent({this.imeiMap, this.languageType,required this.requestCode});
