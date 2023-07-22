@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "587589024543",
+    "project_id": "imei-kh",
+    "storage_bucket": "imei-kh.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:587589024543:android:4f26e9100ffed0178b0e2a",
+        "android_client_info": {
+          "package_name": "com.dmc.eirs"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "587589024543-7phrk2t6k8s3nalhc6j1iojhbm32euuq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB8V_Zia1dx8eL3uMBAajXSk4bgaAxF5z8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "587589024543-7phrk2t6k8s3nalhc6j1iojhbm32euuq.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "587589024543-fl0eg8vjq38c53fkv2hgaa2e73qg2qme.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.dmc.eirs"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

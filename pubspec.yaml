@@ -54,6 +54,8 @@ dependencies:
 
   # retrofit generator is an dio client generator using source_gen and inspired by Chopper and Retrofit.
   retrofit_generator: ^4.1.0+1
+  firebase_core: ^2.15.0
+  firebase_crashlytics: ^3.3.4
 
 dev_dependencies:
   flutter_test:

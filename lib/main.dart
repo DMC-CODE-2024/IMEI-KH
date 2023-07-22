@@ -2,6 +2,8 @@ import 'package:eirs/features/launcher/data/business_logic/launcher_bloc.dart';
 import 'package:eirs/persistent/database_helper.dart';
 import 'package:eirs/routes/app_routes.dart';
 import 'package:eirs/theme/colors.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,6 +12,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'constants/strings.dart';
 import 'features/launcher/presentation/launcher_screen.dart';
+import 'firebase_options.dart';
 import 'helper/app_states_notifier.dart';
 
 const String feature1 = 'feature1',
@@ -32,6 +35,8 @@ Future<void> main() async {
   sharedPref = await SharedPreferences.getInstance();
   // initialize the database
   await dbHelper.init();
+  await Firebase.initializeApp();
+  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
   runApp(MyApp());
 }
 
