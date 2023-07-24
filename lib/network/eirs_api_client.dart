@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:eirs/constants/constants.dart';
 import 'package:eirs/features/launcher/data/models/device_details_req.dart';
 import 'package:eirs/features/launcher/data/models/device_details_res.dart';
 import 'package:eirs/features/launcher/data/models/pre_init_res.dart';
@@ -13,14 +12,16 @@ part 'eirs_api_client.g.dart';
 
 @RestApi()
 abstract class EirsApiClient {
-  factory EirsApiClient( Dio dio,{String baseUrl}) = _EirsApiClient;
+  factory EirsApiClient(Dio dio, {String baseUrl}) = _EirsApiClient;
 
   @POST(EirsApis.deviceDetails)
   Future<DeviceDetailsRes> deviceDetailReq(
       @Body() DeviceDetailsReq deviceDetailsReq);
 
   @GET(EirsApis.languageRetriever)
-  Future<DeviceDetailsRes> languageRetriever(@Query("feature_name") String featureName,@Query("language") String language);
+  Future<DeviceDetailsRes> languageRetriever(
+      @Query("feature_name") String featureName,
+      @Query("language") String language);
 
   @POST(EirsApis.checkImei)
   Future<CheckImeiRes> checkImei(@Body() CheckImeiReq checkImeiReq,
@@ -28,5 +29,4 @@ abstract class EirsApiClient {
 
   @GET(EirsApis.preInit)
   Future<PreInitRes> preInit(@Query("deviceId") String deviceId);
-
 }

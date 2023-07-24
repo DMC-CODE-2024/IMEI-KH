@@ -33,7 +33,7 @@ class _EirsApiClient implements EirsApiClient {
     )
             .compose(
               _dio.options,
-              '/eirs/MobileDeviceDetails/save',
+              '/eirs/services/mobile_api/MobileDeviceDetails/save',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -62,7 +62,7 @@ class _EirsApiClient implements EirsApiClient {
     )
             .compose(
               _dio.options,
-              '/eirs/dialectRetreiver',
+              '/eirs/services/mobile_api/dialectRetreiver',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -91,7 +91,7 @@ class _EirsApiClient implements EirsApiClient {
     )
             .compose(
               _dio.options,
-              '/eirs/services/checkIMEI',
+              '/eirs/services/mobile_api/checkIMEI',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -114,7 +114,7 @@ class _EirsApiClient implements EirsApiClient {
     )
             .compose(
               _dio.options,
-              '/eirs/service/preInit',
+              '/eirs/services/mobile_api/preInit',
               queryParameters: queryParameters,
               data: _data,
             )
