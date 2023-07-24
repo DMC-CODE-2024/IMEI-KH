@@ -139,7 +139,7 @@ class _MultiImeiResultScreenState extends State<MultiImeiResultScreen> {
               child: Column(
                 children: [
                   SvgPicture.asset(
-                    ImageConstants.imeiValidIcon,
+                    ImageConstants.validIcon,
                     color: HexColor(statusColor ?? validStatusColor),
                   ),
                   Padding(
