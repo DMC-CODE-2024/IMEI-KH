@@ -215,7 +215,7 @@ class _ImeiListPageState extends State<ImeiListPage> {
         ],
         maxLines: 1,
         textAlign: TextAlign.left,
-        cursorHeight: 20,
+        cursorHeight: 18,
         style: const TextStyle(fontSize: 14),
         keyboardType: TextInputType.number,
         controller: imeiController,
