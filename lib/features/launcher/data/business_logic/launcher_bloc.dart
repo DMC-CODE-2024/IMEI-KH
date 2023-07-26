@@ -8,6 +8,7 @@ import 'package:eirs/features/launcher/data/business_logic/launcher_state.dart';
 import 'package:eirs/features/launcher/data/models/device_details_req.dart';
 import 'package:eirs/features/launcher/data/models/device_details_res.dart';
 import 'package:eirs/features/launcher/data/models/pre_init_res.dart';
+import 'package:eirs/helper/shared_pref.dart';
 import 'package:eirs/repoistory/eirs_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -38,6 +39,8 @@ class LauncherBloc extends Bloc<LauncherEvent, LauncherState> {
       }
       var deviceId = deviceDetailsReq?.deviceId;
       if (deviceDetailsReq != null && deviceId != null) {
+        //Store device id
+        setDeviceId(deviceId);
         if (event.requestCode == preInitReqCode) {
           emit(LauncherPreInitLoadingState());
           try {

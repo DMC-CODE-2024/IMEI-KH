@@ -1,9 +1,12 @@
+import 'dart:io';
+
 import 'package:eirs/constants/constants.dart';
 import 'package:eirs/features/check_multi_imei/data/models/multi_imei_res.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../constants/strings.dart';
+import '../../../../helper/shared_pref.dart';
 import '../../../../repoistory/eirs_repository.dart';
 import '../../../check_imei/data/models/check_imei_req.dart';
 import '../../../check_imei/data/models/check_imei_res.dart';
@@ -35,18 +38,21 @@ class CheckMultiImeiBloc
           if (imeiList == null || imeiList.isEmpty) {
             emit(CheckMultiImeiErrorState(StringConstants.emptyImeiError));
           } else {
+            String? deviceId = await getDeviceId();
+            String osType = (Platform.isIOS) ? StringConstants.iOSOs : StringConstants.androidOs;
             for (final imei in imeiList) {
               try {
                 final inputImei = imei;
                 CheckImeiReq checkImeiReq = CheckImeiReq(
                     imei: inputImei,
                     language: event.languageType ?? StringConstants.englishCode,
-                    channel: "phone");
+                    channel: "phone",deviceId: deviceId,osType: osType);
+                print("Check IMEI Req: ${checkImeiReq.toJson()}");
                 CheckImeiRes checkImeiRes =
                     await eirsRepository.checkImei(checkImeiReq);
                 eirsRepository.insertDeviceDetail(inputImei, checkImeiRes);
-                imeiResponseList
-                    .add(MultiImeiRes(imei: inputImei, checkImeiRes: checkImeiRes));
+                imeiResponseList.add(
+                    MultiImeiRes(imei: inputImei, checkImeiRes: checkImeiRes));
               } catch (e) {
                 if (kDebugMode) {
                   print(e.toString());
