@@ -1,4 +1,5 @@
 import 'dart:io';
+
 import 'package:bloc/bloc.dart';
 import 'package:eirs/constants/strings.dart';
 import 'package:eirs/features/launcher/data/models/device_details_res.dart';
@@ -37,8 +38,9 @@ class CheckImeiBloc extends Bloc<CheckImeiEvent, CheckImeiState> {
             CheckImeiReq checkImeiReq = CheckImeiReq(
                 imei: event.inputImei ?? "",
                 language: event.languageType ?? StringConstants.englishCode,
-                channel: "phone",deviceId: deviceId,osType: osType);
-            print("Check IMEI Req: ${checkImeiReq.toJson()}");
+                channel: "phone",
+                deviceId: deviceId,
+                osType: osType);
             CheckImeiRes checkImeiRes =
                 await eirsRepository.checkImei(checkImeiReq);
             eirsRepository.insertDeviceDetail(

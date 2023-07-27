@@ -39,15 +39,18 @@ class CheckMultiImeiBloc
             emit(CheckMultiImeiErrorState(StringConstants.emptyImeiError));
           } else {
             String? deviceId = await getDeviceId();
-            String osType = (Platform.isIOS) ? StringConstants.iOSOs : StringConstants.androidOs;
+            String osType = (Platform.isIOS)
+                ? StringConstants.iOSOs
+                : StringConstants.androidOs;
             for (final imei in imeiList) {
               try {
                 final inputImei = imei;
                 CheckImeiReq checkImeiReq = CheckImeiReq(
                     imei: inputImei,
                     language: event.languageType ?? StringConstants.englishCode,
-                    channel: "phone",deviceId: deviceId,osType: osType);
-                print("Check IMEI Req: ${checkImeiReq.toJson()}");
+                    channel: "phone",
+                    deviceId: deviceId,
+                    osType: osType);
                 CheckImeiRes checkImeiRes =
                     await eirsRepository.checkImei(checkImeiReq);
                 eirsRepository.insertDeviceDetail(inputImei, checkImeiRes);

@@ -33,7 +33,7 @@ class _EirsApiClient implements EirsApiClient {
     )
             .compose(
               _dio.options,
-              '/eirs/services/mobile_api/MobileDeviceDetails/save',
+              '/eirs/services/mobile_api/mobileDeviceDetails/save',
               queryParameters: queryParameters,
               data: _data,
             )

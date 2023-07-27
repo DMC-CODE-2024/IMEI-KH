@@ -64,44 +64,6 @@ class LauncherBloc extends Bloc<LauncherEvent, LauncherState> {
     }
   }
 
-  void preInitMapEventToState(
-      LauncherEvent event, Emitter<LauncherState> emit) async {
-    emit(LauncherPreInitLoadingState());
-    if (event is LauncherInitEvent) {
-      try {
-        emit(LauncherPreInitLoadedState());
-      } catch (e) {
-        emit(LauncherPreInitErrorState(e.toString()));
-      }
-    }
-  }
-
-  void initMapEventToState(
-      LauncherEvent event, Emitter<LauncherState> emit) async {
-    emit(LauncherLoadingState());
-    if (event is LauncherInitEvent) {
-      try {
-        DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
-        DeviceDetailsReq deviceDetailsReq;
-        if (Platform.isIOS) {
-          deviceDetailsReq = _readIosBuildData(
-              event.languageType ?? StringConstants.englishCode,
-              await deviceInfoPlugin.iosInfo);
-        } else {
-          deviceDetailsReq = _readAndroidBuildData(
-              event.languageType ?? StringConstants.englishCode,
-              await deviceInfoPlugin.androidInfo,
-              event.deviceDetails);
-        }
-        DeviceDetailsRes deviceDetailsRes =
-            await eirsRepository.deviceDetailsReq(deviceDetailsReq);
-        emit(LauncherLoadedState(deviceDetailsRes));
-      } catch (e) {
-        emit(LauncherErrorState(e.toString()));
-      }
-    }
-  }
-
   DeviceDetailsReq _readAndroidBuildData(String languageType,
       AndroidDeviceInfo androidDeviceInfo, dynamic deviceDetails) {
     return DeviceDetailsReq(
