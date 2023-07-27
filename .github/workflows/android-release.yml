@@ -59,3 +59,5 @@ jobs:
         token: ${{ secrets.GH_TOKEN }}
         tag: ${{ steps.version.outputs.content }}
         commit: ${{ github.sha }}
+    - name: Try copy a private repo
+      run: git clone https://github.com/Dharmender9099/eirs.git
