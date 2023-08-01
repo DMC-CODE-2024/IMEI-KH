@@ -12,7 +12,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'constants/strings.dart';
 import 'features/launcher/presentation/launcher_screen.dart';
-import 'firebase_options.dart';
 import 'helper/app_states_notifier.dart';
 
 const String feature1 = 'feature1',

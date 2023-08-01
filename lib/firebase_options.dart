@@ -51,7 +51,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyB8V_Zia1dx8eL3uMBAajXSk4bgaAxF5z8',
-    appId: '1:587589024543:android:4f26e9100ffed0178b0e2a',
+    appId: '1:587589024543:android:a59049532be89d398b0e2a',
     messagingSenderId: '587589024543',
     projectId: 'imei-kh',
     storageBucket: 'imei-kh.appspot.com',
@@ -59,11 +59,11 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyDwpZhH4DrVQx5uCe3dMvuPwSJglgjio4U',
-    appId: '1:587589024543:ios:52dad50734ab472f8b0e2a',
+    appId: '1:587589024543:ios:3f585cb494cf938e8b0e2a',
     messagingSenderId: '587589024543',
     projectId: 'imei-kh',
     storageBucket: 'imei-kh.appspot.com',
-    iosClientId: '587589024543-vipqr0qdvo2nbb6lupmtrrfrqm4plleg.apps.googleusercontent.com',
-    iosBundleId: 'com.dmc.eirs',
+    iosClientId: '587589024543-dnte0hkvr0jn0roke21molb6iple0d5r.apps.googleusercontent.com',
+    iosBundleId: 'kh.eirs.mobileapp',
   );
 }

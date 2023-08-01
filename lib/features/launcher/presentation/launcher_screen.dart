@@ -8,6 +8,7 @@ import 'package:eirs/features/launcher/data/business_logic/launcher_bloc.dart';
 import 'package:eirs/features/launcher/data/business_logic/launcher_state.dart';
 import 'package:eirs/features/launcher/data/models/device_details_res.dart';
 import 'package:eirs/helper/connection_status_notifier.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -35,12 +36,13 @@ class _LauncherScreenState extends State<LauncherScreen> {
   bool hasNetwork = true;
   bool isDeviceDetailReqInvoked = false;
   String selectedLanguage = StringConstants.englishCode;
-  static const platform = MethodChannel('com.dmc.eirs/deviceInfo');
+  static const platform = MethodChannel('kh.eirs.mobileapp/deviceInfo');
   String? deviceDetails;
 
   @override
   void initState() {
     super.initState();
+    throw("Test Crash");
     _getDeviceDetails();
   }
 

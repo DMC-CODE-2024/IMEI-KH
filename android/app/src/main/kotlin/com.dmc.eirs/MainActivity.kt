@@ -57,6 +57,6 @@ class MainActivity : FlutterActivity() {
 
 
     companion object {
-        private const val CHANNEL = "com.dmc.eirs/deviceInfo"
+        private const val CHANNEL = "kh.eirs.mobileapp/deviceInfo"
     }
 }
