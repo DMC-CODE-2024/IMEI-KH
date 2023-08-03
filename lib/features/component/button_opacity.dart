@@ -37,9 +37,10 @@ class AppButtonOpacity extends StatelessWidget {
               child: child,
             ),
             child: Container(
+              alignment: Alignment.center,
               width: width ?? double.infinity,
+              height: 45,
               padding: const EdgeInsets.all(AppSpacings.m),
-              height: 35,
               constraints: const BoxConstraints(minWidth: 40),
               decoration: BoxDecoration(
                 color: AppColors.buttonColor,
@@ -48,7 +49,7 @@ class AppButtonOpacity extends StatelessWidget {
               child: Center(
                 key: ValueKey(isLoading),
                 child:
-                    isLoading ? const Text(StringConstants.checkImei) : child,
+                    isLoading ? const Text(StringConstants.checkImei,textAlign: TextAlign.center,) : child,
               ),
             ),
           ),

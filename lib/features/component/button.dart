@@ -35,7 +35,7 @@ class AppButton extends StatelessWidget {
           child: Container(
             width: width ?? double.infinity,
             padding: const EdgeInsets.all(AppSpacings.m),
-            height: 35,
+            height: 45,
             constraints: const BoxConstraints(minWidth: 40),
             decoration: BoxDecoration(
               color: AppColors.buttonColor,

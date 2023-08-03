@@ -450,7 +450,7 @@ class _CheckImeiScreenState extends State<CheckImeiScreen> {
               child: AppButtonOpacity(
                 isLoading: false,
                 isEnable: (inputTextLength > 0) ? true : false,
-                child: Text(labelDetails?.checkIMEI ?? emptyString),
+                child: Text(labelDetails?.checkIMEI ?? emptyString,textAlign: TextAlign.center),
                 onPressed: () => _checkImei(context),
               ),
             ),
