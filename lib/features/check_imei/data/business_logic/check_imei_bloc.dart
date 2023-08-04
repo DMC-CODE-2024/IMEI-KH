@@ -38,7 +38,7 @@ class CheckImeiBloc extends Bloc<CheckImeiEvent, CheckImeiState> {
             CheckImeiReq checkImeiReq = CheckImeiReq(
                 imei: event.inputImei ?? "",
                 language: event.languageType ?? StringConstants.englishCode,
-                channel: "phone",
+                channel: channel,
                 deviceId: deviceId,
                 osType: osType);
             CheckImeiRes checkImeiRes =

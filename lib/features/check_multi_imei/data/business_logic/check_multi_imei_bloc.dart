@@ -48,7 +48,7 @@ class CheckMultiImeiBloc
                 CheckImeiReq checkImeiReq = CheckImeiReq(
                     imei: inputImei,
                     language: event.languageType ?? StringConstants.englishCode,
-                    channel: "phone",
+                    channel: channel,
                     deviceId: deviceId,
                     osType: osType);
                 CheckImeiRes checkImeiRes =

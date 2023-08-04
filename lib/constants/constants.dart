@@ -12,3 +12,4 @@ String defaultUrl = "https://lab.eirs.gov.kh";
 String baseUrl = defaultUrl;
 const String invalidStatusColor = "#eb5757";
 const String validStatusColor = "#00D100";
+const String channel = "app";
