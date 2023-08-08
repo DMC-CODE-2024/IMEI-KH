@@ -358,12 +358,14 @@ class _CheckImeiScreenState extends State<CheckImeiScreen> {
                           enableInteractiveSelection: true,
                           inputFormatters: [
                             LengthLimitingTextInputFormatter(15),
+                            FilteringTextInputFormatter.digitsOnly
                           ],
+                          keyboardType: const TextInputType.numberWithOptions(
+                              decimal: true),
                           maxLines: 1,
                           textAlign: TextAlign.left,
                           cursorHeight: 18,
                           style: const TextStyle(fontSize: 14),
-                          keyboardType: TextInputType.number,
                           controller: imeiController,
                           textAlignVertical: TextAlignVertical.center,
                           decoration: InputDecoration(
@@ -450,7 +452,8 @@ class _CheckImeiScreenState extends State<CheckImeiScreen> {
               child: AppButtonOpacity(
                 isLoading: false,
                 isEnable: (inputTextLength > 0) ? true : false,
-                child: Text(labelDetails?.checkIMEI ?? emptyString,textAlign: TextAlign.center),
+                child: Text(labelDetails?.checkIMEI ?? emptyString,
+                    textAlign: TextAlign.center),
                 onPressed: () => _checkImei(context),
               ),
             ),
