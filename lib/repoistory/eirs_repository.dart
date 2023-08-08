@@ -17,26 +17,32 @@ class EirsRepository {
     return _singletonUserRepository;
   }
 
+  BaseOptions options = BaseOptions(
+    baseUrl: baseUrl,
+    connectTimeout: requestTimeOut,
+    receiveTimeout: requestTimeOut,
+  );
+
   EirsRepository._internal();
 
-  // Save device details
+  // PreInit api to get domain url
   Future<dynamic> preInitReq(String deviceId) async {
-    return await EirsApiClient(Dio(), baseUrl: baseUrl).preInit(deviceId);
+    return await EirsApiClient(Dio(options)).preInit(deviceId);
   }
 
   // Save device details
   Future<dynamic> deviceDetailsReq(DeviceDetailsReq deviceDetailsReq) async {
-    return await EirsApiClient(Dio(), baseUrl: baseUrl)
-        .deviceDetailReq(deviceDetailsReq);
+    return await EirsApiClient(Dio(options)).deviceDetailReq(deviceDetailsReq);
   }
 
   // check imei
   Future<dynamic> checkImei(CheckImeiReq checkImeiReq) async {
-    return await EirsApiClient(Dio(), baseUrl: baseUrl).checkImei(checkImeiReq);
+    return await EirsApiClient(Dio(options)).checkImei(checkImeiReq);
   }
 
+  // Change language between en/kh
   Future<dynamic> getLanguage(String featureName, String language) async {
-    return await EirsApiClient(Dio(), baseUrl: baseUrl)
+    return await EirsApiClient(Dio(options))
         .languageRetriever(featureName, language);
   }
 
@@ -61,8 +67,11 @@ class EirsRepository {
         DatabaseHelper.columnMessage: checkImeiRes.result?.message,
         DatabaseHelper.columnCompliantStatus:
             checkImeiRes.result?.complianceStatus,
-        DatabaseHelper.columnStatusColor: (statusColor != null) ? statusColor
-            : (isValidImei) ? validStatusColor : invalidStatusColor,
+        DatabaseHelper.columnStatusColor: (statusColor != null)
+            ? statusColor
+            : (isValidImei)
+                ? validStatusColor
+                : invalidStatusColor,
         DatabaseHelper.columnIsValid: isValidImei ? 1 : 0,
         DatabaseHelper.columnTimeStamp: "${dt.millisecondsSinceEpoch}",
         DatabaseHelper.columnDate: dateFormatter.format(dt),

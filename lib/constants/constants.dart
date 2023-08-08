@@ -8,7 +8,8 @@ const int checkMultiImeiReq = 3;
 
 const int preInitReqCode = 1;
 const int initReqCode = 2;
-String defaultUrl = "https://lab.eirs.gov.kh";
+const int requestTimeOut = 60 * 1000;
+const String defaultUrl = "https://lab.eirs.gov.kh";
 String baseUrl = defaultUrl;
 const String invalidStatusColor = "#eb5757";
 const String validStatusColor = "#00D100";

@@ -3,16 +3,14 @@ import 'package:eirs/features/launcher/data/models/device_details_req.dart';
 import 'package:eirs/features/launcher/data/models/device_details_res.dart';
 import 'package:eirs/features/launcher/data/models/pre_init_res.dart';
 import 'package:retrofit/http.dart';
-
 import '../features/check_imei/data/models/check_imei_req.dart';
 import '../features/check_imei/data/models/check_imei_res.dart';
 import 'eirs_apis.dart';
-
 part 'eirs_api_client.g.dart';
 
 @RestApi()
 abstract class EirsApiClient {
-  factory EirsApiClient(Dio dio, {String baseUrl}) = _EirsApiClient;
+  factory EirsApiClient(Dio dio) = _EirsApiClient;
 
   @POST(EirsApis.deviceDetails)
   Future<DeviceDetailsRes> deviceDetailReq(

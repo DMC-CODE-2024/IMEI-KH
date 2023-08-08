@@ -36,6 +36,5 @@ class NetworkConnectivity {
 
   void disposeStream() {
     _connectivitySubscription.cancel();
-    //_controller.close();
   }
 }
