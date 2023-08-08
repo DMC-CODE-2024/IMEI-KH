@@ -9,7 +9,6 @@ import 'package:eirs/theme/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-
 import '../../../constants/image_path.dart';
 import '../../../theme/hex_color.dart';
 import '../../component/button.dart';

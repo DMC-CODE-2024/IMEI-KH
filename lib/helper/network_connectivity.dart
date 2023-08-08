@@ -1,9 +1,6 @@
 import 'dart:async';
 import 'dart:io';
-
 import 'package:connectivity_plus/connectivity_plus.dart';
-
-import '../constants/enums.dart';
 
 class NetworkConnectivity {
   NetworkConnectivity._();
@@ -14,12 +11,14 @@ class NetworkConnectivity {
   final _networkConnectivity = Connectivity();
   final _controller = StreamController.broadcast();
   late StreamSubscription<ConnectivityResult> _connectivitySubscription;
+
   Stream get myStream => _controller.stream;
 
   void initialise() async {
     ConnectivityResult result = await _networkConnectivity.checkConnectivity();
     _checkStatus(result);
-   _connectivitySubscription = _networkConnectivity.onConnectivityChanged.listen((result) {
+    _connectivitySubscription =
+        _networkConnectivity.onConnectivityChanged.listen((result) {
       _checkStatus(result);
     });
   }
@@ -37,6 +36,6 @@ class NetworkConnectivity {
 
   void disposeStream() {
     _connectivitySubscription.cancel();
-  //_controller.close();
+    //_controller.close();
   }
 }

@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:eirs/features/launcher/data/models/device_details_res.dart';
 import 'package:eirs/features/scanner/data/business_logic/scanner_bloc.dart';
 import 'package:eirs/features/scanner/data/business_logic/scanner_state.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
@@ -38,6 +37,7 @@ class _ScannerPageState extends State<ScannerPage> {
   bool isTimerStarted = false;
   bool isNavigateNext = false;
   bool isDetectionStarted = false;
+
   //Uint8List? capturedImg;
   LabelDetails? labelDetails;
 
@@ -49,8 +49,6 @@ class _ScannerPageState extends State<ScannerPage> {
 
   @override
   Widget build(BuildContext context) {
-    final isCameraSupported = defaultTargetPlatform == TargetPlatform.iOS ||
-        defaultTargetPlatform == TargetPlatform.android;
     return Scaffold(
       appBar: AppBarWithTitleOnly(title: labelDetails?.scanCode ?? ""),
       body: BlocConsumer<ScannerBloc, ScannerState>(
@@ -190,12 +188,5 @@ class _ScannerPageState extends State<ScannerPage> {
       isTimerStarted = false;
       _timer.cancel();
     }
-  }
-
-  _onReset() {
-    setState(() {
-      successScans = 0;
-      failedScans = 0;
-    });
   }
 }

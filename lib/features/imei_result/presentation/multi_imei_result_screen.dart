@@ -3,7 +3,6 @@ import 'package:eirs/features/launcher/data/models/device_details_res.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-
 import '../../../constants/constants.dart';
 import '../../../constants/image_path.dart';
 import '../../../constants/routes.dart';

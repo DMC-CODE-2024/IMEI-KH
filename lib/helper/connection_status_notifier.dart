@@ -1,11 +1,8 @@
 import 'dart:async';
-
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
-
 import 'network_connectivity.dart';
 
-class ConnectionStatusNotifier extends ValueNotifier<Map<dynamic,dynamic>> {
+class ConnectionStatusNotifier extends ValueNotifier<Map<dynamic, dynamic>> {
   late StreamSubscription<dynamic> _connectivitySubscription;
   final NetworkConnectivity _networkConnectivity = NetworkConnectivity.instance;
 
@@ -14,7 +11,8 @@ class ConnectionStatusNotifier extends ValueNotifier<Map<dynamic,dynamic>> {
     // we will update the [value]. This will make the widget
     // to rebuild
     _networkConnectivity.initialise();
-    _connectivitySubscription = _networkConnectivity.myStream.listen((event) => value = event);
+    _connectivitySubscription =
+        _networkConnectivity.myStream.listen((event) => value = event);
   }
 
   @override

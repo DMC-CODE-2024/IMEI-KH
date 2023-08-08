@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:eirs/constants/constants.dart';
 import 'package:eirs/features/component/app_bar_with_title.dart';
 import 'package:eirs/features/component/error_page.dart';
@@ -10,7 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
-
 import '../../../constants/image_path.dart';
 import '../../../constants/strings.dart';
 import '../../../helper/app_states_notifier.dart';

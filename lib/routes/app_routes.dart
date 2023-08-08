@@ -2,7 +2,6 @@ import 'package:eirs/constants/routes.dart';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import '../features/check_imei/data/business_logic/check_imei_bloc.dart';
 import '../features/check_imei/presentation/check_imei_screen.dart';
 

@@ -24,8 +24,6 @@ class ScannerBloc extends Bloc<ScannerEvent, ScannerState> {
           File fileToBeUploaded =
               await File('${tempDir.path}/image.png').create();
           fileToBeUploaded.writeAsBytesSync(imgBytes);
-          print(fileToBeUploaded.path);
-          print("${fileToBeUploaded.uri}");
           emit(ScannerLoadedState());
         } catch (e) {
           emit(ScannerErrorState(e.toString()));

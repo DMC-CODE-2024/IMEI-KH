@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../features/launcher/data/models/device_details_res.dart';
 
 class AppStatesNotifier extends ChangeNotifier {

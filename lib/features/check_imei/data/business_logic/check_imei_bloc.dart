@@ -1,10 +1,8 @@
 import 'dart:io';
-
-import 'package:bloc/bloc.dart';
 import 'package:eirs/constants/strings.dart';
 import 'package:eirs/features/launcher/data/models/device_details_res.dart';
 import 'package:eirs/helper/shared_pref.dart';
-
+import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../constants/constants.dart';
 import '../../../../repoistory/eirs_repository.dart';
 import '../models/check_imei_req.dart';

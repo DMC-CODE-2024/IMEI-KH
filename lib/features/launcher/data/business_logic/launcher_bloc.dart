@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:eirs/constants/constants.dart';
 import 'package:eirs/constants/strings.dart';
@@ -11,7 +10,6 @@ import 'package:eirs/features/launcher/data/models/pre_init_res.dart';
 import 'package:eirs/helper/shared_pref.dart';
 import 'package:eirs/repoistory/eirs_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import 'launcher_event.dart';
 
 class LauncherBloc extends Bloc<LauncherEvent, LauncherState> {
