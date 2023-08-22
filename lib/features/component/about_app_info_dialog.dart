@@ -51,13 +51,13 @@ class _AboutAppInfoDialogState extends State<AboutAppInfoDialog> {
               child: InkWell(
                 onTap: () => Navigator.pop(context),
                 child: Padding(
-                  padding: const EdgeInsets.all(8),
+                  padding: const EdgeInsets.all(10),
                   child: Text(
                     widget.labelDetails?.ok ?? "",
                     style: TextStyle(
                         fontSize: 16,
-                        fontWeight: FontWeight.w400,
-                        color: AppColors.primaryColor),
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.buttonColor),
                   ),
                 ),
               ),
