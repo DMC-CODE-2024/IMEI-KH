@@ -125,7 +125,7 @@ class _EirsAppBarState extends State<EirsAppBar> {
           ],
         ),
         child: IconButton(
-          onPressed: () => widget.callback.call(AppBarActions.appLogo),
+          onPressed: () => widget.callback.call(AppBarActions.appLogo,isEnglish),
           icon: Image.asset(
             ImageConstants.splashIcon,
             fit: BoxFit.cover,
@@ -160,7 +160,7 @@ class _EirsAppBarState extends State<EirsAppBar> {
                   width: 24,
                   height: 24,
                 ),
-                onPressed: () => widget.callback.call(AppBarActions.info),
+                onPressed: () => widget.callback.call(AppBarActions.info,isEnglish),
               ),
             ),
             DescribedFeatureOverlay(
@@ -182,7 +182,7 @@ class _EirsAppBarState extends State<EirsAppBar> {
                 return true;
               },
               child: IconButton(
-                onPressed: () => widget.callback.call(AppBarActions.history),
+                onPressed: () => widget.callback.call(AppBarActions.history,isEnglish),
                 icon: SvgPicture.asset(
                   ImageConstants.timeIcon,
                   width: 24,
@@ -194,8 +194,8 @@ class _EirsAppBarState extends State<EirsAppBar> {
               featureId: feature4,
               tapTarget: Image.asset(
                 isEnglish
-                    ? ImageConstants.englishIconAppbar
-                    : ImageConstants.khmerIconAppbar,
+                    ? ImageConstants.khmerIconAppbar
+                    : ImageConstants.englishIconAppbar,
                 width: 24,
                 height: 24,
               ),
@@ -213,11 +213,11 @@ class _EirsAppBarState extends State<EirsAppBar> {
               },
               child: IconButton(
                 onPressed: () =>
-                    widget.callback.call(AppBarActions.localization),
+                    widget.callback.call(AppBarActions.localization,isEnglish),
                 icon: Image.asset(
                     isEnglish
-                        ? ImageConstants.englishIconAppbar
-                        : ImageConstants.khmerIconAppbar,
+                        ? ImageConstants.khmerIconAppbar
+                        : ImageConstants.englishIconAppbar,
                     width: 24,
                     height: 24),
               ),

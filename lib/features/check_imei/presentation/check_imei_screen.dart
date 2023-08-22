@@ -25,7 +25,6 @@ import '../../component/button_opacity.dart';
 import '../../component/eirs_app_bar.dart';
 import '../../component/error_page.dart';
 import '../../component/input_borders.dart';
-import '../../component/localization_dialog.dart';
 import '../../component/need_any_help_widget.dart';
 import '../../component/no_internet_page.dart';
 import '../../history/presentation/device_history_screen.dart';
@@ -131,8 +130,8 @@ class _CheckImeiScreenState extends State<CheckImeiScreen> {
                 ? EirsAppBar(
                     labelDetails: labelDetails,
                     versionName: versionName,
-                    callback: (value) {
-                      _appBarActions(value);
+                    callback: (action, isEnglishLanguageSelected) {
+                      _appBarActions(action, isEnglishLanguageSelected);
                     })
                 : _appBarWithTitle(),
             body: BlocConsumer<CheckImeiBloc, CheckImeiState>(
@@ -212,13 +211,13 @@ class _CheckImeiScreenState extends State<CheckImeiScreen> {
     }
   }
 
-  void _appBarActions(AppBarActions values) {
+  void _appBarActions(AppBarActions values, bool isEnglishLanguageSelected) {
     switch (values) {
       case AppBarActions.appLogo:
         _showAboutAppInfoDialog();
         break;
       case AppBarActions.localization:
-        _showLocalizationDialog();
+        _showLocalizationDialog(isEnglishLanguageSelected);
         break;
       case AppBarActions.history:
         Navigator.of(context).push(
@@ -252,19 +251,15 @@ class _CheckImeiScreenState extends State<CheckImeiScreen> {
         });
   }
 
-  void _showLocalizationDialog() {
-    showDialog(
-        barrierColor: Colors.black26,
-        context: context,
-        builder: (context) {
-          return LocalizationDialog(callback: (value) {
-            if (hasNetwork && value != selectedLng) {
-              BlocProvider.of<CheckImeiBloc>(this.context).add(
-                  CheckImeiInitEvent(
-                      languageType: value, requestCode: languageReq));
-            }
-          });
-        });
+  void _showLocalizationDialog(bool isEnglishLanguageSelected) {
+    if (hasNetwork) {
+      BlocProvider.of<CheckImeiBloc>(context).add(
+          CheckImeiInitEvent(
+              languageType: isEnglishLanguageSelected
+                  ? StringConstants.khmerCode
+                  : StringConstants.englishCode,
+              requestCode: languageReq));
+    }
   }
 
   void _showImeiFailedDialog() {
