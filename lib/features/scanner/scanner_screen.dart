@@ -4,7 +4,6 @@ import 'package:eirs/features/launcher/data/models/device_details_res.dart';
 import 'package:eirs/features/scanner/data/business_logic/scanner_bloc.dart';
 import 'package:eirs/features/scanner/data/business_logic/scanner_state.dart';
 import 'package:eirs/features/scanner/scanner_overlay.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
@@ -25,12 +24,8 @@ class ScannerPage extends StatefulWidget {
 
 class _ScannerPageState extends State<ScannerPage> {
   bool isMultiScan = true;
-  MobileScannerController cameraController = MobileScannerController(
-    // facing: CameraFacing.back,
-    // torchEnabled: false,
-    formats: [BarcodeFormat.all],
-    returnImage: true,
-  );
+  MobileScannerController cameraController =
+      MobileScannerController(formats: [BarcodeFormat.all]);
   bool showScreenTimer = true;
   int successScans = 0;
   int failedScans = 0;
@@ -43,6 +38,7 @@ class _ScannerPageState extends State<ScannerPage> {
   Barcode? barcode;
   BarcodeCapture? captureBarcode;
   MobileScannerArguments? arguments;
+
   //Uint8List? capturedImg;
   LabelDetails? labelDetails;
 
@@ -52,69 +48,79 @@ class _ScannerPageState extends State<ScannerPage> {
     labelDetails = Provider.of<AppStatesNotifier>(context).value;
   }
 
+  Future<void> onDetect(BarcodeCapture barcode) async {
+    captureBarcode = barcode;
+    setState(() {
+      if (!isDetectionStarted) {
+        isDetectionStarted = true;
+      }
+      this.barcode = barcode.barcodes.first;
+    });
+    //capturedImg = capture.image;
+    final List<Barcode> barcodes = barcode.barcodes;
+    for (final barcode in barcodes) {
+      getScanBarCodeResult(barcode.rawValue);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final scanWindow = Rect.fromCenter(
       center: MediaQuery.of(context).size.center(Offset.zero),
       width: 300,
-      height: 200,
+      height: 150,
     );
-    final isCameraSupported = defaultTargetPlatform == TargetPlatform.iOS ||
-        defaultTargetPlatform == TargetPlatform.android;
     return Scaffold(
+      backgroundColor: Colors.black,
       appBar: AppBarWithTitleOnly(title: labelDetails?.scanCode ?? ""),
       body: BlocConsumer<ScannerBloc, ScannerState>(
         builder: (context, state) {
           return Stack(
+            fit: StackFit.expand,
             children: [
               MobileScanner(
-                fit: BoxFit.fitHeight,
+                fit: BoxFit.contain,
                 scanWindow: scanWindow,
                 controller: cameraController,
-                onScannerStarted:  (arguments) {
+                onScannerStarted: (arguments) {
                   setState(() {
                     this.arguments = arguments;
                   });
                 },
-                onDetect: (capture) {
-                  if (!isDetectionStarted) {
-                    setState(() {
-                      isDetectionStarted = true;
-                    });
-                  }
-                  /*captureBarcode = capture;
-                  setState(() => barcode = capture.barcodes.first);*/
-                  //capturedImg = capture.image;
-                  final List<Barcode> barcodes = capture.barcodes;
-                  for (final barcode in barcodes) {
-                    getScanBarCodeResult(barcode.rawValue);
-                  }
-                },
+                onDetect: onDetect,
               ),
               if (showScreenTimer && isDetectionStarted)
-                Padding(
-                  padding: const EdgeInsets.all(5.0),
-                  child: Container(
-                    width: 50,
-                    height: 50,
-                    decoration: BoxDecoration(
-                      border: Border.all(width: 2),
-                      shape: BoxShape.circle,
-                      color: Colors.white.withOpacity(0.7),
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: Padding(
+                    padding: const EdgeInsets.all(5.0),
+                    child: Container(
+                      width: 50,
+                      height: 50,
+                      decoration: BoxDecoration(
+                        border: Border.all(width: 2),
+                        shape: BoxShape.circle,
+                        color: Colors.white.withOpacity(0.7),
+                      ),
+                      child: Center(
+                        child: Text(
                           "00:${_start.toString().padLeft(2, '0')}",
                           style: const TextStyle(fontSize: 14),
-                        )
-                      ],
+                        ),
+                      ),
                     ),
                   ),
                 ),
-              // if (barcode != null && barcode?.corners != null && arguments != null)
-              //   CustomPaint(painter: BarcodeOverlay(barcode: barcode!, arguments: arguments!, boxFit: BoxFit.contain, capture: captureBarcode!),),
+              if (barcode != null &&
+                  barcode?.corners != null &&
+                  arguments != null)
+                CustomPaint(
+                  painter: BarcodeOverlay(
+                      barcode: barcode!,
+                      arguments: arguments!,
+                      boxFit: BoxFit.contain,
+                      capture: captureBarcode!),
+                ),
               CustomPaint(
                 painter: ScannerOverlay(scanWindow),
               ),
@@ -140,9 +146,6 @@ class _ScannerPageState extends State<ScannerPage> {
         if (count != null) uniqueImei[code] = count + 1;
       } else {
         uniqueImei[code] = 1;
-/*        setState(() {
-          successScans = successScans + 1;
-        });*/
       }
       stopTimer();
     }
@@ -170,6 +173,8 @@ class _ScannerPageState extends State<ScannerPage> {
         .then((_) {
       // This block runs when you have come back to the 1st Page from 2nd.
       setState(() {
+        showScreenTimer = true;
+        isDetectionStarted = false;
         _start = 10;
         successScans = 0;
         failedScans = 0;
