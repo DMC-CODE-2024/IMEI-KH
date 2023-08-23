@@ -26,6 +26,7 @@ class _ScannerPageState extends State<ScannerPage> {
   bool isMultiScan = true;
   MobileScannerController cameraController =
       MobileScannerController(formats: [BarcodeFormat.all]);
+  bool resetBarcodeOverlay = false;
   bool showScreenTimer = true;
   int successScans = 0;
   int failedScans = 0;
@@ -52,6 +53,7 @@ class _ScannerPageState extends State<ScannerPage> {
     captureBarcode = barcode;
     setState(() {
       if (!isDetectionStarted) {
+        resetBarcodeOverlay = false;
         isDetectionStarted = true;
       }
       this.barcode = barcode.barcodes.first;
@@ -67,8 +69,8 @@ class _ScannerPageState extends State<ScannerPage> {
   Widget build(BuildContext context) {
     final scanWindow = Rect.fromCenter(
       center: MediaQuery.of(context).size.center(Offset.zero),
-      width: 300,
-      height: 150,
+      width: 250,
+      height: 250,
     );
     return Scaffold(
       backgroundColor: Colors.black,
@@ -111,16 +113,14 @@ class _ScannerPageState extends State<ScannerPage> {
                     ),
                   ),
                 ),
-              if (barcode != null &&
-                  barcode?.corners != null &&
-                  arguments != null)
-                CustomPaint(
-                  painter: BarcodeOverlay(
-                      barcode: barcode!,
-                      arguments: arguments!,
-                      boxFit: BoxFit.contain,
-                      capture: captureBarcode!),
-                ),
+              CustomPaint(
+                painter: BarcodeOverlay(
+                    barcode: barcode,
+                    arguments: arguments,
+                    boxFit: BoxFit.contain,
+                    capture: captureBarcode,
+                    resetBarcodeOverlay: resetBarcodeOverlay),
+              ),
               CustomPaint(
                 painter: ScannerOverlay(scanWindow),
               ),
@@ -173,6 +173,7 @@ class _ScannerPageState extends State<ScannerPage> {
         .then((_) {
       // This block runs when you have come back to the 1st Page from 2nd.
       setState(() {
+        resetBarcodeOverlay = true;
         showScreenTimer = true;
         isDetectionStarted = false;
         _start = 10;
