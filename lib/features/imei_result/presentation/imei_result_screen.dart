@@ -84,11 +84,12 @@ class _ImeiResultScreenState extends State<ImeiResultScreen> {
                             fontSize: 20.0, color: AppColors.secondary),
                       ),
                     ),
-                    Align(
-                      alignment: Alignment.center,
+                    Center(
                       child: Padding(
                         padding: const EdgeInsets.symmetric(vertical: 35),
                         child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             SvgPicture.asset(
                               (isValidImei)
@@ -108,12 +109,14 @@ class _ImeiResultScreenState extends State<ImeiResultScreen> {
                               child: Html(
                                 data: widget.checkImeiResult.complianceStatus ??
                                     emptyString,
+                                shrinkWrap: true,
                               ),
                             ),
                             (isValidImei)
                                 ? Html(
                                     data: widget.checkImeiResult.message ??
                                         emptyString,
+                                    shrinkWrap: true,
                                   )
                                 : Container()
                           ],

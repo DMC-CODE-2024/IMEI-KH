@@ -147,10 +147,12 @@ class _MultiImeiResultScreenState extends State<MultiImeiResultScreen> {
                     padding: const EdgeInsets.only(top: 10.0, bottom: 8),
                     child: Html(
                       data: checkImeiResult?.complianceStatus ?? "",
+                      shrinkWrap: true,
                     ),
                   ),
                   Html(
                     data: checkImeiResult?.message ?? "",
+                    shrinkWrap: true,
                   ),
                   Padding(
                     padding: const EdgeInsets.only(
@@ -242,6 +244,7 @@ class _MultiImeiResultScreenState extends State<MultiImeiResultScreen> {
               padding: const EdgeInsets.symmetric(vertical: 10.0),
               child: Html(
                 data: checkImeiResult?.complianceStatus ?? "",
+                shrinkWrap: true,
               ),
             ),
             Padding(
@@ -271,7 +274,7 @@ class _MultiImeiResultScreenState extends State<MultiImeiResultScreen> {
                     width: double.infinity,
                     margin: const EdgeInsets.only(bottom: 5.0, right: 40),
                     padding: const EdgeInsets.only(
-                        top: 30.0, bottom: 30, left: 15, right: 15),
+                        top: 20.0, bottom: 20, left: 15, right: 15),
                     decoration: BoxDecoration(
                       border: Border.all(color: Colors.red),
                       borderRadius:
@@ -281,17 +284,15 @@ class _MultiImeiResultScreenState extends State<MultiImeiResultScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
+                        /*Text(
                           widget.labelDetails?.remark ?? "",
                           style:
                               TextStyle(fontSize: 14.0, color: AppColors.black),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 20),
-                          child: Html(
-                            data: widget.labelDetails?.imeiNotPer3gpp ?? "",
-                          ),
-                        ),
+                        ),*/
+                        Html(
+                          data: widget.labelDetails?.imeiNotPer3gpp ?? "",
+                          shrinkWrap: true,
+                        )
                       ],
                     ),
                   ),

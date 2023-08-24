@@ -18,7 +18,7 @@ class InvalidImeiResult extends StatelessWidget {
         Container(
           width: double.infinity,
           margin: const EdgeInsets.symmetric(vertical: 5.0),
-          padding: const EdgeInsets.symmetric(vertical: 30.0, horizontal: 25),
+          padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
             border: Border.all(color: AppColors.grey),
             borderRadius: const BorderRadius.all(Radius.circular(5.0) //
@@ -27,15 +27,11 @@ class InvalidImeiResult extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
+              /* Text(
                 labelDetails?.remark ?? "",
                 style: TextStyle(fontSize: 14.0, color: AppColors.black),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 20),
-                child:
-                    Html(data: errorMsg ?? labelDetails?.imeiNotPer3gpp ?? ""),
-              ),
+              ),*/
+              Html(data: errorMsg ?? labelDetails?.imeiNotPer3gpp ?? ""),
             ],
           ),
         ),
