@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'package:eirs/constants/constants.dart';
 import 'package:eirs/features/component/app_bar_with_title.dart';
 import 'package:eirs/features/component/error_page.dart';
@@ -7,8 +8,10 @@ import 'package:eirs/features/history/data/business_logic/device_history_state.d
 import 'package:eirs/theme/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
+
 import '../../../constants/image_path.dart';
 import '../../../constants/strings.dart';
 import '../../../helper/app_states_notifier.dart';
@@ -183,21 +186,11 @@ Widget _validImeiWidget(
               children: [
                 Padding(
                   padding: const EdgeInsets.only(bottom: 8.0),
-                  child: Text(
-                    compliantStatus ?? "",
-                    style: TextStyle(
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.w400,
-                        color: AppColors.black),
+                  child: Html(
+                    data: compliantStatus ?? "",
                   ),
                 ),
-                Text(
-                  message ?? "",
-                  style: TextStyle(
-                      fontSize: 15.0,
-                      fontWeight: FontWeight.w400,
-                      color: AppColors.black),
-                ),
+                Html(data: message ?? ""),
                 if (deviceDetails != null) _deviceInfoListWidget(deviceDetails)
               ],
             ),
@@ -316,13 +309,7 @@ Widget _invalidImeiWidget(
               title: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    compliantStatus ?? "",
-                    style: TextStyle(
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.w400,
-                        color: AppColors.black),
-                  ),
+                  Html(data: compliantStatus ?? ""),
                   Padding(
                     padding: const EdgeInsets.only(top: 10, bottom: 10),
                     child: Text(
@@ -331,11 +318,7 @@ Widget _invalidImeiWidget(
                           fontSize: 14, color: AppColors.historyTxtColor),
                     ),
                   ),
-                  Text(
-                      invalidImeiMsg,
-                      style: TextStyle(
-                          fontSize: 14, color: AppColors.historyTxtColor),
-                    ),
+                  Html(data: invalidImeiMsg),
                 ],
               ),
             )

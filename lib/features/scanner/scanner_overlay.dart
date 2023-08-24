@@ -8,7 +8,11 @@ class ScannerOverlay extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final backgroundPath = Path()..addRect(Rect.largest);
-    final cutoutPath = Path()..addRect(scanWindow);
+    final cutoutPath = Path()
+      ..addRect(Rect.fromCenter(
+          center: Offset(size.width / 2, size.height / 2),
+          width: 250,
+          height: 250));
 
     final backgroundPaint = Paint()
       ..color = Colors.black.withOpacity(0.5)

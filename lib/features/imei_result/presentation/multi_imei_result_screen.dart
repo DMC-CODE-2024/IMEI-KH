@@ -2,7 +2,9 @@ import 'package:eirs/features/check_multi_imei/data/models/multi_imei_res.dart';
 import 'package:eirs/features/launcher/data/models/device_details_res.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_svg/svg.dart';
+
 import '../../../constants/constants.dart';
 import '../../../constants/image_path.dart';
 import '../../../constants/routes.dart';
@@ -143,22 +145,12 @@ class _MultiImeiResultScreenState extends State<MultiImeiResultScreen> {
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 10.0, bottom: 8),
-                    child: Text(
-                      checkImeiResult?.complianceStatus ?? "",
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(
-                          fontSize: 16.0,
-                          fontWeight: FontWeight.w400,
-                          color: Colors.black),
+                    child: Html(
+                      data: checkImeiResult?.complianceStatus ?? "",
                     ),
                   ),
-                  Text(
-                    checkImeiResult?.message ?? "",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        fontSize: 15.0,
-                        fontWeight: FontWeight.w400,
-                        color: AppColors.black),
+                  Html(
+                    data: checkImeiResult?.message ?? "",
                   ),
                   Padding(
                     padding: const EdgeInsets.only(
@@ -170,7 +162,7 @@ class _MultiImeiResultScreenState extends State<MultiImeiResultScreen> {
                           style: TextStyle(fontSize: 14.0),
                         ),
                         Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 40.0),
+                          padding: const EdgeInsets.symmetric(horizontal: 5.0),
                           child: Text(
                             imei,
                             style: const TextStyle(fontSize: 14.0),
@@ -248,13 +240,8 @@ class _MultiImeiResultScreenState extends State<MultiImeiResultScreen> {
                 color: HexColor(statusColor ?? invalidStatusColor)),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 10.0),
-              child: Text(
-                checkImeiResult?.complianceStatus ?? "",
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                    fontSize: 16.0,
-                    fontWeight: FontWeight.w400,
-                    color: AppColors.black),
+              child: Html(
+                data: checkImeiResult?.complianceStatus ?? "",
               ),
             ),
             Padding(
@@ -266,7 +253,7 @@ class _MultiImeiResultScreenState extends State<MultiImeiResultScreen> {
                     style: TextStyle(fontSize: 14.0),
                   ),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 40.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 5.0),
                     child: Text(
                       imei,
                       style: const TextStyle(fontSize: 14.0),
@@ -301,10 +288,8 @@ class _MultiImeiResultScreenState extends State<MultiImeiResultScreen> {
                         ),
                         Padding(
                           padding: const EdgeInsets.only(top: 20),
-                          child: Text(
-                            widget.labelDetails?.imeiNotPer3gpp ?? "",
-                            style: TextStyle(
-                                fontSize: 14.0, color: AppColors.black),
+                          child: Html(
+                            data: widget.labelDetails?.imeiNotPer3gpp ?? "",
                           ),
                         ),
                       ],

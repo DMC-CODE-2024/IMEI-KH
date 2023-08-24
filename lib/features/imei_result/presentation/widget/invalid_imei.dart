@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
+
 import '../../../../theme/colors.dart';
 import '../../../launcher/data/models/device_details_res.dart';
 
 class InvalidImeiResult extends StatelessWidget {
-  const InvalidImeiResult({
-    Key? key,
-    this.labelDetails,
-     this.errorMsg
-  }) : super(key: key);
+  const InvalidImeiResult({Key? key, this.labelDetails, this.errorMsg})
+      : super(key: key);
 
   final LabelDetails? labelDetails;
   final String? errorMsg;
@@ -34,15 +33,13 @@ class InvalidImeiResult extends StatelessWidget {
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 20),
-                child: Text(
-                  errorMsg ?? labelDetails?.imeiNotPer3gpp ?? "",
-                  style: TextStyle(fontSize: 14.0, color: AppColors.black),
-                ),
+                child:
+                    Html(data: errorMsg ?? labelDetails?.imeiNotPer3gpp ?? ""),
               ),
             ],
           ),
         ),
-      /*  Container(
+        /*  Container(
           width: double.infinity,
           margin: const EdgeInsets.only(top: 20.0),
           padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 25),

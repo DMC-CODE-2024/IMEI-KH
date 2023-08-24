@@ -28,8 +28,6 @@ class _ScannerPageState extends State<ScannerPage> {
       MobileScannerController(formats: [BarcodeFormat.all]);
   bool resetBarcodeOverlay = false;
   bool showScreenTimer = true;
-  int successScans = 0;
-  int failedScans = 0;
   var uniqueImei = <String, int>{};
   late Timer _timer;
   int _start = 10;
@@ -39,6 +37,8 @@ class _ScannerPageState extends State<ScannerPage> {
   Barcode? barcode;
   BarcodeCapture? captureBarcode;
   MobileScannerArguments? arguments;
+  int initialDetectionValue = 0;
+  int lastDetectionValue = 0;
 
   //Uint8List? capturedImg;
   LabelDetails? labelDetails;
@@ -53,12 +53,12 @@ class _ScannerPageState extends State<ScannerPage> {
     captureBarcode = barcode;
     setState(() {
       if (!isDetectionStarted) {
-        resetBarcodeOverlay = false;
         isDetectionStarted = true;
       }
+      resetBarcodeOverlay = false;
+      initialDetectionValue++;
       this.barcode = barcode.barcodes.first;
     });
-    //capturedImg = capture.image;
     final List<Barcode> barcodes = barcode.barcodes;
     for (final barcode in barcodes) {
       getScanBarCodeResult(barcode.rawValue);
@@ -84,13 +84,25 @@ class _ScannerPageState extends State<ScannerPage> {
                 fit: BoxFit.contain,
                 scanWindow: scanWindow,
                 controller: cameraController,
-                onScannerStarted: (arguments) {
+                onScannerStarted: (arguments) async {
                   setState(() {
                     this.arguments = arguments;
                   });
                 },
                 onDetect: onDetect,
               ),
+              CustomPaint(
+                painter: BarcodeOverlay(
+                    barcode: barcode,
+                    arguments: arguments,
+                    boxFit: BoxFit.contain,
+                    capture: captureBarcode,
+                    resetBarcodeOverlay: resetBarcodeOverlay),
+              ),
+              if (arguments != null)
+                CustomPaint(
+                  painter: ScannerOverlay(scanWindow),
+                ),
               if (showScreenTimer && isDetectionStarted)
                 Align(
                   alignment: Alignment.topLeft,
@@ -113,17 +125,6 @@ class _ScannerPageState extends State<ScannerPage> {
                     ),
                   ),
                 ),
-              CustomPaint(
-                painter: BarcodeOverlay(
-                    barcode: barcode,
-                    arguments: arguments,
-                    boxFit: BoxFit.contain,
-                    capture: captureBarcode,
-                    resetBarcodeOverlay: resetBarcodeOverlay),
-              ),
-              CustomPaint(
-                painter: ScannerOverlay(scanWindow),
-              ),
             ],
           );
         },
@@ -157,8 +158,6 @@ class _ScannerPageState extends State<ScannerPage> {
     stopTimer();
     isNavigateNext = true;
     if (uniqueImei.isEmpty) {
-      /* ScannerBloc bloc = BlocProvider.of<ScannerBloc>(context);
-      bloc.add(ScannerInitEvent(imgBytes: capturedImg));*/
       return Navigator.pop(context, true);
     }
     Navigator.of(context)
@@ -173,19 +172,23 @@ class _ScannerPageState extends State<ScannerPage> {
         .then((_) {
       // This block runs when you have come back to the 1st Page from 2nd.
       setState(() {
-        resetBarcodeOverlay = true;
-        showScreenTimer = true;
-        isDetectionStarted = false;
-        _start = 10;
-        successScans = 0;
-        failedScans = 0;
-        cameraController.start();
-        isNavigateNext = false;
-        isTimerStarted = false;
         // Call setState to refresh the page.
+        resetUiElement();
       });
       uniqueImei.clear();
     });
+  }
+
+  void resetUiElement() {
+    initialDetectionValue = 0;
+    lastDetectionValue = 0;
+    resetBarcodeOverlay = true;
+    showScreenTimer = true;
+    isDetectionStarted = false;
+    _start = 10;
+    cameraController.start();
+    isNavigateNext = false;
+    isTimerStarted = false;
   }
 
   void startTimer() {
@@ -203,6 +206,10 @@ class _ScannerPageState extends State<ScannerPage> {
             _start--;
           }
           setState(() {
+            if (lastDetectionValue == initialDetectionValue) {
+              resetBarcodeOverlay = true;
+            }
+            lastDetectionValue = initialDetectionValue;
             _start;
           });
         },

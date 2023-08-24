@@ -8,7 +8,9 @@ import 'package:eirs/features/imei_result/presentation/widget/invalid_imei.dart'
 import 'package:eirs/theme/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_svg/svg.dart';
+
 import '../../../constants/image_path.dart';
 import '../../../theme/hex_color.dart';
 import '../../component/button.dart';
@@ -103,24 +105,15 @@ class _ImeiResultScreenState extends State<ImeiResultScreen> {
                                   ? const EdgeInsets.only(
                                       top: 10.0, bottom: 8.0)
                                   : const EdgeInsets.symmetric(vertical: 10.0),
-                              child: Text(
-                                widget.checkImeiResult.complianceStatus ?? emptyString,
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    fontSize: 16.0,
-                                    fontWeight: FontWeight.w400,
-                                    color: AppColors.black),
+                              child: Html(
+                                data: widget.checkImeiResult.complianceStatus ??
+                                    emptyString,
                               ),
                             ),
                             (isValidImei)
-                                ? Text(
-                                    widget.checkImeiResult.message ??
+                                ? Html(
+                                    data: widget.checkImeiResult.message ??
                                         emptyString,
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                        fontSize: 15.0,
-                                        fontWeight: FontWeight.w400,
-                                        color: AppColors.black),
                                   )
                                 : Container()
                           ],
@@ -134,7 +127,7 @@ class _ImeiResultScreenState extends State<ImeiResultScreen> {
                           style: TextStyle(fontSize: 14.0),
                         ),
                         Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 40.0),
+                          padding: const EdgeInsets.symmetric(horizontal: 5.0),
                           child: Text(
                             widget.scanImei,
                             style: const TextStyle(fontSize: 14.0),
