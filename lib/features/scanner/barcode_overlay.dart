@@ -1,6 +1,4 @@
 import 'dart:io';
-import 'dart:ui';
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
