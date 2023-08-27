@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>587589024543-fl0eg8vjq38c53fkv2hgaa2e73qg2qme.apps.googleusercontent.com</string>
+	<string>587589024543-dnte0hkvr0jn0roke21molb6iple0d5r.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.587589024543-fl0eg8vjq38c53fkv2hgaa2e73qg2qme</string>
+	<string>com.googleusercontent.apps.587589024543-dnte0hkvr0jn0roke21molb6iple0d5r</string>
 	<key>API_KEY</key>
 	<string>AIzaSyDwpZhH4DrVQx5uCe3dMvuPwSJglgjio4U</string>
 	<key>GCM_SENDER_ID</key>
@@ -19,16 +19,16 @@
 	<key>STORAGE_BUCKET</key>
 	<string>imei-kh.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
-	<false/>
+	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
-	<false/>
+	<false></false>
 	<key>IS_APPINVITE_ENABLED</key>
-	<true/>
+	<true></true>
 	<key>IS_GCM_ENABLED</key>
-	<true/>
+	<true></true>
 	<key>IS_SIGNIN_ENABLED</key>
-	<true/>
+	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:587589024543:ios:00ad458d223712ed8b0e2a</string>
+	<string>1:587589024543:ios:3f585cb494cf938e8b0e2a</string>
 </dict>
 </plist>
