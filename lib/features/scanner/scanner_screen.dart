@@ -9,10 +9,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:provider/provider.dart';
+
 import '../../helper/app_states_notifier.dart';
 import '../check_multi_imei/data/business_logic/check_multi_imei_bloc.dart';
 import '../check_multi_imei/presentation/imei_list.dart';
 import '../component/app_bar_with_title.dart';
+import 'barcode_overlay.dart';
 
 class ScannerPage extends StatefulWidget {
   const ScannerPage({super.key});
@@ -111,28 +113,29 @@ class _ScannerPageState extends State<ScannerPage>
                 },
                 onDetect: onDetect,
               ),
-              /* CustomPaint(
+              CustomPaint(
                 painter: BarcodeOverlay(
                     barcode: barcode,
                     arguments: arguments,
                     boxFit: BoxFit.contain,
                     capture: captureBarcode,
                     resetBarcodeOverlay: resetBarcodeOverlay),
-              ),*/
+              ),
               if (arguments != null)
                 CustomPaint(
                   painter: ScannerOverlay(),
                 ),
-              Align(
-                alignment: Alignment.center,
-                child: SizedBox(
-                  width: 300,
-                  height: 150,
-                  child: ScannerAnimation(
-                    animation: _animationController,
+              if (arguments != null)
+                Align(
+                  alignment: Alignment.center,
+                  child: SizedBox(
+                    width: 300,
+                    height: 150,
+                    child: ScannerAnimation(
+                      animation: _animationController,
+                    ),
                   ),
                 ),
-              ),
               if (showScreenTimer && isDetectionStarted)
                 Align(
                   alignment: Alignment.topLeft,
