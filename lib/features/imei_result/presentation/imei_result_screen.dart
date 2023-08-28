@@ -104,12 +104,15 @@ class _ImeiResultScreenState extends State<ImeiResultScreen> {
                             Padding(
                               padding: (isValidImei)
                                   ? const EdgeInsets.only(
-                                      top: 10.0, bottom: 8.0)
+                                      top: 10.0, bottom: 5.0)
                                   : const EdgeInsets.symmetric(vertical: 10.0),
                               child: Html(
                                 data: widget.checkImeiResult.complianceStatus ??
                                     emptyString,
                                 shrinkWrap: true,
+                                style: {
+                                  'html': Style(textAlign: TextAlign.center)
+                                },
                               ),
                             ),
                             (isValidImei)
@@ -117,6 +120,9 @@ class _ImeiResultScreenState extends State<ImeiResultScreen> {
                                     data: widget.checkImeiResult.message ??
                                         emptyString,
                                     shrinkWrap: true,
+                                    style: {
+                                      'html': Style(textAlign: TextAlign.center)
+                                    },
                                   )
                                 : Container()
                           ],

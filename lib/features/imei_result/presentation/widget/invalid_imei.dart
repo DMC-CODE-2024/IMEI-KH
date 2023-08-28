@@ -31,7 +31,11 @@ class InvalidImeiResult extends StatelessWidget {
                 labelDetails?.remark ?? "",
                 style: TextStyle(fontSize: 14.0, color: AppColors.black),
               ),*/
-              Html(data: errorMsg ?? labelDetails?.imeiNotPer3gpp ?? ""),
+              Html(
+                data: errorMsg ?? labelDetails?.imeiNotPer3gpp ?? "",
+                shrinkWrap: true,
+                style: {'html': Style(textAlign: TextAlign.left)},
+              ),
             ],
           ),
         ),

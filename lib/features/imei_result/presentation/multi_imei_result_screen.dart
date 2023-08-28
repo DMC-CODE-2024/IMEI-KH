@@ -144,15 +144,17 @@ class _MultiImeiResultScreenState extends State<MultiImeiResultScreen> {
                     color: HexColor(statusColor ?? validStatusColor),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(top: 10.0, bottom: 8),
+                    padding: const EdgeInsets.only(top: 10.0, bottom: 5),
                     child: Html(
                       data: checkImeiResult?.complianceStatus ?? "",
                       shrinkWrap: true,
+                      style: {'html': Style(textAlign: TextAlign.center)},
                     ),
                   ),
                   Html(
                     data: checkImeiResult?.message ?? "",
                     shrinkWrap: true,
+                    style: {'html': Style(textAlign: TextAlign.center)},
                   ),
                   Padding(
                     padding: const EdgeInsets.only(
@@ -245,6 +247,7 @@ class _MultiImeiResultScreenState extends State<MultiImeiResultScreen> {
               child: Html(
                 data: checkImeiResult?.complianceStatus ?? "",
                 shrinkWrap: true,
+                style: {'html': Style(textAlign: TextAlign.center)},
               ),
             ),
             Padding(
@@ -292,6 +295,7 @@ class _MultiImeiResultScreenState extends State<MultiImeiResultScreen> {
                         Html(
                           data: widget.labelDetails?.imeiNotPer3gpp ?? "",
                           shrinkWrap: true,
+                          style: {'html': Style(textAlign: TextAlign.left)},
                         )
                       ],
                     ),
