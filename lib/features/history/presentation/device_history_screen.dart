@@ -184,14 +184,19 @@ Widget _validImeiWidget(
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 8.0),
-                  child: Html(
+                Html(
                     data: compliantStatus ?? "",
-                  ),
-                ),
-                Html(data: message ?? ""),
-                if (deviceDetails != null) _deviceInfoListWidget(deviceDetails)
+                    shrinkWrap: true,
+                    style: {'html': Style(textAlign: TextAlign.start)}),
+                Html(
+                    data: message ?? "",
+                    shrinkWrap: true,
+                    style: {'html': Style(textAlign: TextAlign.start)}),
+                if (deviceDetails != null)
+                  Padding(
+                    padding: const EdgeInsets.only(left: 8, bottom: 10),
+                    child: _deviceInfoListWidget(deviceDetails),
+                  )
               ],
             ),
           ],
@@ -222,10 +227,13 @@ Widget _deviceInfoListWidget(Map<String, dynamic> values) {
               ),
               Expanded(
                 flex: 2,
-                child: Text(
-                  value,
-                  style:
-                      TextStyle(fontSize: 14, color: AppColors.historyTxtColor),
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 10),
+                  child: Text(
+                    value,
+                    style: TextStyle(
+                        fontSize: 14, color: AppColors.historyTxtColor),
+                  ),
                 ),
               )
             ],
@@ -309,16 +317,14 @@ Widget _invalidImeiWidget(
               title: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Html(data: compliantStatus ?? ""),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 10, bottom: 10),
-                    child: Text(
-                      labelDetails?.remark ?? "",
-                      style: TextStyle(
-                          fontSize: 14, color: AppColors.historyTxtColor),
-                    ),
-                  ),
-                  Html(data: invalidImeiMsg),
+                  Html(
+                      data: compliantStatus ?? "",
+                      shrinkWrap: true,
+                      style: {'html': Style(textAlign: TextAlign.start)}),
+                  Html(
+                      data: invalidImeiMsg,
+                      shrinkWrap: true,
+                      style: {'html': Style(textAlign: TextAlign.start)}),
                 ],
               ),
             )
