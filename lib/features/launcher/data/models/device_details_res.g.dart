@@ -84,7 +84,8 @@ LabelDetails _$LabelDetailsFromJson(Map<String, dynamic> json) => LabelDetails()
   ..scanFailedDesc = json['scanFailedDesc'] as String?
   ..positiveBtnTxt = json['positiveBtnTxt'] as String?
   ..negativeBtnTxt = json['negativeBtnTxt'] as String?
-  ..appVersion = json['appVersion'] as String?;
+  ..appVersion = json['appVersion'] as String?
+  ..imei = json['imei'] as String?;
 
 Map<String, dynamic> _$LabelDetailsToJson(LabelDetails instance) =>
     <String, dynamic>{
@@ -153,4 +154,5 @@ Map<String, dynamic> _$LabelDetailsToJson(LabelDetails instance) =>
       'positiveBtnTxt': instance.positiveBtnTxt,
       'negativeBtnTxt': instance.negativeBtnTxt,
       'appVersion': instance.appVersion,
+      'imei': instance.imei,
     };

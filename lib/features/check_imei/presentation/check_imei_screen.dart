@@ -18,7 +18,6 @@ import 'package:provider/provider.dart';
 import '../../../constants/constants.dart';
 import '../../../constants/image_path.dart';
 import '../../../constants/strings.dart';
-import '../../../helper/shared_pref.dart';
 import '../../../main.dart';
 import '../../../theme/colors.dart';
 import '../../component/button_opacity.dart';
@@ -55,7 +54,6 @@ class _CheckImeiScreenState extends State<CheckImeiScreen> {
   String emptyString = "";
   Color textColor = AppColors.grey;
   LabelDetails? labelDetails;
-  String selectedLng = StringConstants.englishCode;
   bool reloadPage = false;
   bool isEnglish = true;
 
@@ -64,9 +62,6 @@ class _CheckImeiScreenState extends State<CheckImeiScreen> {
     super.initState();
     PackageInfo.fromPlatform().then((value) {
       versionName = value.version;
-    });
-    getLocale().then((languageCode) {
-      selectedLng = languageCode;
     });
   }
 
@@ -253,12 +248,11 @@ class _CheckImeiScreenState extends State<CheckImeiScreen> {
 
   void _showLocalizationDialog(bool isEnglishLanguageSelected) {
     if (hasNetwork) {
-      BlocProvider.of<CheckImeiBloc>(context).add(
-          CheckImeiInitEvent(
-              languageType: isEnglishLanguageSelected
-                  ? StringConstants.khmerCode
-                  : StringConstants.englishCode,
-              requestCode: languageReq));
+      BlocProvider.of<CheckImeiBloc>(context).add(CheckImeiInitEvent(
+          languageType: isEnglishLanguageSelected
+              ? StringConstants.khmerCode
+              : StringConstants.englishCode,
+          requestCode: languageReq));
     }
   }
 

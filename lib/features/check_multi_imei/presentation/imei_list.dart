@@ -173,7 +173,7 @@ class _ImeiListPageState extends State<ImeiListPage> {
           });
         });
         return ListTile(
-          title: Text("${StringConstants.imei} ${index + 1}"),
+          title: Text("${labelDetails?.imei ?? ""} ${index + 1}"),
           subtitle: Padding(
             padding: const EdgeInsets.symmetric(vertical: 8),
             child: Row(

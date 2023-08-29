@@ -93,6 +93,7 @@ class LabelDetails {
   String? positiveBtnTxt;
   String? negativeBtnTxt;
   String? appVersion;
+  String? imei;
   LabelDetails();
 
   factory LabelDetails.fromJson(Map<String, dynamic> json) =>

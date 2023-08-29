@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../../constants/image_path.dart';
+import '../../main.dart';
 import '../launcher/data/models/device_details_res.dart';
 import 'button.dart';
 
@@ -20,13 +21,19 @@ class ErrorPage extends StatelessWidget {
         children: <Widget>[
           SvgPicture.asset(ImageConstants.errorImg),
           Text(
-            labelDetails?.oops ?? StringConstants.oops,
+            labelDetails?.oops ??
+                ((selectedLng == StringConstants.englishCode)
+                    ? StringConstants.oops
+                    : StringConstants.oopsKh),
             style: const TextStyle(fontSize: 32.0, color: Colors.black),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 40),
             child: Text(
-              labelDetails?.sorryUnableToFetch ?? StringConstants.errorMsg,
+              labelDetails?.sorryUnableToFetch ??
+                  ((selectedLng == StringConstants.englishCode)
+                      ? StringConstants.errorMsg
+                      : StringConstants.errorMsgKh),
               textAlign: TextAlign.center,
               style: const TextStyle(fontSize: 16.0, color: Colors.black),
             ),
@@ -34,7 +41,10 @@ class ErrorPage extends StatelessWidget {
           AppButton(
             width: 200,
             isLoading: false,
-            child: Text(labelDetails?.tryAgain ?? StringConstants.tryAgain),
+            child: Text(labelDetails?.tryAgain ??
+                ((selectedLng == StringConstants.englishCode)
+                    ? StringConstants.tryAgain
+                    : StringConstants.tryAgainKh)),
             onPressed: () => callback?.call(true),
           )
         ],

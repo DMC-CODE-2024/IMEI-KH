@@ -1,22 +1,20 @@
 import 'package:eirs/main.dart';
-
-const String selectedLang = "selectedLang";
-const String deviceId = "device_id";
+import '../constants/strings.dart';
 
 Future setLocale(String languageCode) async {
-  await sharedPref.setString(selectedLang, languageCode);
+  await sharedPref.setString(StringConstants.selectedLang, languageCode);
 }
 
 Future<String> getLocale() async {
-  String languageCode = sharedPref.getString(selectedLang) ?? 'en';
+  String languageCode = sharedPref.getString(StringConstants.selectedLang) ??
+      StringConstants.englishCode;
   return languageCode;
 }
 
-
 Future setDeviceId(String uniqueId) async {
-  await sharedPref.setString(deviceId,uniqueId);
+  await sharedPref.setString(StringConstants.deviceId, uniqueId);
 }
 
 Future<String?> getDeviceId() async {
-  return sharedPref.getString(deviceId);
+  return sharedPref.getString(StringConstants.deviceId);
 }

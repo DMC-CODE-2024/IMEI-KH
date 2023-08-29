@@ -8,7 +8,6 @@ import 'package:flutter_svg/svg.dart';
 import '../../../constants/constants.dart';
 import '../../../constants/image_path.dart';
 import '../../../constants/routes.dart';
-import '../../../constants/strings.dart';
 import '../../../theme/colors.dart';
 import '../../../theme/hex_color.dart';
 import '../../check_imei/data/models/check_imei_res.dart';
@@ -161,9 +160,9 @@ class _MultiImeiResultScreenState extends State<MultiImeiResultScreen> {
                         top: 30.0, left: 15.0, bottom: 15),
                     child: Row(
                       children: [
-                        const Text(
-                          StringConstants.imei,
-                          style: TextStyle(fontSize: 14.0),
+                        Text(
+                          widget.labelDetails?.imei ?? "",
+                          style: const TextStyle(fontSize: 14.0),
                         ),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 5.0),
@@ -254,9 +253,9 @@ class _MultiImeiResultScreenState extends State<MultiImeiResultScreen> {
               padding: const EdgeInsets.only(top: 20, bottom: 8),
               child: Row(
                 children: [
-                  const Text(
-                    StringConstants.imei,
-                    style: TextStyle(fontSize: 14.0),
+                  Text(
+                    widget.labelDetails?.imei ?? "",
+                    style: const TextStyle(fontSize: 14.0),
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 5.0),

@@ -1,5 +1,4 @@
 import 'package:eirs/constants/constants.dart';
-import 'package:eirs/constants/strings.dart';
 import 'package:eirs/features/check_imei/data/models/check_imei_res.dart';
 import 'package:eirs/features/component/result_app_bar.dart';
 import 'package:eirs/features/imei_result/data/models/device_details.dart';
@@ -131,9 +130,9 @@ class _ImeiResultScreenState extends State<ImeiResultScreen> {
                     ),
                     Row(
                       children: [
-                        const Text(
-                          StringConstants.imei,
-                          style: TextStyle(fontSize: 14.0),
+                        Text(
+                          widget.labelDetails?.imei ?? emptyString,
+                          style: const TextStyle(fontSize: 14.0),
                         ),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 5.0),

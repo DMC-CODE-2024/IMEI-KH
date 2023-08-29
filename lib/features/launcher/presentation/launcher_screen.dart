@@ -14,9 +14,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants/image_path.dart';
-import '../../../constants/strings.dart';
 import '../../../helper/app_states_notifier.dart';
-import '../../../helper/shared_pref.dart';
+import '../../../main.dart';
 import '../../../theme/colors.dart';
 import '../../component/no_internet_page.dart';
 import '../data/business_logic/launcher_event.dart';
@@ -34,7 +33,6 @@ class _LauncherScreenState extends State<LauncherScreen> {
   Map _source = {ConnectivityResult.none: false};
   bool hasNetwork = true;
   bool isDeviceDetailReqInvoked = false;
-  String selectedLanguage = StringConstants.englishCode;
   static const platform = MethodChannel('kh.eirs.mobileapp/deviceInfo');
   String? deviceDetails;
 
@@ -55,13 +53,12 @@ class _LauncherScreenState extends State<LauncherScreen> {
   Future<void> _preInitApiReq() async {
     BlocProvider.of<LauncherBloc>(context).add(LauncherInitEvent(
         requestCode: preInitReqCode,
-        languageType: await getLocale(),
+        languageType: selectedLng,
         deviceDetails: deviceDetails));
   }
 
   Future<void> _initApiReq() async {
     LauncherBloc bloc = BlocProvider.of<LauncherBloc>(context);
-    String selectedLng = await getLocale();
     bloc.add(LauncherInitEvent(
         requestCode: initReqCode,
         languageType: selectedLng,
@@ -84,7 +81,6 @@ class _LauncherScreenState extends State<LauncherScreen> {
       }
       if (hasNetwork && !isDeviceDetailReqInvoked) {
         isDeviceDetailReqInvoked = true;
-        //_initApiReq();
         _preInitApiReq();
       }
     }

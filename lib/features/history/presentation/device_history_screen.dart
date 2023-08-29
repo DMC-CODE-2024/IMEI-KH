@@ -116,205 +116,71 @@ class _DeviceHistoryScreenState extends State<DeviceHistoryScreen> {
       },
     );
   }
-}
 
-Widget _validImeiWidget(
-    BuildContext context,
-    String imei,
-    String date,
-    String time,
-    Map<String, dynamic>? deviceDetails,
-    String? compliantStatus,
-    String? message,
-    String? statusColor) {
-  return Container(
-    color: AppColors.historyBg,
-    padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-    child: Theme(
-      data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
-      child: ListTileTheme(
-        contentPadding: const EdgeInsets.all(0),
-        child: ExpansionTile(
-          title: Row(
-            children: [
-              SvgPicture.asset(
-                ImageConstants.validIcon,
-                color: HexColor(statusColor ?? validStatusColor),
-                width: 40,
-                height: 40,
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 12),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "${StringConstants.imei}  $imei",
-                      style: TextStyle(
-                          fontSize: 14, color: AppColors.historyTxtColor),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 6),
-                      child: Row(
-                        children: [
-                          Text(
-                            date,
-                            style: TextStyle(
-                                fontSize: 14,
-                                color: AppColors.dateTimeTxtColor),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 15),
-                            child: Text(
-                              time,
+  Widget _validImeiWidget(
+      BuildContext context,
+      String imei,
+      String date,
+      String time,
+      Map<String, dynamic>? deviceDetails,
+      String? compliantStatus,
+      String? message,
+      String? statusColor) {
+    return Container(
+      color: AppColors.historyBg,
+      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+      child: Theme(
+        data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+        child: ListTileTheme(
+          contentPadding: const EdgeInsets.all(0),
+          child: ExpansionTile(
+            title: Row(
+              children: [
+                SvgPicture.asset(
+                  ImageConstants.validIcon,
+                  color: HexColor(statusColor ?? validStatusColor),
+                  width: 40,
+                  height: 40,
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 12),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "${labelDetails?.imei ?? ""}  $imei",
+                        style: TextStyle(
+                            fontSize: 14, color: AppColors.historyTxtColor),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 6),
+                        child: Row(
+                          children: [
+                            Text(
+                              date,
                               style: TextStyle(
-                                  fontSize: 12,
+                                  fontSize: 14,
                                   color: AppColors.dateTimeTxtColor),
                             ),
-                          )
-                        ],
+                            Padding(
+                              padding: const EdgeInsets.only(left: 15),
+                              child: Text(
+                                time,
+                                style: TextStyle(
+                                    fontSize: 12,
+                                    color: AppColors.dateTimeTxtColor),
+                              ),
+                            )
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-              )
-            ],
-          ),
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Html(
-                    data: compliantStatus ?? "",
-                    shrinkWrap: true,
-                    style: {'html': Style(textAlign: TextAlign.start)}),
-                Html(
-                    data: message ?? "",
-                    shrinkWrap: true,
-                    style: {'html': Style(textAlign: TextAlign.start)}),
-                if (deviceDetails != null)
-                  Padding(
-                    padding: const EdgeInsets.only(left: 8, bottom: 10),
-                    child: _deviceInfoListWidget(deviceDetails),
-                  )
+                    ],
+                  ),
+                )
               ],
             ),
-          ],
-        ),
-      ),
-    ),
-  );
-}
-
-Widget _deviceInfoListWidget(Map<String, dynamic> values) {
-  return ListView.builder(
-    shrinkWrap: true,
-    itemCount: values.length,
-    itemBuilder: (BuildContext context, int index) {
-      String key = values.keys.elementAt(index);
-      String value = values.values.elementAt(index);
-      return SizedBox(
-        height: 36,
-        child: ListTile(
-          title: Row(
             children: [
-              Expanded(
-                child: Text(
-                  key,
-                  style:
-                      TextStyle(fontSize: 14, color: AppColors.historyTxtColor),
-                ),
-              ),
-              Expanded(
-                flex: 2,
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 10),
-                  child: Text(
-                    value,
-                    style: TextStyle(
-                        fontSize: 14, color: AppColors.historyTxtColor),
-                  ),
-                ),
-              )
-            ],
-          ),
-        ),
-      );
-    },
-  );
-}
-
-Widget _invalidImeiWidget(
-    BuildContext context,
-    String imei,
-    String date,
-    String time,
-    LabelDetails? labelDetails,
-    String? compliantStatus,
-    String? statusColor,
-    String? message) {
-  var invalidImeiMsg = labelDetails?.imeiNotPer3gpp ?? "";
-  if (message == "null" || message == null) {
-    labelDetails?.imeiNotPer3gpp;
-  } else {
-    invalidImeiMsg = message;
-  }
-  return Container(
-    color: AppColors.historyBg,
-    padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-    child: Theme(
-      data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
-      child: ListTileTheme(
-        contentPadding: const EdgeInsets.all(0),
-        child: ExpansionTile(
-          title: Row(
-            children: [
-              SvgPicture.asset(
-                ImageConstants.invalidIcon,
-                color: HexColor(statusColor ?? invalidStatusColor),
-                width: 40,
-                height: 40,
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 12),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "${StringConstants.imei}  $imei",
-                      style: TextStyle(
-                          fontSize: 14, color: AppColors.historyTxtColor),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 6),
-                      child: Row(
-                        children: [
-                          Text(
-                            date,
-                            style: TextStyle(
-                                fontSize: 14,
-                                color: AppColors.dateTimeTxtColor),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 15),
-                            child: Text(
-                              time,
-                              style: TextStyle(
-                                  fontSize: 12,
-                                  color: AppColors.dateTimeTxtColor),
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              )
-            ],
-          ),
-          children: <Widget>[
-            ListTile(
-              title: Column(
+              Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Html(
@@ -322,15 +188,149 @@ Widget _invalidImeiWidget(
                       shrinkWrap: true,
                       style: {'html': Style(textAlign: TextAlign.start)}),
                   Html(
-                      data: invalidImeiMsg,
+                      data: message ?? "",
                       shrinkWrap: true,
                       style: {'html': Style(textAlign: TextAlign.start)}),
+                  if (deviceDetails != null)
+                    Padding(
+                      padding: const EdgeInsets.only(left: 8, bottom: 10),
+                      child: _deviceInfoListWidget(deviceDetails),
+                    )
                 ],
               ),
-            )
-          ],
+            ],
+          ),
         ),
       ),
-    ),
-  );
+    );
+  }
+
+  Widget _deviceInfoListWidget(Map<String, dynamic> values) {
+    return ListView.builder(
+      shrinkWrap: true,
+      itemCount: values.length,
+      itemBuilder: (BuildContext context, int index) {
+        String key = values.keys.elementAt(index);
+        String value = values.values.elementAt(index);
+        return SizedBox(
+          height: 36,
+          child: ListTile(
+            title: Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    key,
+                    style: TextStyle(
+                        fontSize: 14, color: AppColors.historyTxtColor),
+                  ),
+                ),
+                Expanded(
+                  flex: 2,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 10),
+                    child: Text(
+                      value,
+                      style: TextStyle(
+                          fontSize: 14, color: AppColors.historyTxtColor),
+                    ),
+                  ),
+                )
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _invalidImeiWidget(
+      BuildContext context,
+      String imei,
+      String date,
+      String time,
+      LabelDetails? labelDetails,
+      String? compliantStatus,
+      String? statusColor,
+      String? message) {
+    var invalidImeiMsg = labelDetails?.imeiNotPer3gpp ?? "";
+    if (message == "null" || message == null) {
+      labelDetails?.imeiNotPer3gpp;
+    } else {
+      invalidImeiMsg = message;
+    }
+    return Container(
+      color: AppColors.historyBg,
+      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+      child: Theme(
+        data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+        child: ListTileTheme(
+          contentPadding: const EdgeInsets.all(0),
+          child: ExpansionTile(
+            title: Row(
+              children: [
+                SvgPicture.asset(
+                  ImageConstants.invalidIcon,
+                  color: HexColor(statusColor ?? invalidStatusColor),
+                  width: 40,
+                  height: 40,
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 12),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "${labelDetails?.imei ?? ""}  $imei",
+                        style: TextStyle(
+                            fontSize: 14, color: AppColors.historyTxtColor),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 6),
+                        child: Row(
+                          children: [
+                            Text(
+                              date,
+                              style: TextStyle(
+                                  fontSize: 14,
+                                  color: AppColors.dateTimeTxtColor),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 15),
+                              child: Text(
+                                time,
+                                style: TextStyle(
+                                    fontSize: 12,
+                                    color: AppColors.dateTimeTxtColor),
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            ),
+            children: <Widget>[
+              ListTile(
+                title: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Html(
+                        data: compliantStatus ?? "",
+                        shrinkWrap: true,
+                        style: {'html': Style(textAlign: TextAlign.start)}),
+                    Html(
+                        data: invalidImeiMsg,
+                        shrinkWrap: true,
+                        style: {'html': Style(textAlign: TextAlign.start)}),
+                  ],
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 }

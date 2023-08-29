@@ -1,4 +1,5 @@
 import 'package:eirs/features/launcher/data/business_logic/launcher_bloc.dart';
+import 'package:eirs/helper/shared_pref.dart';
 import 'package:eirs/persistent/database_helper.dart';
 import 'package:eirs/routes/app_routes.dart';
 import 'package:eirs/theme/colors.dart';
@@ -20,6 +21,7 @@ const String feature1 = 'feature1',
     feature4 = 'feature4',
     feature5 = 'feature5';
 final dbHelper = DatabaseHelper();
+String selectedLng = StringConstants.englishCode;
 late final SharedPreferences sharedPref;
 
 Future<void> main() async {
@@ -34,6 +36,7 @@ Future<void> main() async {
     ),
   );
   sharedPref = await SharedPreferences.getInstance();
+  selectedLng = await getLocale();
   // initialize the database
   await dbHelper.init();
   runApp(MyApp());
