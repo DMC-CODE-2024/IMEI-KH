@@ -13,7 +13,7 @@ class StringConstants {
   static const String openSansFontFamily = 'OpenSans';
   //Internet error messages
   static const String noInternet = "No Internet connection";
-  static const String noInternetKh = "ពុំមានសេវាអ៊ីនធឺណេត";
+  static const String noInternetKh = "ពុំមានសេវាអ៊ីនធឺណិត";
   static const String noInternetMsg = "Make sure WiFi or cellular data is turned on and then try again.";
   static const String noInternetMsgKh = "សូមប្រាកដថាសេវា WiFi ឬសេវាអ៊ីនធឺណិតចល័តត្រូវបានបើក ហើយសូមមេត្តាព្យាយាមម្តងទៀត";
   static const String tryAgain = "Try Again";
