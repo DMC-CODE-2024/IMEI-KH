@@ -29,8 +29,7 @@ class NeedAnyHelpWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "${labelDetails?.needAnyHelp} ${labelDetails?.contactUs}" ??
-                      "",
+                  labelDetails?.needAnyHelp ?? "",
                   style: TextStyle(color: AppColors.black, fontSize: 14.0),
                 ),
                 Padding(
