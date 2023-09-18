@@ -9,11 +9,11 @@ import 'package:eirs/features/launcher/data/business_logic/launcher_state.dart';
 import 'package:eirs/features/launcher/data/models/device_details_res.dart';
 import 'package:eirs/helper/connection_status_notifier.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants/image_path.dart';
+import '../../../helper/app_device_details.dart';
 import '../../../helper/app_states_notifier.dart';
 import '../../../main.dart';
 import '../../../theme/colors.dart';
@@ -33,7 +33,6 @@ class _LauncherScreenState extends State<LauncherScreen> {
   Map _source = {ConnectivityResult.none: false};
   bool hasNetwork = true;
   bool isDeviceDetailReqInvoked = false;
-  static const platform = MethodChannel('kh.eirs.mobileapp/deviceInfo');
   String? deviceDetails;
 
   @override
@@ -43,11 +42,7 @@ class _LauncherScreenState extends State<LauncherScreen> {
   }
 
   Future<void> _getDeviceDetails() async {
-    try {
-      deviceDetails = await platform.invokeMethod('getDeviceInfo');
-    } on PlatformException catch (e) {
-      e.stacktrace;
-    }
+    deviceDetails = await AppDeviceDetails().getDeviceDetails();
   }
 
   Future<void> _preInitApiReq() async {

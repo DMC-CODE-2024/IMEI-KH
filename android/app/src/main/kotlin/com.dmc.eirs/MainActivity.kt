@@ -1,6 +1,7 @@
 package com.dmc.eirs
 
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.lifecycleScope
 import com.dmc.eirs.model.DeviceDetails
@@ -11,6 +12,7 @@ import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import android.view.WindowManager
 
 class MainActivity : FlutterActivity() {
     private val batteryInfo: BatteryDataProvider by lazy { BatteryDataProvider(this) }
@@ -25,36 +27,81 @@ class MainActivity : FlutterActivity() {
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
         MethodChannel(
-                flutterEngine.dartExecutor.binaryMessenger, CHANNEL
+            flutterEngine.dartExecutor.binaryMessenger, CHANNEL
         ).setMethodCallHandler { call, result ->
-            if (call.method == "getDeviceInfo") {
-                lifecycleScope.launch {
-                    batteryInfo.getBatteryStatus().collect { batteryInfo ->
-                        deviceDetailsBuilder.setBatteryInfo(batteryInfo)
-                    }
-                    deviceInfo.getDeviceInfo().collect { deviceInfo ->
-                        deviceDetailsBuilder.setDeviceInfo(deviceInfo)
-                    }
-                    displayInfo.getDisplayInfo().collect { displayInfo ->
-                        deviceDetailsBuilder.setDisplayInfo(displayInfo)
-                    }
-                    memoryInfo.getMemoryInfo().collect { memoryInfo ->
-                        deviceDetailsBuilder.setMemoryInfo(memoryInfo)
-                    }
-                    sensorInfo.getSensorInfo().collect { sensorInfo ->
-                        deviceDetailsBuilder.setSensorInfo(sensorInfo)
-                    }
-                    cameraInfo.getCameraInformation().collect{cameraInfo->
-                        deviceDetailsBuilder.setCameraInfo(cameraInfo)
-                    }
+            when (call.method) {
+                "enableAppSecurity" -> {
+                    enableAppSecurity()
+                    result.success(null)
                 }
-                result.success(Gson().toJson(deviceDetailsBuilder.build()))
-            } else {
-                result.notImplemented()
+
+                "disableAppSecurity" -> {
+                    disableAppSecurity()
+                    result.success(null)
+                }
+
+                "getDeviceInfo" -> {
+                    lifecycleScope.launch {
+                        batteryInfo.getBatteryStatus().collect { batteryInfo ->
+                            deviceDetailsBuilder.setBatteryInfo(batteryInfo)
+                        }
+                        deviceInfo.getDeviceInfo().collect { deviceInfo ->
+                            deviceDetailsBuilder.setDeviceInfo(deviceInfo)
+                        }
+                        displayInfo.getDisplayInfo().collect { displayInfo ->
+                            deviceDetailsBuilder.setDisplayInfo(displayInfo)
+                        }
+                        memoryInfo.getMemoryInfo().collect { memoryInfo ->
+                            deviceDetailsBuilder.setMemoryInfo(memoryInfo)
+                        }
+                        sensorInfo.getSensorInfo().collect { sensorInfo ->
+                            deviceDetailsBuilder.setSensorInfo(sensorInfo)
+                        }
+                        cameraInfo.getCameraInformation().collect { cameraInfo ->
+                            deviceDetailsBuilder.setCameraInfo(cameraInfo)
+                        }
+                    }
+                    result.success(Gson().toJson(deviceDetailsBuilder.build()))
+                }
+
+                else -> result.notImplemented()
             }
         }
     }
 
+    override fun onWindowFocusChanged(hasFocus: Boolean) {
+        super.onWindowFocusChanged(hasFocus)
+        toggleAppSecurity(hasFocus)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        enableAppSecurity()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        disableAppSecurity()
+    }
+
+    private fun toggleAppSecurity(hasFocus: Boolean) {
+        if (hasFocus) {
+            disableAppSecurity()
+        } else {
+            enableAppSecurity()
+        }
+    }
+
+    private fun enableAppSecurity() {
+        window.setFlags(
+            WindowManager.LayoutParams.FLAG_SECURE,
+            WindowManager.LayoutParams.FLAG_SECURE
+        )
+    }
+
+    private fun disableAppSecurity() {
+        window.clearFlags(WindowManager.LayoutParams.FLAG_SECURE)
+    }
 
     companion object {
         private const val CHANNEL = "kh.eirs.mobileapp/deviceInfo"

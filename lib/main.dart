@@ -13,6 +13,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'constants/strings.dart';
 import 'features/launcher/presentation/launcher_screen.dart';
+import 'helper/app_screen_privacy.dart';
 import 'helper/app_states_notifier.dart';
 
 const String feature1 = 'feature1',
@@ -20,7 +21,9 @@ const String feature1 = 'feature1',
     feature3 = 'feature3',
     feature4 = 'feature4',
     feature5 = 'feature5';
+const platform = MethodChannel('kh.eirs.mobileapp/deviceInfo');
 final dbHelper = DatabaseHelper();
+final appScreenPrivacy = AppScreenPrivacyService();
 String selectedLng = StringConstants.englishCode;
 late final SharedPreferences sharedPref;
 
@@ -39,13 +42,34 @@ Future<void> main() async {
   selectedLng = await getLocale();
   // initialize the database
   await dbHelper.init();
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   final AppRoutes _appRoutes = AppRoutes();
 
-  MyApp({super.key});
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.inactive ||
+        state == AppLifecycleState.paused) {
+      appScreenPrivacy.enableScreenPrivacy();
+    } else if (state == AppLifecycleState.resumed) {
+      appScreenPrivacy.disableScreenPrivacy();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -63,5 +87,11 @@ class MyApp extends StatelessWidget {
               child: const LauncherScreen(title: "Launcher screen"),
             ),
             onGenerateRoute: _appRoutes.onGenerateRoute));
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
   }
 }
