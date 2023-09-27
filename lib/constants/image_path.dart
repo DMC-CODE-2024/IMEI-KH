@@ -18,5 +18,8 @@ class ImageConstants {
   static const String khmerIconAppbar = "assets/images/ic_khmer.png";
   static const String invalidIcon = "assets/images/ic_invalid.svg";
   static const String validIcon = "assets/images/ic_valid.svg";
+  static const String uploadBarcode = "assets/images/ic_upload_barcode.svg";
+  static const String flashIconOff = "assets/images/ic_flash_icon_off.svg";
+  static const String flashIconOn = "assets/images/ic_flash_icon_on.svg";
 
 }

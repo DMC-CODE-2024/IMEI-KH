@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:eirs/constants/strings.dart';
 import 'package:eirs/features/launcher/data/models/device_details_res.dart';
 import 'package:eirs/features/scanner/data/business_logic/scanner_bloc.dart';
 import 'package:eirs/features/scanner/data/business_logic/scanner_state.dart';
@@ -7,9 +8,12 @@ import 'package:eirs/features/scanner/scanner_animation_widget.dart';
 import 'package:eirs/features/scanner/scanner_overlay.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:provider/provider.dart';
 
+import '../../constants/image_path.dart';
 import '../../helper/app_states_notifier.dart';
 import '../check_multi_imei/data/business_logic/check_multi_imei_bloc.dart';
 import '../check_multi_imei/presentation/imei_list.dart';
@@ -46,6 +50,7 @@ class _ScannerPageState extends State<ScannerPage>
   AnimationStatus animationStatus = AnimationStatus.forward;
   bool selected = false;
   bool upDown = true;
+  bool isCameraScan = true;
 
   @override
   void initState() {
@@ -72,17 +77,21 @@ class _ScannerPageState extends State<ScannerPage>
 
   Future<void> onDetect(BarcodeCapture barcode) async {
     captureBarcode = barcode;
-    setState(() {
-      if (!isDetectionStarted) {
-        isDetectionStarted = true;
+    if (isCameraScan) {
+      setState(() {
+        if (!isDetectionStarted) {
+          isDetectionStarted = true;
+        }
+        resetBarcodeOverlay = false;
+        initialDetectionValue++;
+        this.barcode = barcode.barcodes.first;
+      });
+      final List<Barcode> barcodes = barcode.barcodes;
+      for (final barcode in barcodes) {
+        getScanBarCodeResult(barcode.rawValue);
       }
-      resetBarcodeOverlay = false;
-      initialDetectionValue++;
-      this.barcode = barcode.barcodes.first;
-    });
-    final List<Barcode> barcodes = barcode.barcodes;
-    for (final barcode in barcodes) {
-      getScanBarCodeResult(barcode.rawValue);
+    } else {
+      getImageBarCodeResult(barcode.barcodes);
     }
   }
 
@@ -158,6 +167,21 @@ class _ScannerPageState extends State<ScannerPage>
                     ),
                   ),
                 ),
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      margin: const EdgeInsets.only(right: 20),
+                      child: _flashWidget(),
+                    ),
+                    _galleryImageWidget()
+                  ],
+                ),
+              )
             ],
           );
         },
@@ -168,6 +192,110 @@ class _ScannerPageState extends State<ScannerPage>
 
   bool _isNumeric(String str) {
     return double.tryParse(str) != null && str.length == 15;
+  }
+
+  Widget _flashWidget() {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        IconButton(
+          color: Colors.white,
+          icon: ValueListenableBuilder(
+            valueListenable: cameraController.torchState,
+            builder: (context, state, child) {
+              if (state == null) {
+                return SvgPicture.asset(
+                  ImageConstants.flashIconOff,
+                  width: 40,
+                  height: 40,
+                );
+              }
+              switch (state) {
+                case TorchState.off:
+                  return SvgPicture.asset(
+                    ImageConstants.flashIconOff,
+                    width: 40,
+                    height: 40,
+                  );
+                case TorchState.on:
+                  return SvgPicture.asset(
+                    ImageConstants.flashIconOn,
+                    width: 40,
+                    height: 40,
+                  );
+              }
+            },
+          ),
+          iconSize: 32.0,
+          onPressed: () => cameraController.toggleTorch(),
+        ),
+        const Text(
+          StringConstants.flashTxt,
+          style: TextStyle(color: Colors.white, fontSize: 16.0),
+          textAlign: TextAlign.center,
+        )
+      ],
+    );
+  }
+
+  Widget _galleryImageWidget() {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        IconButton(
+          color: Colors.white,
+          icon: SvgPicture.asset(
+            ImageConstants.uploadBarcode,
+            width: 40,
+            height: 40,
+          ),
+          iconSize: 32.0,
+          onPressed: () async {
+            if (uniqueImei.isNotEmpty) uniqueImei.clear();
+            isCameraScan = false;
+            stopTimer();
+            final ImagePicker picker = ImagePicker();
+            // Pick an image
+            final XFile? image = await picker.pickImage(
+              source: ImageSource.gallery,
+            );
+            if (image != null) {
+              bool isAnalyze = await cameraController.analyzeImage(image.path);
+              if (!isAnalyze) {
+                isCameraScan = true;
+                if (!mounted) return;
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text(StringConstants.noBarcodeFound),
+                    backgroundColor: Colors.red,
+                  ),
+                );
+              }
+            }
+          },
+        ),
+        const Text(
+          StringConstants.uploadBarcode,
+          style: TextStyle(color: Colors.white, fontSize: 16.0),
+          textAlign: TextAlign.center,
+        )
+      ],
+    );
+  }
+
+  void getImageBarCodeResult(List<Barcode> barcodes) {
+    for (final barcode in barcodes) {
+      String? code = barcode.rawValue;
+      if (code != null && _isNumeric(code)) {
+        if (uniqueImei.containsKey(code)) {
+          var count = uniqueImei[code];
+          if (count != null) uniqueImei[code] = count + 1;
+        } else {
+          uniqueImei[code] = 1;
+        }
+      }
+    }
+    navigateNext();
   }
 
   void getScanBarCodeResult(String? code) {
@@ -222,6 +350,7 @@ class _ScannerPageState extends State<ScannerPage>
     cameraController.start();
     isNavigateNext = false;
     isTimerStarted = false;
+    isCameraScan = true;
   }
 
   void startTimer() {

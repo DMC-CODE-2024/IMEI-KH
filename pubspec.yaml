@@ -52,6 +52,7 @@ dependencies:
   sqflite: ^2.2.2
   path_provider: ^2.0.11
   package_info_plus: ^3.0.3
+  image_picker: ^1.0.4
   flutter_html: ^3.0.0-alpha.3
 
   # retrofit generator is an dio client generator using source_gen and inspired by Chopper and Retrofit.
@@ -108,6 +109,9 @@ flutter:
     - assets/images/ic_khmer.png
     - assets/images/ic_invalid.svg
     - assets/images/ic_valid.svg
+    - assets/images/ic_upload_barcode.svg
+    - assets/images/ic_flash_icon_off.svg
+    - assets/images/ic_flash_icon_on.svg
 
   #   - images/a_dot_ham.jpeg
 
