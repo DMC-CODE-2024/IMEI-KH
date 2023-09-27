@@ -292,7 +292,7 @@ class _MultiImeiResultScreenState extends State<MultiImeiResultScreen> {
                               TextStyle(fontSize: 14.0, color: AppColors.black),
                         ),*/
                         Html(
-                          data: widget.labelDetails?.imeiNotPer3gpp ?? "",
+                          data: checkImeiResult?.message ?? widget.labelDetails?.imeiNotPer3gpp ?? "",
                           shrinkWrap: true,
                           style: {'html': Style(textAlign: TextAlign.left)},
                         )
