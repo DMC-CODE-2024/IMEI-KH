@@ -8,7 +8,7 @@ const int checkMultiImeiReq = 3;
 
 const int preInitReqCode = 1;
 const int initReqCode = 2;
-const int requestTimeOut = 60 * 1000;
+const int requestTimeOut = 5 * 1000;
 const String defaultUrl = "https://appapi.eirs.gov.kh";
 String baseUrl = defaultUrl;
 const String invalidStatusColor = "#eb5757";
