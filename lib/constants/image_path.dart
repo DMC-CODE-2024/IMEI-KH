@@ -21,5 +21,6 @@ class ImageConstants {
   static const String uploadBarcode = "assets/images/ic_upload_barcode.svg";
   static const String flashIconOff = "assets/images/ic_flash_icon_off.svg";
   static const String flashIconOn = "assets/images/ic_flash_icon_on.svg";
+  static const String warningIcon = "assets/images/ic_warning.svg";
 
 }

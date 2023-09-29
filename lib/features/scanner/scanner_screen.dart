@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:eirs/constants/strings.dart';
 import 'package:eirs/features/launcher/data/models/device_details_res.dart';
+import 'package:eirs/features/scanner/barcode_error_widget.dart';
 import 'package:eirs/features/scanner/data/business_logic/scanner_bloc.dart';
 import 'package:eirs/features/scanner/data/business_logic/scanner_state.dart';
 import 'package:eirs/features/scanner/scanner_animation_widget.dart';
@@ -264,12 +265,18 @@ class _ScannerPageState extends State<ScannerPage>
               if (!isAnalyze) {
                 isCameraScan = true;
                 if (!mounted) return;
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text(StringConstants.noBarcodeFound),
-                    backgroundColor: Colors.red,
-                  ),
-                );
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const BarcodeErrorWidget()),
+                ).then((_) {
+                  // This block runs when you have come back to the 1st Page from 2nd.
+                  setState(() {
+                    // Call setState to refresh the page.
+                    resetUiElement();
+                  });
+                  uniqueImei.clear();
+                });
               }
             }
           },

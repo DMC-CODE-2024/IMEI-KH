@@ -464,10 +464,10 @@ class _CheckImeiScreenState extends State<CheckImeiScreen> {
               ),
             ),
             Text(
-              labelDetails?.imeiAlsoWrittenInBox ?? emptyString,
+              labelDetails?.dial ?? emptyString,
               style: TextStyle(color: AppColors.black, fontSize: 14.0),
             ),
-            Image.asset(ImageConstants.optionA),
+            Image.asset(ImageConstants.deviceInfo),
             Padding(
               padding: const EdgeInsets.only(top: 10, bottom: 5),
               child: Text(
@@ -476,10 +476,10 @@ class _CheckImeiScreenState extends State<CheckImeiScreen> {
               ),
             ),
             Text(
-              labelDetails?.dial ?? emptyString,
+              labelDetails?.imeiAlsoWrittenInBox ?? emptyString,
               style: TextStyle(color: AppColors.black, fontSize: 14.0),
             ),
-            Image.asset(ImageConstants.deviceInfo),
+            Image.asset(ImageConstants.optionA),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 12),
               child: NeedAnyHelpWidget(

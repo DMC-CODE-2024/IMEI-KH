@@ -85,52 +85,57 @@ class _EirsAppBarState extends State<EirsAppBar> {
       elevation: 1,
       centerTitle: false,
       titleSpacing: 0.0,
-      leading: DescribedFeatureOverlay(
-        featureId: feature1,
-        tapTarget: Padding(
-          padding: const EdgeInsets.all(30),
-          child: Image.asset(
-            ImageConstants.splashIcon,
-            width: 67,
-            height: 30,
+      leading: Padding(
+        padding: const EdgeInsets.only(left: 10),
+        child: DescribedFeatureOverlay(
+          featureId: feature1,
+          tapTarget: Padding(
+            padding: const EdgeInsets.all(30),
+            child: Image.asset(
+              ImageConstants.splashIcon,
+              width: 67,
+              height: 40,
+            ),
           ),
-        ),
-        backgroundColor: AppColors.secondary,
-        title: Text(
-          widget.labelDetails?.aboutUs ?? emptyString,
-          style: const TextStyle(fontWeight: FontWeight.w700),
-        ),
-        overflowMode: feature1OverflowMode,
-        enablePulsingAnimation: feature1EnablePulsingAnimation,
-        description: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Text(widget.labelDetails?.knowMore ?? emptyString),
-            Padding(
-              padding: const EdgeInsets.only(top: 40),
-              child: Row(
-                children: [
-                  Text(
-                    widget.labelDetails?.appVersion ??
-                        StringConstants.appVersion,
-                    style: const TextStyle(fontWeight: FontWeight.w400),
-                  ),
-                  Text(
-                    ": ${widget.versionName}",
-                    style: const TextStyle(fontWeight: FontWeight.w400),
-                  )
-                ],
+          backgroundColor: AppColors.secondary,
+          title: Text(
+            widget.labelDetails?.aboutUs ?? emptyString,
+            style: const TextStyle(fontWeight: FontWeight.w700),
+          ),
+          overflowMode: feature1OverflowMode,
+          enablePulsingAnimation: feature1EnablePulsingAnimation,
+          description: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(widget.labelDetails?.knowMore ?? emptyString),
+              Padding(
+                padding: const EdgeInsets.only(top: 40),
+                child: Row(
+                  children: [
+                    Text(
+                      widget.labelDetails?.appVersion ??
+                          StringConstants.appVersion,
+                      style: const TextStyle(fontWeight: FontWeight.w400),
+                    ),
+                    Text(
+                      ": ${widget.versionName}",
+                      style: const TextStyle(fontWeight: FontWeight.w400),
+                    )
+                  ],
+                ),
+              )
+            ],
+          ),
+          child: Transform.scale(
+            scale: 1.8,
+            child: IconButton(
+              onPressed: () =>
+                  widget.callback.call(AppBarActions.appLogo, isEnglish),
+              icon: Image.asset(
+                ImageConstants.splashIcon,
+                fit: BoxFit.contain,
               ),
-            )
-          ],
-        ),
-        child: IconButton(
-          onPressed: () => widget.callback.call(AppBarActions.appLogo,isEnglish),
-          icon: Image.asset(
-            ImageConstants.splashIcon,
-            fit: BoxFit.cover,
-            width: 120,
-            height: 20,
+            ),
           ),
         ),
       ),
@@ -160,7 +165,8 @@ class _EirsAppBarState extends State<EirsAppBar> {
                   width: 24,
                   height: 24,
                 ),
-                onPressed: () => widget.callback.call(AppBarActions.info,isEnglish),
+                onPressed: () =>
+                    widget.callback.call(AppBarActions.info, isEnglish),
               ),
             ),
             DescribedFeatureOverlay(
@@ -182,7 +188,8 @@ class _EirsAppBarState extends State<EirsAppBar> {
                 return true;
               },
               child: IconButton(
-                onPressed: () => widget.callback.call(AppBarActions.history,isEnglish),
+                onPressed: () =>
+                    widget.callback.call(AppBarActions.history, isEnglish),
                 icon: SvgPicture.asset(
                   ImageConstants.timeIcon,
                   width: 24,
@@ -213,7 +220,7 @@ class _EirsAppBarState extends State<EirsAppBar> {
               },
               child: IconButton(
                 onPressed: () =>
-                    widget.callback.call(AppBarActions.localization,isEnglish),
+                    widget.callback.call(AppBarActions.localization, isEnglish),
                 icon: Image.asset(
                     isEnglish
                         ? ImageConstants.khmerIconAppbar

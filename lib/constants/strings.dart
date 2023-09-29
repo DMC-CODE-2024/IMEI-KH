@@ -38,5 +38,7 @@ class StringConstants {
   static const String flashTxt = "Flash";
   static const String uploadBarcode = "Upload \n Barcode";
   static const String noBarcodeFound = "No barcode found!";
+  static const String invalidBarcode = "Invalid Barcode";
+
 
 }
