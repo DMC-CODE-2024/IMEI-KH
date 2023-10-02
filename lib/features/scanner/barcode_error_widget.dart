@@ -59,8 +59,11 @@ class _BarcodeErrorWidgetState extends State<BarcodeErrorWidget> {
           Align(
             alignment: Alignment.bottomCenter,
             child: Padding(
-              padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
               child: InkWell(
+                customBorder: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
+                ),
                 onTap: () => Navigator.pop(context),
                 child: Container(
                   height: 38.0,
