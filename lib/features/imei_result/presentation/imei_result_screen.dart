@@ -76,7 +76,7 @@ class _ImeiResultScreenState extends State<ImeiResultScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Padding(
-                      padding: const EdgeInsets.only(top: 25.0),
+                      padding: const EdgeInsets.only(top: 12.0),
                       child: Text(
                         widget.labelDetails?.imeiInfo ?? emptyString,
                         style: TextStyle(
@@ -85,7 +85,7 @@ class _ImeiResultScreenState extends State<ImeiResultScreen> {
                     ),
                     Center(
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 35),
+                        padding: const EdgeInsets.symmetric(vertical: 25),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -101,13 +101,9 @@ class _ImeiResultScreenState extends State<ImeiResultScreen> {
                                       : invalidStatusColor),
                             ),
                             Padding(
-                              padding: (isValidImei)
-                                  ? const EdgeInsets.only(
-                                      top: 10.0, bottom: 5.0)
-                                  : const EdgeInsets.symmetric(vertical: 10.0),
+                              padding: const EdgeInsets.only(top: 5),
                               child: Html(
-                                data: widget.checkImeiResult.complianceStatus ??
-                                    emptyString,
+                                data: widget.checkImeiResult.complianceStatus ?? emptyString,
                                 shrinkWrap: true,
                                 style: {
                                   'html': Style(textAlign: TextAlign.center)

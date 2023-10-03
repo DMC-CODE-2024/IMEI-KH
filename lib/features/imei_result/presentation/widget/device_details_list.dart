@@ -13,16 +13,16 @@ class DeviceDetailList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      margin: const EdgeInsets.symmetric(vertical: 5.0),
+      margin: const EdgeInsets.symmetric(vertical: 8.0),
       decoration: BoxDecoration(
-        border: Border.all(color: AppColors.grey),
+        border: Border.all(color: AppColors.borderColor),
         borderRadius: const BorderRadius.all(Radius.circular(5.0) //
             ),
       ),
       child: Table(
-        border: const TableBorder(
+        border: TableBorder(
             horizontalInside: BorderSide(
-                width: 1, color: Colors.grey, style: BorderStyle.solid)),
+                width: 1, color: AppColors.borderColor, style: BorderStyle.solid)),
         children: data.entries.map((deviceDetailMap) {
           return TableRow(children: [
             TableCell(

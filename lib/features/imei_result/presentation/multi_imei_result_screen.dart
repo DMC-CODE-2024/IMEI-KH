@@ -46,14 +46,14 @@ class _MultiImeiResultScreenState extends State<MultiImeiResultScreen> {
           }),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(15),
+          padding: const EdgeInsets.all(20),
           child: Column(
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 25.0),
+                padding: const EdgeInsets.only(top: 12.0),
                 child: Text(
                   widget.labelDetails?.imeiInfo ?? "",
                   style: TextStyle(fontSize: 20.0, color: AppColors.secondary),
@@ -123,9 +123,8 @@ class _MultiImeiResultScreenState extends State<MultiImeiResultScreen> {
       CheckImeiResult? checkImeiResult) {
     var statusColor = checkImeiResult?.statusColor;
     return Container(
-      decoration: BoxDecoration(
-        color: AppColors.validBg,
-        borderRadius: const BorderRadius.all(
+      decoration: const BoxDecoration(
+        borderRadius: BorderRadius.all(
           Radius.circular(8.0),
         ),
       ),
@@ -143,7 +142,7 @@ class _MultiImeiResultScreenState extends State<MultiImeiResultScreen> {
                     color: HexColor(statusColor ?? validStatusColor),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(top: 10.0, bottom: 5),
+                    padding: const EdgeInsets.only(top: 5),
                     child: Html(
                       data: checkImeiResult?.complianceStatus ?? "",
                       shrinkWrap: true,
@@ -157,7 +156,7 @@ class _MultiImeiResultScreenState extends State<MultiImeiResultScreen> {
                   ),
                   Padding(
                     padding: const EdgeInsets.only(
-                        top: 30.0, left: 15.0, bottom: 15),
+                        top: 30.0, bottom: 4),
                     child: Row(
                       children: [
                         Text(
@@ -176,17 +175,18 @@ class _MultiImeiResultScreenState extends State<MultiImeiResultScreen> {
                   ),
                   Container(
                     width: double.infinity,
-                    height: 1,
-                    color: Colors.green,
-                  ),
-                  Container(
-                    width: double.infinity,
                     margin: const EdgeInsets.symmetric(vertical: 5.0),
+                    decoration: BoxDecoration(
+                        border: Border.all(
+                          color: AppColors.borderColor,
+                        ),
+                        borderRadius: const BorderRadius.all(Radius.circular(8))
+                    ),
                     child: Table(
-                      border: const TableBorder(
+                      border: TableBorder(
                         horizontalInside: BorderSide(
                             width: 1,
-                            color: Colors.green,
+                            color: AppColors.borderColor,
                             style: BorderStyle.solid),
                       ),
                       children: data.entries.map((deviceDetailMap) {
@@ -228,21 +228,20 @@ class _MultiImeiResultScreenState extends State<MultiImeiResultScreen> {
   Widget invalidImeiList(String imei, CheckImeiResult? checkImeiResult) {
     var statusColor = checkImeiResult?.statusColor;
     return Container(
-      decoration: BoxDecoration(
-        color: AppColors.inValidBg,
-        borderRadius: const BorderRadius.all(
+      decoration: const BoxDecoration(
+        borderRadius: BorderRadius.all(
           Radius.circular(8.0),
         ),
       ),
       child: Padding(
-        padding: const EdgeInsets.only(top: 20.0, left: 15, right: 15),
+        padding: const EdgeInsets.only(top: 20.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SvgPicture.asset(ImageConstants.invalidIcon,
                 color: HexColor(statusColor ?? invalidStatusColor)),
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 10.0),
+              padding: const EdgeInsets.only(top: 5.0),
               child: Html(
                 data: checkImeiResult?.complianceStatus ?? "",
                 shrinkWrap: true,
@@ -274,11 +273,11 @@ class _MultiImeiResultScreenState extends State<MultiImeiResultScreen> {
                 children: [
                   Container(
                     width: double.infinity,
-                    margin: const EdgeInsets.only(bottom: 5.0, right: 40),
+                    margin: const EdgeInsets.only(bottom: 5.0, right: 10),
                     padding: const EdgeInsets.only(
                         top: 20.0, bottom: 20, left: 15, right: 15),
                     decoration: BoxDecoration(
-                      border: Border.all(color: Colors.red),
+                      border: Border.all(color:  AppColors.errorBorderColor),
                       borderRadius:
                           const BorderRadius.all(Radius.circular(5.0) //
                               ),

@@ -31,6 +31,8 @@ class AppColors {
   static Color inValidBg = HexColor("#FFF2F2");
   static Color invalidStatusColor = HexColor("#eb5757");
   static Color validStatusColor = HexColor("#00D100");
+  static Color borderColor = HexColor("#E0E0E0");
+  static Color errorBorderColor = HexColor("#BDBDBD");
 
   static Map<int, Color> color = {
     50: Color.fromRGBO(136, 14, 79, .1),

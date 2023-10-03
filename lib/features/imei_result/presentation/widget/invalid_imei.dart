@@ -17,10 +17,10 @@ class InvalidImeiResult extends StatelessWidget {
       children: [
         Container(
           width: double.infinity,
-          margin: const EdgeInsets.symmetric(vertical: 5.0),
+          margin: const EdgeInsets.only(top: 8.0,bottom: 8,right: 10),
           padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
-            border: Border.all(color: AppColors.grey),
+            border: Border.all(color: AppColors.errorBorderColor),
             borderRadius: const BorderRadius.all(Radius.circular(5.0) //
                 ),
           ),
