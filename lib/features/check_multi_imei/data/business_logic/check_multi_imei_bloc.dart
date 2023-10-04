@@ -17,6 +17,7 @@ class CheckMultiImeiBloc
     extends Bloc<CheckMultiImeiEvent, CheckMultiImeiState> {
   EirsRepository eirsRepository = EirsRepository();
   List<MultiImeiRes> imeiResponseList = [];
+  bool isValidImei = false;
 
   CheckMultiImeiBloc() : super(CheckMultiImeiInitialState()) {
     on<CheckMultiImeiInitEvent>(mapEventToState);
@@ -53,6 +54,7 @@ class CheckMultiImeiBloc
                     osType: osType);
                 CheckImeiRes checkImeiRes =
                     await eirsRepository.checkImei(checkImeiReq);
+                isValidImei = checkImeiRes.result?.validImei ?? false;
                 eirsRepository.insertDeviceDetail(inputImei, checkImeiRes);
                 imeiResponseList.add(
                     MultiImeiRes(imei: inputImei, checkImeiRes: checkImeiRes));
@@ -65,7 +67,7 @@ class CheckMultiImeiBloc
             if (imeiResponseList.isEmpty) {
               emit(CheckMultiImeiErrorState(StringConstants.errorInScanImei));
             } else {
-              emit(CheckMultiImeiLoadedState(imeiResponseList));
+              emit(CheckMultiImeiLoadedState(isValidImei, imeiResponseList));
             }
           }
           break;

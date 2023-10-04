@@ -1,6 +1,5 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:device_info_plus/device_info_plus.dart';
-import 'package:eirs/features/check_imei/data/models/check_imei_res.dart';
 import 'package:eirs/features/component/about_app_info_dialog.dart';
 import 'package:eirs/features/component/custom_progress_indicator.dart';
 import 'package:eirs/features/component/imei_scan_failed_dialog.dart';
@@ -20,6 +19,7 @@ import '../../../constants/image_path.dart';
 import '../../../constants/strings.dart';
 import '../../../main.dart';
 import '../../../theme/colors.dart';
+import '../../check_multi_imei/data/business_logic/check_multi_imei_bloc.dart';
 import '../../component/button_opacity.dart';
 import '../../component/eirs_app_bar.dart';
 import '../../component/error_page.dart';
@@ -27,7 +27,7 @@ import '../../component/input_borders.dart';
 import '../../component/need_any_help_widget.dart';
 import '../../component/no_internet_page.dart';
 import '../../history/presentation/device_history_screen.dart';
-import '../../imei_result/presentation/imei_result_screen.dart';
+import '../../imei_result/presentation/multi_imei_result_screen.dart';
 import '../../launcher/data/models/device_details_res.dart';
 import '../../scanner/data/business_logic/scanner_bloc.dart';
 import '../../scanner/scanner_screen.dart';
@@ -138,14 +138,12 @@ class _CheckImeiScreenState extends State<CheckImeiScreen> {
                         _reloadPage();
                       });
                 }
-                if (state is CheckImeiLoadingState ||
-                    state is LanguageLoadingState) {
+                if (state is LanguageLoadingState) {
                   return CustomProgressIndicator(
                       labelDetails: labelDetails, textColor: Colors.black);
                 }
 
-                if (state is CheckImeiErrorState ||
-                    state is LanguageErrorState) {
+                if (state is LanguageErrorState) {
                   return ErrorPage(
                       labelDetails: labelDetails,
                       callback: (value) {
@@ -156,10 +154,6 @@ class _CheckImeiScreenState extends State<CheckImeiScreen> {
                 return _imeiPageWidget();
               },
               listener: (context, state) {
-                if (state is CheckImeiLoadedState) {
-                  _navigateResultScreen(state.checkImeiRes.result);
-                }
-
                 if (state is LanguageLoadedState) {
                   selectedLng = state.deviceDetailsRes.languageType ??
                       StringConstants.englishCode;
@@ -180,30 +174,6 @@ class _CheckImeiScreenState extends State<CheckImeiScreen> {
             ),
           );
         });
-  }
-
-  void _navigateResultScreen(CheckImeiResult? checkImeiResult) {
-    if (checkImeiResult != null) {
-      Navigator.of(context)
-          .push(
-        MaterialPageRoute(
-          builder: (context) => ImeiResultScreen(
-              labelDetails: labelDetails,
-              scanImei: imeiController.text,
-              checkImeiResult: checkImeiResult),
-        ),
-      )
-          .then((value) {
-        if (value == true) {
-          setState(() {
-            imeiController.clear();
-            text = "0/15";
-            inputTextLength = 0;
-            textColor = AppColors.grey;
-          });
-        }
-      });
-    }
   }
 
   void _appBarActions(AppBarActions values, bool isEnglishLanguageSelected) {
@@ -277,10 +247,28 @@ class _CheckImeiScreenState extends State<CheckImeiScreen> {
     if (inputImei.length < 15) {
       return _showErrorMsg(labelDetails?.min15Digit ?? emptyString);
     }
-    BlocProvider.of<CheckImeiBloc>(context).add(CheckImeiInitEvent(
-        inputImei: inputImei,
-        languageType: selectedLng,
-        requestCode: checkImeiReq));
+    Navigator.of(context)
+        .push(
+      MaterialPageRoute(
+        builder: (_) => BlocProvider.value(
+          value: CheckMultiImeiBloc(),
+          child: MultiImeiResultScreen(
+              isSingleImeiReq: true,
+              imeiList: [inputImei],
+              labelDetails: labelDetails),
+        ),
+      ),
+    )
+        .then((value) {
+      if (value == true) {
+        setState(() {
+          imeiController.clear();
+          text = "0/15";
+          inputTextLength = 0;
+          textColor = AppColors.grey;
+        });
+      }
+    });
   }
 
   void _showErrorMsg(String errorMsg) {

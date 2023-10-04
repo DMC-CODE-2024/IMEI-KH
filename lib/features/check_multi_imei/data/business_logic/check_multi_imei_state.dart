@@ -10,8 +10,9 @@ class PageRefresh extends CheckMultiImeiState {}
 
 class CheckMultiImeiLoadedState extends CheckMultiImeiState {
   List<MultiImeiRes> multiImeiResList;
+  bool isValidImei;
 
-  CheckMultiImeiLoadedState(this.multiImeiResList);
+  CheckMultiImeiLoadedState(this.isValidImei, this.multiImeiResList);
 }
 
 class CheckMultiImeiErrorState extends CheckMultiImeiState {
