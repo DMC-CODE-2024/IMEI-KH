@@ -100,16 +100,10 @@ class _ImeiListPageState extends State<ImeiListPage> {
                   )
                 ],
               ),
-              (widget.data.length > 3)
-                  ? SingleChildScrollView(
-                      child: SizedBox(
-                        height: MediaQuery.of(context).size.height / 3,
-                        child: _listWidget(data),
-                      ),
-                    )
-                  : SingleChildScrollView(
-                      child: _listWidget(data),
-                    ),
+              /*(widget.data.length > 3)
+                  ? SingleChildScrollView(child: SizedBox(height: MediaQuery.of(context).size.height / 3, child: _listWidget(data)),)
+                  : */
+              _listWidget(data),
               Container(height: 20),
               AppButtonOpacity(
                 width: 200,
