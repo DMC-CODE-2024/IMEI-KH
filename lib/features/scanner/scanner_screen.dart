@@ -8,6 +8,7 @@ import 'package:eirs/features/scanner/data/business_logic/scanner_state.dart';
 import 'package:eirs/features/scanner/scanner_animation_widget.dart';
 import 'package:eirs/features/scanner/scanner_overlay.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:image_picker/image_picker.dart';
@@ -53,8 +54,16 @@ class _ScannerPageState extends State<ScannerPage>
   bool upDown = true;
   bool isCameraScan = true;
 
+  void _enablePortraitMode() {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
+  }
+
   @override
   void initState() {
+    _enablePortraitMode();
     _animationController = AnimationController(
       duration: const Duration(seconds: 1),
       vsync: this,
@@ -348,6 +357,7 @@ class _ScannerPageState extends State<ScannerPage>
   }
 
   void resetUiElement() {
+    _enablePortraitMode();
     initialDetectionValue = 0;
     lastDetectionValue = 0;
     resetBarcodeOverlay = true;
@@ -398,6 +408,12 @@ class _ScannerPageState extends State<ScannerPage>
 
   @override
   void dispose() {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.landscapeRight,
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
     _animationController.dispose();
     super.dispose();
   }

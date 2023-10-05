@@ -37,6 +37,12 @@ class _ImeiListPageState extends State<ImeiListPage> {
 
   @override
   void initState() {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.landscapeRight,
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
     super.initState();
     getLocale().then((languageCode) {
       selectedLng = languageCode;
@@ -67,51 +73,53 @@ class _ImeiListPageState extends State<ImeiListPage> {
       ),
       child: Padding(
         padding: const EdgeInsets.only(bottom: 15.0, top: 5, right: 5, left: 5),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Expanded(
-                  child: Align(
-                    alignment: Alignment.center,
-                    child: Text(
-                      labelDetails?.selectOnImei ?? "",
-                      style: TextStyle(
-                          fontSize: 16.0,
-                          color: AppColors.black,
-                          fontWeight: FontWeight.bold),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: Text(
+                        labelDetails?.selectOnImei ?? "",
+                        style: TextStyle(
+                            fontSize: 16.0,
+                            color: AppColors.black,
+                            fontWeight: FontWeight.bold),
+                      ),
                     ),
                   ),
-                ),
-                InkWell(
-                  onTap: () => Navigator.pop(context),
-                  child: Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: SvgPicture.asset(ImageConstants.crossIcon)),
-                )
-              ],
-            ),
-            (widget.data.length > 3)
-                ? SingleChildScrollView(
-                    child: SizedBox(
-                      height: MediaQuery.of(context).size.height / 3,
+                  InkWell(
+                    onTap: () => Navigator.pop(context),
+                    child: Padding(
+                        padding: const EdgeInsets.all(10),
+                        child: SvgPicture.asset(ImageConstants.crossIcon)),
+                  )
+                ],
+              ),
+              (widget.data.length > 3)
+                  ? SingleChildScrollView(
+                      child: SizedBox(
+                        height: MediaQuery.of(context).size.height / 3,
+                        child: _listWidget(data),
+                      ),
+                    )
+                  : SingleChildScrollView(
                       child: _listWidget(data),
                     ),
-                  )
-                : SingleChildScrollView(
-                    child: _listWidget(data),
-                  ),
-            Container(height: 20),
-            AppButtonOpacity(
-              width: 200,
-              isLoading: false,
-              isEnable: enableCheckImeiButton,
-              child: Text(labelDetails?.check ?? emptyString),
-              onPressed: () => _checkImei(context),
-            )
-          ],
+              Container(height: 20),
+              AppButtonOpacity(
+                width: 200,
+                isLoading: false,
+                isEnable: enableCheckImeiButton,
+                child: Text(labelDetails?.check ?? emptyString),
+                onPressed: () => _checkImei(context),
+              )
+            ],
+          ),
         ),
       ),
     );
