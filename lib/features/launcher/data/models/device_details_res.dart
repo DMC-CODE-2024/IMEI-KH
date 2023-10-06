@@ -94,6 +94,9 @@ class LabelDetails {
   String? negativeBtnTxt;
   String? appVersion;
   String? imei;
+  String? flash;
+  String? uploadBarcode;
+  String? invalidBarcode;
   LabelDetails();
 
   factory LabelDetails.fromJson(Map<String, dynamic> json) =>

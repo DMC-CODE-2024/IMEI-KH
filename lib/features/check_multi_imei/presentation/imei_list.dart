@@ -247,7 +247,7 @@ class _ImeiListPageState extends State<ImeiListPage> {
         builder: (_) => BlocProvider.value(
           value: CheckMultiImeiBloc(),
           child: MultiImeiResultScreen(
-              isSingleImeiReq: true,
+              isSingleImeiReq: false,
               imeiList: imeiList,
               labelDetails: labelDetails),
         ),

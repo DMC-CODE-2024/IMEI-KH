@@ -42,11 +42,12 @@ class _BarcodeErrorWidgetState extends State<BarcodeErrorWidget> {
                     width: 40,
                     height: 38,
                   ),
-                  const Padding(
-                    padding: EdgeInsets.symmetric(vertical: 15),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 15),
                     child: Text(
-                      StringConstants.invalidBarcode,
-                      style: TextStyle(
+                      labelDetails?.invalidBarcode ??
+                          StringConstants.invalidBarcode,
+                      style: const TextStyle(
                           color: Colors.white,
                           fontSize: 18,
                           fontWeight: FontWeight.w600),
@@ -74,7 +75,8 @@ class _BarcodeErrorWidgetState extends State<BarcodeErrorWidget> {
                   ),
                   child: Center(
                     child: Text(
-                      labelDetails?.tryAgain?.toUpperCase() ?? "",
+                      labelDetails?.tryAgain?.toUpperCase() ??
+                          StringConstants.tryAgain,
                       style: const TextStyle(
                           fontSize: 16.0,
                           color: Colors.white,

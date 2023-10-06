@@ -136,11 +136,11 @@ class _MultiImeiResultScreenState extends State<MultiImeiResultScreen> {
                             isLoading: false,
                             child:
                                 Text(widget.labelDetails?.checkOtherImei ?? ""),
-                            onPressed: () => {
+                            onPressed: () {
                               widget.isSingleImeiReq
                                   ? Navigator.pop(context, isValidImei)
                                   : Navigator.pushNamedAndRemoveUntil(context,
-                                      Routes.IMEI_SCREEN, (route) => false)
+                                      Routes.IMEI_SCREEN, (route) => false);
                             },
                           ),
                         ),

@@ -239,9 +239,9 @@ class _ScannerPageState extends State<ScannerPage>
           iconSize: 32.0,
           onPressed: () => cameraController.toggleTorch(),
         ),
-        const Text(
-          StringConstants.flashTxt,
-          style: TextStyle(color: Colors.white, fontSize: 16.0),
+         Text(
+          labelDetails?.flash ?? StringConstants.flashTxt,
+          style: const TextStyle(color: Colors.white, fontSize: 16.0),
           textAlign: TextAlign.center,
         )
       ],
@@ -290,9 +290,9 @@ class _ScannerPageState extends State<ScannerPage>
             }
           },
         ),
-        const Text(
-          StringConstants.uploadBarcode,
-          style: TextStyle(color: Colors.white, fontSize: 16.0),
+         Text(
+          labelDetails?.uploadBarcode ?? StringConstants.uploadBarcode,
+          style: const TextStyle(color: Colors.white, fontSize: 16.0),
           textAlign: TextAlign.center,
         )
       ],

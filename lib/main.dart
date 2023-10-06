@@ -81,7 +81,6 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
               fontFamily: StringConstants.openSansFontFamily,
               primarySwatch: AppColors.primaryColor,
             ),
-            //home: const LauncherScreen(title: 'Flutter Demo Home Page'),
             home: BlocProvider(
               create: (context) => LauncherBloc(),
               child: const LauncherScreen(title: "Launcher screen"),
