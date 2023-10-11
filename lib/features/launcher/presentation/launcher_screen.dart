@@ -13,7 +13,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants/image_path.dart';
-import '../../../helper/app_device_details.dart';
 import '../../../helper/app_states_notifier.dart';
 import '../../../main.dart';
 import '../../../theme/colors.dart';
@@ -34,16 +33,6 @@ class _LauncherScreenState extends State<LauncherScreen> {
   bool hasNetwork = true;
   bool isDeviceDetailReqInvoked = false;
   String? deviceDetails;
-
-  @override
-  void initState() {
-    super.initState();
-    _getDeviceDetails();
-  }
-
-  Future<void> _getDeviceDetails() async {
-    deviceDetails = await AppDeviceDetails().getDeviceDetails();
-  }
 
   Future<void> _preInitApiReq() async {
     BlocProvider.of<LauncherBloc>(context).add(LauncherInitEvent(

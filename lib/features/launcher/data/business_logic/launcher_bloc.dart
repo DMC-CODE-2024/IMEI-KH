@@ -1,5 +1,5 @@
-import 'dart:convert';
 import 'dart:io';
+
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:eirs/constants/constants.dart';
 import 'package:eirs/constants/strings.dart';
@@ -10,6 +10,7 @@ import 'package:eirs/features/launcher/data/models/pre_init_res.dart';
 import 'package:eirs/helper/shared_pref.dart';
 import 'package:eirs/repoistory/eirs_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'launcher_event.dart';
 
 class LauncherBloc extends Bloc<LauncherEvent, LauncherState> {
@@ -31,8 +32,7 @@ class LauncherBloc extends Bloc<LauncherEvent, LauncherState> {
         } else {
           deviceDetailsReq = _readAndroidBuildData(
               event.languageType ?? StringConstants.englishCode,
-              await deviceInfoPlugin.androidInfo,
-              event.deviceDetails);
+              await deviceInfoPlugin.androidInfo);
         }
       }
       var deviceId = deviceDetailsReq?.deviceId;
@@ -62,13 +62,18 @@ class LauncherBloc extends Bloc<LauncherEvent, LauncherState> {
     }
   }
 
-  DeviceDetailsReq _readAndroidBuildData(String languageType,
-      AndroidDeviceInfo androidDeviceInfo, dynamic deviceDetails) {
+  DeviceDetailsReq _readAndroidBuildData(
+      String languageType, AndroidDeviceInfo androidDeviceInfo) {
     return DeviceDetailsReq(
       osType: StringConstants.androidOs,
       deviceId: androidDeviceInfo.id,
       languageType: languageType,
-      deviceDetails: jsonDecode(deviceDetails),
+      deviceDetails: AndroidDeviceDetails(
+          brand: androidDeviceInfo.brand,
+          id: androidDeviceInfo.id,
+          manufacturer: androidDeviceInfo.manufacturer,
+          manufacturermodel: androidDeviceInfo.model,
+          isPhysicalDevice: androidDeviceInfo.isPhysicalDevice),
     );
   }
 
