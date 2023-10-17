@@ -86,7 +86,7 @@ class _EirsAppBarState extends State<EirsAppBar> {
       centerTitle: false,
       titleSpacing: 0.0,
       leading: Padding(
-        padding: const EdgeInsets.only(left: 10),
+        padding: const EdgeInsets.only(left: 2),
         child: DescribedFeatureOverlay(
           featureId: feature1,
           tapTarget: Padding(
@@ -127,7 +127,7 @@ class _EirsAppBarState extends State<EirsAppBar> {
             ],
           ),
           child: Transform.scale(
-            scale: 1.8,
+            scale: 1,
             child: IconButton(
               onPressed: () =>
                   widget.callback.call(AppBarActions.appLogo, isEnglish),

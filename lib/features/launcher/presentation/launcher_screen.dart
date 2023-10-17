@@ -145,8 +145,8 @@ class _LauncherScreenState extends State<LauncherScreen> {
               children: [
                 Image.asset(
                   ImageConstants.splashIcon,
-                  width: 200,
-                  height: 100,
+                  width: 250,
+                  height: 125,
                 )
               ],
             ),
