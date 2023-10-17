@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:eirs/constants/Validator.dart';
 import 'package:eirs/constants/strings.dart';
 import 'package:eirs/features/launcher/data/models/device_details_res.dart';
 import 'package:eirs/features/scanner/barcode_error_widget.dart';
@@ -32,8 +33,11 @@ class ScannerPage extends StatefulWidget {
 class _ScannerPageState extends State<ScannerPage>
     with SingleTickerProviderStateMixin {
   bool isMultiScan = true;
-  MobileScannerController cameraController =
-      MobileScannerController(formats: [BarcodeFormat.all]);
+  MobileScannerController cameraController = MobileScannerController(
+      formats: [BarcodeFormat.code128],
+      detectionSpeed: DetectionSpeed.normal,
+      detectionTimeoutMs: 500,
+      returnImage: false);
   bool resetBarcodeOverlay = false;
   bool showScreenTimer = true;
   var uniqueImei = <String, int>{};
@@ -53,6 +57,7 @@ class _ScannerPageState extends State<ScannerPage>
   bool selected = false;
   bool upDown = true;
   bool isCameraScan = true;
+  int totalTimerCount = 0;
 
   void _enablePortraitMode() {
     SystemChrome.setPreferredOrientations([
@@ -200,10 +205,6 @@ class _ScannerPageState extends State<ScannerPage>
     );
   }
 
-  bool _isNumeric(String str) {
-    return double.tryParse(str) != null && str.length == 15;
-  }
-
   Widget _flashWidget() {
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -239,7 +240,7 @@ class _ScannerPageState extends State<ScannerPage>
           iconSize: 32.0,
           onPressed: () => cameraController.toggleTorch(),
         ),
-         Text(
+        Text(
           labelDetails?.flash ?? StringConstants.flashTxt,
           style: const TextStyle(color: Colors.white, fontSize: 16.0),
           textAlign: TextAlign.center,
@@ -290,7 +291,7 @@ class _ScannerPageState extends State<ScannerPage>
             }
           },
         ),
-         Text(
+        Text(
           labelDetails?.uploadBarcode ?? StringConstants.uploadBarcode,
           style: const TextStyle(color: Colors.white, fontSize: 16.0),
           textAlign: TextAlign.center,
@@ -302,7 +303,9 @@ class _ScannerPageState extends State<ScannerPage>
   void getImageBarCodeResult(List<Barcode> barcodes) {
     for (final barcode in barcodes) {
       String? code = barcode.rawValue;
-      if (code != null && _isNumeric(code)) {
+      if (code != null &&
+          Validator.isNumeric(code) &&
+          Validator.isValidIMEI(double.parse(code))) {
         if (uniqueImei.containsKey(code)) {
           var count = uniqueImei[code];
           if (count != null) uniqueImei[code] = count + 1;
@@ -315,17 +318,16 @@ class _ScannerPageState extends State<ScannerPage>
   }
 
   void getScanBarCodeResult(String? code) {
-    if (code != null && _isNumeric(code)) {
+    if (code != null &&
+        Validator.isNumeric(code) &&
+        Validator.isValidIMEI(double.tryParse(code)!)) {
+      var count = uniqueImei[code];
       if (uniqueImei.containsKey(code)) {
-        var count = uniqueImei[code];
-        if (count == 3) {
-          navigateNext();
-        }
         if (count != null) uniqueImei[code] = count + 1;
       } else {
         uniqueImei[code] = 1;
       }
-      stopTimer();
+      if (count != null && count < 2) stopTimer();
     }
     startTimer();
   }
@@ -368,6 +370,7 @@ class _ScannerPageState extends State<ScannerPage>
     isNavigateNext = false;
     isTimerStarted = false;
     isCameraScan = true;
+    totalTimerCount = 0;
   }
 
   void startTimer() {
@@ -378,9 +381,14 @@ class _ScannerPageState extends State<ScannerPage>
         oneSec,
         (Timer timer) {
           if (_start == 0) {
-            setState(() {
-              navigateNext();
-            });
+            totalTimerCount = totalTimerCount + 1;
+            if (uniqueImei.entries.every((e) => e.value >= 2) ||
+                totalTimerCount >= 3) {
+              stopTimer();
+              return navigateNext();
+            } else {
+              _start = 10;
+            }
           } else {
             _start--;
           }
