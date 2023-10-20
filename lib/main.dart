@@ -24,7 +24,7 @@ const String feature1 = 'feature1',
 const platform = MethodChannel('kh.eirs.mobileapp/deviceInfo');
 final dbHelper = DatabaseHelper();
 final appScreenPrivacy = AppScreenPrivacyService();
-String selectedLng = StringConstants.englishCode;
+String selectedLng = StringConstants.khmerCode;
 late final SharedPreferences sharedPref;
 
 Future<void> main() async {

@@ -7,7 +7,7 @@ Future setLocale(String languageCode) async {
 
 Future<String> getLocale() async {
   String languageCode = sharedPref.getString(StringConstants.selectedLang) ??
-      StringConstants.englishCode;
+      StringConstants.khmerCode;
   return languageCode;
 }
 

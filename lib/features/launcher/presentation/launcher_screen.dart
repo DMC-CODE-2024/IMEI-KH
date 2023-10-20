@@ -142,7 +142,7 @@ class _LauncherScreenState extends State<LauncherScreen>
                 Future.delayed(const Duration(seconds: 2), () {
                   Provider.of<AppStatesNotifier>(context, listen: false)
                       .updateState(state.deviceDetailsRes.labelDetails);
-                  Navigator.pushNamedAndRemoveUntil(
+                   Navigator.pushNamedAndRemoveUntil(
                       context, Routes.IMEI_SCREEN, (route) => false);
                 });
               }
@@ -166,8 +166,9 @@ class _LauncherScreenState extends State<LauncherScreen>
                   children: [
                     Image.asset(
                       ImageConstants.splashIcon,
-                      width: 320,
-                      height: 150,
+                      fit: BoxFit.contain,
+                      width: 170,
+                      height: 210,
                     )
                   ],
                 ),

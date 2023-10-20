@@ -1,5 +1,6 @@
 class StringConstants {
   const StringConstants._();
+
   static const String checkImei = 'Check IMEI';
 
   static const String englishCode = 'en';
@@ -11,19 +12,24 @@ class StringConstants {
 
   //Coach screen
   static const String openSansFontFamily = 'OpenSans';
+
   //Internet error messages
   static const String noInternet = "No Internet Connection";
   static const String noInternetKh = "ពុំមានសេវាអ៊ីនធឺណិត";
-  static const String noInternetMsg = "Make sure WiFi or cellular data is turned on and then try again.";
-  static const String noInternetMsgKh = "សូមប្រាកដថាសេវា WiFi ឬសេវាអ៊ីនធឺណិតចល័តត្រូវបានបើក ហើយសូមមេត្តាព្យាយាមម្តងទៀត";
+  static const String noInternetMsg =
+      "Make sure WiFi or cellular data is turned on and then try again.";
+  static const String noInternetMsgKh =
+      "សូមប្រាកដថាសេវា WiFi ឬសេវាអ៊ីនធឺណិតចល័តត្រូវបានបើក ហើយសូមមេត្តាព្យាយាមម្តងទៀត";
   static const String tryAgain = "Try Again";
   static const String tryAgainKh = "សូមព្យាយាមម្តងទៀត";
 
   //Unable to fetch data
   static const String oops = 'OOPS!';
   static const String oopsKh = 'អូ!';
-  static const String errorMsg = 'Sorry, the application was unable to fetch the data. Please try sometime later.';
-  static const String errorMsgKh = 'សូមអភ័យទោស កម្មវិធីមិនអាចទាញយកទិន្នន័យបានទេ សូមព្យាយាមម្តងទៀតនៅពេលក្រោយ';
+  static const String errorMsg =
+      'Sorry, the application was unable to fetch the data. Please try sometime later.';
+  static const String errorMsgKh =
+      'សូមអភ័យទោស កម្មវិធីមិនអាចទាញយកទិន្នន័យបានទេ សូមព្យាយាមម្តងទៀតនៅពេលក្រោយ';
   static const String noDataFound = "No Data Found!!";
   static const String androidOs = "Android";
   static const String iOSOs = "iOS";
@@ -34,11 +40,10 @@ class StringConstants {
   static const String positiveBtnTxt = "YES";
   static const String negativeBtnTxt = "NO";
   static const String appVersion = "APP VERSION";
-  static const String aboutApp =  "Developed by Ministry of Post and Telecommunications, this application will verify any mobile device by its IMEI number. IMEI KH App will provide status  of mobile device (Invalid/Blocklist) and other information like manufacturer, band name and model name of the given IMEI. While purchasing a mobile devices, the genuineness of those mobile devices can be verified by using IMEI KH App.";
+  static const String aboutApp =
+      "Developed by Ministry of Post and Telecommunications, this application will verify any mobile device by its IMEI number. IMEI KH App will provide status  of mobile device (Invalid/Blocklist) and other information like manufacturer, band name and model name of the given IMEI. While purchasing a mobile devices, the genuineness of those mobile devices can be verified by using IMEI KH App.";
   static const String flashTxt = "Flash";
   static const String uploadBarcode = "Upload \n Barcode";
   static const String noBarcodeFound = "No barcode found!";
   static const String invalidBarcode = "Invalid Barcode";
-
-
 }
