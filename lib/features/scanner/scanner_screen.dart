@@ -182,19 +182,22 @@ class _ScannerPageState extends State<ScannerPage>
                     ),
                   ),
                 ),
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      margin: const EdgeInsets.only(right: 20),
-                      child: _flashWidget(),
-                    ),
-                    _galleryImageWidget()
-                  ],
+              Padding(
+                padding: const EdgeInsets.only(bottom: 25),
+                child: Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        margin: const EdgeInsets.only(right: 20),
+                        child: _flashWidget(),
+                      ),
+                      _galleryImageWidget()
+                    ],
+                  ),
                 ),
               )
             ],

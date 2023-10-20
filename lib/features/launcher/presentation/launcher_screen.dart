@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:eirs/constants/constants.dart';
-import 'package:eirs/constants/routes.dart';
 import 'package:eirs/features/component/error_page.dart';
 import 'package:eirs/features/launcher/data/business_logic/launcher_bloc.dart';
 import 'package:eirs/features/launcher/data/business_logic/launcher_state.dart';
@@ -13,6 +12,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants/image_path.dart';
+import '../../../constants/routes.dart';
 import '../../../helper/app_states_notifier.dart';
 import '../../../main.dart';
 import '../../../theme/colors.dart';
@@ -28,11 +28,30 @@ class LauncherScreen extends StatefulWidget {
   State<LauncherScreen> createState() => _LauncherScreenState();
 }
 
-class _LauncherScreenState extends State<LauncherScreen> {
+class _LauncherScreenState extends State<LauncherScreen>
+    with SingleTickerProviderStateMixin {
   Map _source = {ConnectivityResult.none: false};
   bool hasNetwork = true;
   bool isDeviceDetailReqInvoked = false;
   String? deviceDetails;
+  late AnimationController _controller;
+  late Animation<Offset> _animation;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      duration: const Duration(milliseconds: 1200),
+      vsync: this,
+    )..forward();
+    _animation = Tween<Offset>(
+      begin: const Offset(-0.58, 0.0),
+      end: const Offset(-0.4, 0.0),
+    ).animate(CurvedAnimation(
+      parent: _controller,
+      curve: Curves.easeInCubic,
+    ));
+  }
 
   Future<void> _preInitApiReq() async {
     BlocProvider.of<LauncherBloc>(context).add(LauncherInitEvent(
@@ -135,32 +154,71 @@ class _LauncherScreenState extends State<LauncherScreen> {
   }
 
   Widget _splashWidget(LabelDetails? labelDetails) {
-    return Column(
-      children: <Widget>[
-        Expanded(
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Image.asset(
-                  ImageConstants.splashIcon,
-                  width: 250,
-                  height: 125,
-                )
-              ],
+    return Stack(
+      children: [
+        Column(
+          children: <Widget>[
+            Expanded(
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Image.asset(
+                      ImageConstants.splashIcon,
+                      width: 320,
+                      height: 150,
+                    )
+                  ],
+                ),
+              ),
+            ),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Padding(
+                  padding: const EdgeInsets.only(
+                      left: 32, right: 32, bottom: 20, top: 0),
+                  child: Text(
+                    labelDetails?.copyRight ?? "",
+                    style:
+                        TextStyle(fontSize: 14, color: AppColors.greyTextColor),
+                  )),
+            ),
+          ],
+        ),
+        Padding(
+          padding: const EdgeInsets.only(top: 30),
+          child: SlideTransition(
+            position: _animation,
+            transformHitTests: true,
+            textDirection: TextDirection.ltr,
+            child: SizedBox(
+              child: Image.asset(
+                ImageConstants.patternUp,
+                width: 400,
+                height: 300,
+              ),
             ),
           ),
         ),
         Align(
-          alignment: Alignment.bottomCenter,
+          alignment: Alignment.bottomRight,
           child: Padding(
-              padding: const EdgeInsets.all(32),
-              child: Text(
-                labelDetails?.copyRight ?? "",
-                style: TextStyle(fontSize: 14, color: AppColors.greyTextColor),
-              )),
-        ),
+            padding: const EdgeInsets.only(bottom: 30),
+            child: SlideTransition(
+              position: _animation,
+              transformHitTests: true,
+              textDirection: TextDirection.rtl,
+              child: SizedBox(
+                child: Image.asset(
+                  ImageConstants.patternDown,
+                  width: 400,
+                  height: 300,
+                ),
+              ),
+            ),
+          ),
+        )
       ],
     );
   }

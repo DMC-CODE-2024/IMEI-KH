@@ -33,7 +33,7 @@ class _AboutAppInfoDialogState extends State<AboutAppInfoDialog> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset(
-              ImageConstants.splashIcon,
+              ImageConstants.aboutUs,
               width: 150,
               height: 60,
             ),

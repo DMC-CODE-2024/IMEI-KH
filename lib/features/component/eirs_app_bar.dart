@@ -84,57 +84,54 @@ class _EirsAppBarState extends State<EirsAppBar> {
     return AppBar(
       elevation: 1,
       centerTitle: false,
-      titleSpacing: 0.0,
-      leading: Padding(
-        padding: const EdgeInsets.only(left: 2),
-        child: DescribedFeatureOverlay(
-          featureId: feature1,
-          tapTarget: Padding(
-            padding: const EdgeInsets.all(30),
-            child: Image.asset(
-              ImageConstants.splashIcon,
-              width: 67,
-              height: 40,
-            ),
+      leadingWidth: 105,
+      leading: DescribedFeatureOverlay(
+        featureId: feature1,
+        tapTarget: Padding(
+          padding: const EdgeInsets.all(30),
+          child: Image.asset(
+            ImageConstants.aboutUs,
+            width: 90,
+            height: 60,
           ),
-          backgroundColor: AppColors.secondary,
-          title: Text(
-            widget.labelDetails?.aboutUs ?? emptyString,
-            style: const TextStyle(fontWeight: FontWeight.w700),
-          ),
-          overflowMode: feature1OverflowMode,
-          enablePulsingAnimation: feature1EnablePulsingAnimation,
-          description: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Text(widget.labelDetails?.knowMore ?? emptyString),
-              Padding(
-                padding: const EdgeInsets.only(top: 40),
-                child: Row(
-                  children: [
-                    Text(
-                      widget.labelDetails?.appVersion ??
-                          StringConstants.appVersion,
-                      style: const TextStyle(fontWeight: FontWeight.w400),
-                    ),
-                    Text(
-                      ": ${widget.versionName}",
-                      style: const TextStyle(fontWeight: FontWeight.w400),
-                    )
-                  ],
-                ),
-              )
-            ],
-          ),
-          child: Transform.scale(
-            scale: 1,
-            child: IconButton(
-              onPressed: () =>
-                  widget.callback.call(AppBarActions.appLogo, isEnglish),
-              icon: Image.asset(
-                ImageConstants.splashIcon,
-                fit: BoxFit.contain,
+        ),
+        backgroundColor: AppColors.secondary,
+        title: Text(
+          widget.labelDetails?.aboutUs ?? emptyString,
+          style: const TextStyle(fontWeight: FontWeight.w700),
+        ),
+        overflowMode: feature1OverflowMode,
+        enablePulsingAnimation: feature1EnablePulsingAnimation,
+        description: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Text(widget.labelDetails?.knowMore ?? emptyString),
+            Padding(
+              padding: const EdgeInsets.only(top: 40),
+              child: Row(
+                children: [
+                  Text(
+                    widget.labelDetails?.appVersion ??
+                        StringConstants.appVersion,
+                    style: const TextStyle(fontWeight: FontWeight.w400),
+                  ),
+                  Text(
+                    ": ${widget.versionName}",
+                    style: const TextStyle(fontWeight: FontWeight.w400),
+                  )
+                ],
               ),
+            )
+          ],
+        ),
+        child: Transform.scale(
+          scale: 1.2,
+          child: IconButton(
+            onPressed: () =>
+                widget.callback.call(AppBarActions.appLogo, isEnglish),
+            icon: Image.asset(
+              ImageConstants.aboutUs,
+              fit: BoxFit.contain,
             ),
           ),
         ),

@@ -22,5 +22,8 @@ class ImageConstants {
   static const String flashIconOff = "assets/images/ic_flash_icon_off.svg";
   static const String flashIconOn = "assets/images/ic_flash_icon_on.svg";
   static const String warningIcon = "assets/images/ic_warning.svg";
+  static const String aboutUs = "assets/images/ic_about_us.png";
+  static const String patternDown = "assets/images/ic_pattern_down.png";
+  static const String patternUp = "assets/images/ic_pattern_upper.png";
 
 }
