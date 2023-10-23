@@ -88,11 +88,11 @@ class _EirsAppBarState extends State<EirsAppBar> {
       leading: DescribedFeatureOverlay(
         featureId: feature1,
         tapTarget: Padding(
-          padding: const EdgeInsets.all(30),
+          padding: const EdgeInsets.all(10),
           child: Image.asset(
             ImageConstants.aboutUs,
-            width: 90,
-            height: 60,
+            width: 130,
+            height: 90,
           ),
         ),
         backgroundColor: AppColors.secondary,

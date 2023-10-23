@@ -3,6 +3,7 @@ import 'package:eirs/helper/shared_pref.dart';
 import 'package:eirs/persistent/database_helper.dart';
 import 'package:eirs/routes/app_routes.dart';
 import 'package:eirs/theme/colors.dart';
+import 'package:eirs/theme/hex_color.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
@@ -33,9 +34,8 @@ Future<void> main() async {
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
   //* Update statusbar theme
   SystemChrome.setSystemUIOverlayStyle(
-    const SystemUiOverlayStyle(
-      statusBarColor: Colors.transparent,
-      statusBarIconBrightness: Brightness.dark,
+    SystemUiOverlayStyle.light.copyWith(
+      statusBarColor: Colors.white,
     ),
   );
   sharedPref = await SharedPreferences.getInstance();

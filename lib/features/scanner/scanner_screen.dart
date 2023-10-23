@@ -121,90 +121,92 @@ class _ScannerPageState extends State<ScannerPage>
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBarWithTitleOnly(title: labelDetails?.scanCode ?? ""),
-      body: BlocConsumer<ScannerBloc, ScannerState>(
-        builder: (context, state) {
-          return Stack(
-            fit: StackFit.expand,
-            children: [
-              MobileScanner(
-                fit: BoxFit.contain,
-                scanWindow: scanWindow,
-                controller: cameraController,
-                onScannerStarted: (arguments) async {
-                  setState(() {
-                    this.arguments = arguments;
-                  });
-                },
-                onDetect: onDetect,
-              ),
-              CustomPaint(
-                painter: BarcodeOverlay(
-                    barcode: barcode,
-                    arguments: arguments,
-                    boxFit: BoxFit.contain,
-                    capture: captureBarcode,
-                    resetBarcodeOverlay: resetBarcodeOverlay),
-              ),
-              if (arguments != null)
-                CustomPaint(
-                  painter: ScannerOverlay(),
-                ),
-              if (arguments != null)
-                Align(
-                  alignment: Alignment.center,
-                  child: SizedBox(
-                    width: 300,
-                    height: 150,
-                    child: ScannerAnimation(
-                      animation: _animationController,
-                    ),
+      body: SafeArea(
+          bottom: true,
+          child: BlocConsumer<ScannerBloc, ScannerState>(
+            builder: (context, state) {
+              return Stack(
+                fit: StackFit.expand,
+                children: [
+                  MobileScanner(
+                    fit: BoxFit.contain,
+                    scanWindow: scanWindow,
+                    controller: cameraController,
+                    onScannerStarted: (arguments) async {
+                      setState(() {
+                        this.arguments = arguments;
+                      });
+                    },
+                    onDetect: onDetect,
                   ),
-                ),
-              if (showScreenTimer && isDetectionStarted)
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: Padding(
-                    padding: const EdgeInsets.all(5.0),
-                    child: Container(
-                      width: 50,
-                      height: 50,
-                      decoration: BoxDecoration(
-                        border: Border.all(width: 2),
-                        shape: BoxShape.circle,
-                        color: Colors.white.withOpacity(0.7),
-                      ),
-                      child: Center(
-                        child: Text(
-                          "00:${_start.toString().padLeft(2, '0')}",
-                          style: const TextStyle(fontSize: 14),
+                  CustomPaint(
+                    painter: BarcodeOverlay(
+                        barcode: barcode,
+                        arguments: arguments,
+                        boxFit: BoxFit.contain,
+                        capture: captureBarcode,
+                        resetBarcodeOverlay: resetBarcodeOverlay),
+                  ),
+                  if (arguments != null)
+                    CustomPaint(
+                      painter: ScannerOverlay(),
+                    ),
+                  if (arguments != null)
+                    Align(
+                      alignment: Alignment.center,
+                      child: SizedBox(
+                        width: 300,
+                        height: 150,
+                        child: ScannerAnimation(
+                          animation: _animationController,
                         ),
                       ),
                     ),
-                  ),
-                ),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 25),
-                child: Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        margin: const EdgeInsets.only(right: 20),
-                        child: _flashWidget(),
+                  if (showScreenTimer && isDetectionStarted)
+                    Align(
+                      alignment: Alignment.topLeft,
+                      child: Padding(
+                        padding: const EdgeInsets.all(5.0),
+                        child: Container(
+                          width: 50,
+                          height: 50,
+                          decoration: BoxDecoration(
+                            border: Border.all(width: 2),
+                            shape: BoxShape.circle,
+                            color: Colors.white.withOpacity(0.7),
+                          ),
+                          child: Center(
+                            child: Text(
+                              "00:${_start.toString().padLeft(2, '0')}",
+                              style: const TextStyle(fontSize: 14),
+                            ),
+                          ),
+                        ),
                       ),
-                      _galleryImageWidget()
-                    ],
-                  ),
-                ),
-              )
-            ],
-          );
-        },
-        listener: (context, state) {},
-      ),
+                    ),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 10),
+                    child: Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            margin: const EdgeInsets.only(right: 20),
+                            child: _flashWidget(),
+                          ),
+                          _galleryImageWidget()
+                        ],
+                      ),
+                    ),
+                  )
+                ],
+              );
+            },
+            listener: (context, state) {},
+          )),
     );
   }
 

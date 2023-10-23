@@ -35,7 +35,7 @@ class _LauncherScreenState extends State<LauncherScreen>
   bool isDeviceDetailReqInvoked = false;
   String? deviceDetails;
   late AnimationController _controller;
-  late Animation<Offset> _animation;
+  late Animation<Offset> animation;
 
   @override
   void initState() {
@@ -44,7 +44,7 @@ class _LauncherScreenState extends State<LauncherScreen>
       duration: const Duration(milliseconds: 1200),
       vsync: this,
     )..forward();
-    _animation = Tween<Offset>(
+    animation = Tween<Offset>(
       begin: const Offset(-0.58, 0.0),
       end: const Offset(-0.4, 0.0),
     ).animate(CurvedAnimation(
@@ -98,129 +98,130 @@ class _LauncherScreenState extends State<LauncherScreen>
         updateNetworkStatus(value);
         return Scaffold(
           backgroundColor: Colors.white,
-          body: BlocConsumer<LauncherBloc, LauncherState>(
-            builder: (context, state) {
-              if (!hasNetwork) {
-                return NoInternetPage(
-                    labelDetails: LabelDetails(),
-                    callback: (value) {
-                      setState(() {});
-                    });
-              }
+          body: SafeArea(
+              bottom: true,
+              child: BlocConsumer<LauncherBloc, LauncherState>(
+                builder: (context, state) {
+                  if (!hasNetwork) {
+                    return NoInternetPage(
+                        labelDetails: LabelDetails(),
+                        callback: (value) {
+                          setState(() {});
+                        });
+                  }
 
-              if (state is LauncherPreInitLoadingState) {
-                return Center(child: _splashWidget(LabelDetails()));
-              } else if (state is LauncherPreInitLoadedState) {
-                return Center(child: _splashWidget(LabelDetails()));
-              } else if (state is LauncherPreInitErrorState) {
-                return ErrorPage(
-                    labelDetails: LabelDetails(),
-                    callback: (value) {
-                      _initApiReq();
+                  if (state is LauncherPreInitLoadingState) {
+                    return Center(child: _splashWidget(LabelDetails()));
+                  } else if (state is LauncherPreInitLoadedState) {
+                    return Center(child: _splashWidget(LabelDetails()));
+                  } else if (state is LauncherPreInitErrorState) {
+                    return ErrorPage(
+                        labelDetails: LabelDetails(),
+                        callback: (value) {
+                          _initApiReq();
+                        });
+                  } else if (state is LauncherLoadingState) {
+                    return Center(
+                      child: _splashWidget(LabelDetails()),
+                    );
+                  } else if (state is LauncherErrorState) {
+                    return ErrorPage(
+                        labelDetails: LabelDetails(),
+                        callback: (value) {
+                          _initApiReq();
+                        });
+                  } else if (state is LauncherLoadedState) {
+                    return Center(
+                        child:
+                            _splashWidget(state.deviceDetailsRes.labelDetails));
+                  }
+                  return Center(child: _splashWidget(LabelDetails()));
+                },
+                listener: (context, state) {
+                  if (state is LauncherPreInitLoadedState) {
+                    _initApiReq();
+                  }
+                  if (state is LauncherLoadedState) {
+                    Future.delayed(const Duration(seconds: 2), () {
+                      Provider.of<AppStatesNotifier>(context, listen: false)
+                          .updateState(state.deviceDetailsRes.labelDetails);
+                      Navigator.pushNamedAndRemoveUntil(
+                          context, Routes.IMEI_SCREEN, (route) => false);
                     });
-              } else if (state is LauncherLoadingState) {
-                return Center(
-                  child: _splashWidget(LabelDetails()),
-                );
-              } else if (state is LauncherErrorState) {
-                return ErrorPage(
-                    labelDetails: LabelDetails(),
-                    callback: (value) {
-                      _initApiReq();
-                    });
-              } else if (state is LauncherLoadedState) {
-                return Center(
-                    child: _splashWidget(state.deviceDetailsRes.labelDetails));
-              }
-              return Center(child: _splashWidget(LabelDetails()));
-            },
-            listener: (context, state) {
-              if (state is LauncherPreInitLoadedState) {
-                _initApiReq();
-              }
-              if (state is LauncherLoadedState) {
-                Future.delayed(const Duration(seconds: 2), () {
-                  Provider.of<AppStatesNotifier>(context, listen: false)
-                      .updateState(state.deviceDetailsRes.labelDetails);
-                   Navigator.pushNamedAndRemoveUntil(
-                      context, Routes.IMEI_SCREEN, (route) => false);
-                });
-              }
-            },
-          ),
+                  }
+                },
+              )),
         );
       },
     );
   }
 
   Widget _splashWidget(LabelDetails? labelDetails) {
+    var window = MediaQuery.of(context).size;
     return Stack(
       children: [
-        Column(
-          children: <Widget>[
-            Expanded(
-              child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Image.asset(
-                      ImageConstants.splashIcon,
-                      fit: BoxFit.contain,
-                      width: 170,
-                      height: 210,
-                    )
-                  ],
-                ),
-              ),
-            ),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: Padding(
-                  padding: const EdgeInsets.only(
-                      left: 32, right: 32, bottom: 20, top: 0),
-                  child: Text(
-                    labelDetails?.copyRight ?? "",
-                    style:
-                        TextStyle(fontSize: 14, color: AppColors.greyTextColor),
-                  )),
-            ),
-          ],
-        ),
-        Padding(
-          padding: const EdgeInsets.only(top: 30),
-          child: SlideTransition(
-            position: _animation,
-            transformHitTests: true,
-            textDirection: TextDirection.ltr,
-            child: SizedBox(
-              child: Image.asset(
-                ImageConstants.patternUp,
-                width: 400,
-                height: 300,
-              ),
-            ),
+        Align(
+          alignment: Alignment.center,
+          child: Image.asset(
+            ImageConstants.splashIcon,
+            fit: BoxFit.contain,
+            width: 170,
+            height: 210,
           ),
         ),
         Align(
-          alignment: Alignment.bottomRight,
+          alignment: Alignment.bottomCenter,
           child: Padding(
-            padding: const EdgeInsets.only(bottom: 30),
-            child: SlideTransition(
-              position: _animation,
-              transformHitTests: true,
-              textDirection: TextDirection.rtl,
-              child: SizedBox(
-                child: Image.asset(
-                  ImageConstants.patternDown,
-                  width: 400,
-                  height: 300,
-                ),
-              ),
+              padding: const EdgeInsets.only(
+                  left: 45, right: 45, bottom: 15, top: 0),
+              child: Text(
+                textAlign: TextAlign.center,
+                labelDetails?.copyRight ?? "",
+                style: TextStyle(fontSize: 14, color: AppColors.greyTextColor),
+              )),
+        ),
+        patternUp(window),
+        patternDown(window),
+      ],
+    );
+  }
+
+  patternUp(Size window) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 30),
+      child: SlideTransition(
+        position: animation,
+        transformHitTests: true,
+        textDirection: TextDirection.ltr,
+        child: SizedBox(
+          child: Image.asset(
+            ImageConstants.patternUp,
+            width: 400,
+            height: window.height / 2 - 120,
+          ),
+        ),
+      ),
+    );
+  }
+
+  patternDown(Size window) {
+    return Align(
+      alignment: Alignment.bottomRight,
+      child: Padding(
+        padding: const EdgeInsets.only(bottom: 30),
+        child: SlideTransition(
+          position: animation,
+          transformHitTests: true,
+          textDirection: TextDirection.rtl,
+          child: SizedBox(
+            child: Image.asset(
+              ImageConstants.patternDown,
+              width: 400,
+              height: window.height / 2 - 120,
             ),
           ),
-        )
-      ],
+        ),
+      ),
     );
   }
 }

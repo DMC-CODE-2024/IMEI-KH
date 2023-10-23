@@ -34,8 +34,8 @@ class _AboutAppInfoDialogState extends State<AboutAppInfoDialog> {
           children: [
             Image.asset(
               ImageConstants.aboutUs,
-              width: 150,
-              height: 60,
+              width: 200,
+              height: 80,
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
