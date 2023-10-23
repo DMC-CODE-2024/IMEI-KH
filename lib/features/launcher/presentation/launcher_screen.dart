@@ -173,7 +173,7 @@ class _LauncherScreenState extends State<LauncherScreen>
           alignment: Alignment.bottomCenter,
           child: Padding(
               padding: const EdgeInsets.only(
-                  left: 45, right: 45, bottom: 15, top: 0),
+                  left: 75, right: 75, bottom: 15, top: 0),
               child: Text(
                 textAlign: TextAlign.center,
                 labelDetails?.copyRight ?? "",
