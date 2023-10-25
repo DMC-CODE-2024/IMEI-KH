@@ -22,23 +22,25 @@ class NeedAnyHelpWidget extends StatelessWidget {
           borderRadius: const BorderRadius.all(Radius.circular(5))),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           Expanded(
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Text(
                   labelDetails?.needAnyHelp ?? "",
                   style: TextStyle(color: AppColors.black, fontSize: 14.0),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 6),
-                  child: Text(
-                    labelDetails?.emailId ?? "",
-                    style: TextStyle(color: AppColors.black, fontSize: 14.0),
-                  ),
-                )
+                (labelDetails?.emailId != null && labelDetails?.emailId != "")
+                    ? Padding(
+                        padding: const EdgeInsets.only(top: 6),
+                        child: Text(
+                          labelDetails?.emailId ?? "",
+                          style:
+                              TextStyle(color: AppColors.black, fontSize: 14.0),
+                        ),
+                      )
+                    : Container()
               ],
             ),
           ),
