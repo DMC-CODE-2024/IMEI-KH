@@ -208,6 +208,7 @@ class _DeviceHistoryScreenState extends State<DeviceHistoryScreen> {
   Widget _deviceInfoListWidget(Map<String, dynamic> values) {
     return ListView.builder(
       shrinkWrap: true,
+      physics: const ClampingScrollPhysics(),
       itemCount: values.length,
       itemBuilder: (BuildContext context, int index) {
         String key = values.keys.elementAt(index);
