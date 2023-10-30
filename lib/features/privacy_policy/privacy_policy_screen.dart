@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import '../../constants/constants.dart';
+import '../../helper/app_states_notifier.dart';
 import '../component/app_bar_with_title.dart';
+import '../launcher/data/models/device_details_res.dart';
 
 class PrivacyPolicyScreen extends StatefulWidget {
   @override
@@ -11,6 +14,7 @@ class PrivacyPolicyScreen extends StatefulWidget {
 class _PrivacyPolicyScreenState extends State<PrivacyPolicyScreen> {
   late WebViewController webViewController;
   bool isLoading = true;
+  LabelDetails? labelDetails;
 
   @override
   void initState() {
@@ -46,9 +50,16 @@ class _PrivacyPolicyScreenState extends State<PrivacyPolicyScreen> {
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    labelDetails = Provider.of<AppStatesNotifier>(context).value;
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: const AppBarWithTitleOnly(title: "Privacy & Policy"),
+        appBar:
+            AppBarWithTitleOnly(title: labelDetails?.privacyPolicyTitle ?? ""),
         body: (isLoading)
             ? const Center(
                 child: CircularProgressIndicator(

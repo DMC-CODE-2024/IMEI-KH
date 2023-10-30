@@ -97,6 +97,8 @@ class LabelDetails {
   String? flash;
   String? uploadBarcode;
   String? invalidBarcode;
+  String? privacyPolicyLabel;
+  String? privacyPolicyTitle;
   LabelDetails();
 
   factory LabelDetails.fromJson(Map<String, dynamic> json) =>

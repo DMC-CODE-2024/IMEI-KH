@@ -66,9 +66,9 @@ class _AboutAppInfoDialogState extends State<AboutAppInfoDialog> {
                         ),
                       ),
                     ),
-                    child: const Text(
-                      "Privacy & Policy",
-                      style: TextStyle(
+                    child: Text(
+                      widget.labelDetails?.privacyPolicyLabel ?? "",
+                      style: const TextStyle(
                         color: Colors.blue,
                       ),
                     ),
