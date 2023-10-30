@@ -98,15 +98,17 @@ class _CheckImeiScreenState extends State<CheckImeiScreen> {
       backgroundColor: Colors.white,
       elevation: 1,
       centerTitle: false,
-      titleSpacing: 0.0,
+      leadingWidth: 95,
       leading: Padding(
-        padding: const EdgeInsets.only(left: 10),
+        padding: const EdgeInsets.only(left: 28),
         child: GestureDetector(
           onTap: () => {_showAboutAppInfoDialog()},
-          child: Image.asset(
-            ImageConstants.splashIcon,
-            width: 67,
-            height: 30,
+          child: Transform.scale(
+            scale: 1.6,
+            child: Image.asset(
+              ImageConstants.aboutUs,
+              fit: BoxFit.contain,
+            ),
           ),
         ),
       ),

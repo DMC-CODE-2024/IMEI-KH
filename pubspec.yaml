@@ -54,6 +54,7 @@ dependencies:
   package_info_plus: ^3.0.3
   image_picker: ^1.0.4
   flutter_html: ^3.0.0-alpha.3
+  webview_flutter: ^4.4.1
 
   # retrofit generator is an dio client generator using source_gen and inspired by Chopper and Retrofit.
   retrofit_generator: ^4.1.0+1

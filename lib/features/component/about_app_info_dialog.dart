@@ -1,4 +1,5 @@
 import 'package:eirs/constants/strings.dart';
+import 'package:eirs/features/privacy_policy/privacy_policy_screen.dart';
 import 'package:flutter/material.dart';
 
 import '../../constants/image_path.dart';
@@ -44,6 +45,35 @@ class _AboutAppInfoDialogState extends State<AboutAppInfoDialog> {
                     StringConstants.aboutApp,
                 style:
                     const TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
+              ),
+            ),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Padding(
+                padding: const EdgeInsets.only(left: 20),
+                child: InkWell(
+                  onTap: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => PrivacyPolicyScreen()));
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.only(bottom: 3),
+                    decoration: const BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(
+                          color: Colors.blue,
+                          width: 1.0, // Underline thickness
+                        ),
+                      ),
+                    ),
+                    child: const Text(
+                      "Privacy & Policy",
+                      style: TextStyle(
+                        color: Colors.blue,
+                      ),
+                    ),
+                  ),
+                ),
               ),
             ),
             Align(
