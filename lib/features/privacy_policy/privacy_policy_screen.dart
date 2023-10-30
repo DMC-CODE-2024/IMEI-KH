@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-
 import '../../constants/constants.dart';
 import '../component/app_bar_with_title.dart';
 
