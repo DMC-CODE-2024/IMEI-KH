@@ -469,7 +469,7 @@ class _CheckImeiScreenState extends State<CheckImeiScreen> {
               labelDetails?.imeiAlsoWrittenInBox ?? emptyString,
               style: TextStyle(color: AppColors.black, fontSize: 14.0),
             ),
-            Image.asset(ImageConstants.optionA),
+            Padding(padding: const EdgeInsets.only(top: 10),child: Image.asset(ImageConstants.optionA),),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 12),
               child: NeedAnyHelpWidget(
