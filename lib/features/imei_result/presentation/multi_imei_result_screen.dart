@@ -94,14 +94,14 @@ class _MultiImeiResultScreenState extends State<MultiImeiResultScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Padding(
+                        /* Padding(
                           padding: const EdgeInsets.only(top: 12.0),
                           child: Text(
                             widget.labelDetails?.imeiInfo ?? "",
                             style: TextStyle(
                                 fontSize: 20.0, color: AppColors.secondary),
                           ),
-                        ),
+                        ),*/
                         ListView.builder(
                             physics: const NeverScrollableScrollPhysics(),
                             shrinkWrap: true,
@@ -203,10 +203,10 @@ class _MultiImeiResultScreenState extends State<MultiImeiResultScreen> {
               alignment: Alignment.center,
               child: Column(
                 children: [
-                  SvgPicture.asset(
-                    ImageConstants.validIcon,
-                    color: HexColor(statusColor ?? validStatusColor),
-                  ),
+                  SvgPicture.asset(ImageConstants.validIcon,
+                      color: HexColor(statusColor ?? validStatusColor),
+                      width: 70,
+                      height: 70),
                   Padding(
                     padding: const EdgeInsets.only(top: 5),
                     child: Html(
@@ -215,13 +215,8 @@ class _MultiImeiResultScreenState extends State<MultiImeiResultScreen> {
                       style: {'html': Style(textAlign: TextAlign.center)},
                     ),
                   ),
-                  Html(
-                    data: checkImeiResult?.message ?? "",
-                    shrinkWrap: true,
-                    style: {'html': Style(textAlign: TextAlign.center)},
-                  ),
                   Padding(
-                    padding: const EdgeInsets.only(top: 30.0, bottom: 4),
+                    padding: const EdgeInsets.only(top: 20.0, bottom: 4),
                     child: Row(
                       children: [
                         Text(
@@ -238,6 +233,11 @@ class _MultiImeiResultScreenState extends State<MultiImeiResultScreen> {
                       ],
                     ),
                   ),
+                  Html(data: checkImeiResult?.message ?? "", style: {
+                    'html': Style(textAlign: TextAlign.start),
+                    'body':
+                        Style(padding: HtmlPaddings.zero, margin: Margins.zero)
+                  }),
                   Container(
                     width: double.infinity,
                     margin: const EdgeInsets.symmetric(vertical: 5.0),
@@ -303,8 +303,12 @@ class _MultiImeiResultScreenState extends State<MultiImeiResultScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            SvgPicture.asset(ImageConstants.invalidIcon,
-                color: HexColor(statusColor ?? invalidStatusColor)),
+            SvgPicture.asset(
+              ImageConstants.invalidIcon,
+              color: HexColor(statusColor ?? invalidStatusColor),
+              width: 70,
+              height: 70,
+            ),
             Padding(
               padding: const EdgeInsets.only(top: 5.0),
               child: Html(
