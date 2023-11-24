@@ -308,9 +308,7 @@ class _ScannerPageState extends State<ScannerPage>
   void getImageBarCodeResult(List<Barcode> barcodes) {
     for (final barcode in barcodes) {
       String? code = barcode.rawValue;
-      if (code != null &&
-          Validator.isNumeric(code) &&
-          Validator.isValidIMEI(double.parse(code))) {
+      if (code != null && Validator.isNumeric(code)) {
         if (uniqueImei.containsKey(code)) {
           var count = uniqueImei[code];
           if (count != null) uniqueImei[code] = count + 1;
@@ -323,16 +321,14 @@ class _ScannerPageState extends State<ScannerPage>
   }
 
   void getScanBarCodeResult(String? code) {
-    if (code != null &&
-        Validator.isNumeric(code) &&
-        Validator.isValidIMEI(double.tryParse(code)!)) {
+    if (code != null && Validator.isNumeric(code)) {
       var count = uniqueImei[code];
       if (uniqueImei.containsKey(code)) {
         if (count != null) uniqueImei[code] = count + 1;
       } else {
         uniqueImei[code] = 1;
       }
-      if (count != null && count < 2) stopTimer();
+      //if (count != null && count < 2) stopTimer();
     }
     startTimer();
   }
@@ -386,16 +382,29 @@ class _ScannerPageState extends State<ScannerPage>
         oneSec,
         (Timer timer) {
           if (_start == 0) {
-            totalTimerCount = totalTimerCount + 1;
+            /*totalTimerCount = totalTimerCount + 1;
             if (uniqueImei.entries.every((e) => e.value >= 2) ||
                 totalTimerCount >= 3) {
               stopTimer();
               return navigateNext();
             } else {
               _start = 10;
-            }
+            }*/
+            _start = 10;
+            stopTimer();
+            return navigateNext();
           } else {
             _start--;
+            if (uniqueImei.length >= 2) {
+              _start = 10;
+              stopTimer();
+              return navigateNext();
+            }
+            if (_start <= 4 && uniqueImei.isNotEmpty) {
+              _start = 10;
+              stopTimer();
+              return navigateNext();
+            }
           }
           setState(() {
             if (lastDetectionValue == initialDetectionValue) {
