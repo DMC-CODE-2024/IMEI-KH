@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_svg/svg.dart';
-
+import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import '../../../constants/constants.dart';
 import '../../../constants/image_path.dart';
 import '../../../constants/routes.dart';
@@ -199,90 +199,80 @@ class _MultiImeiResultScreenState extends State<MultiImeiResultScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Align(
-              alignment: Alignment.center,
-              child: Column(
-                children: [
-                  SvgPicture.asset(ImageConstants.validIcon,
-                      color: HexColor(statusColor ?? validStatusColor),
-                      width: 70,
-                      height: 70),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 5),
-                    child: Html(
-                      data: checkImeiResult?.complianceStatus ?? "",
-                      shrinkWrap: true,
-                      style: {'html': Style(textAlign: TextAlign.center)},
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 20.0, bottom: 4),
-                    child: Row(
-                      children: [
-                        Text(
-                          widget.labelDetails?.imei ?? "",
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Center(child: SvgPicture.asset(ImageConstants.validIcon,
+                    color: HexColor(statusColor ?? validStatusColor),
+                    width: 70,
+                    height: 70),),
+                Padding(
+                  padding: const EdgeInsets.only(top: 5),
+                  child: HtmlWidget(checkImeiResult?.complianceStatus ?? ""),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 20.0, bottom: 4),
+                  child: Row(
+                    children: [
+                      Text(
+                        widget.labelDetails?.imei ?? "",
+                        style: const TextStyle(fontSize: 14.0),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                        child: Text(
+                          imei,
                           style: const TextStyle(fontSize: 14.0),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 5.0),
-                          child: Text(
-                            imei,
-                            style: const TextStyle(fontSize: 14.0),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Html(data: checkImeiResult?.message ?? "", style: {
-                    'html': Style(textAlign: TextAlign.start),
-                    'body':
-                        Style(padding: HtmlPaddings.zero, margin: Margins.zero)
-                  }),
-                  Container(
-                    width: double.infinity,
-                    margin: const EdgeInsets.symmetric(vertical: 5.0),
-                    decoration: BoxDecoration(
-                        border: Border.all(
-                          color: AppColors.borderColor,
-                        ),
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(8))),
-                    child: Table(
-                      border: TableBorder(
-                        horizontalInside: BorderSide(
-                            width: 1,
-                            color: AppColors.borderColor,
-                            style: BorderStyle.solid),
                       ),
-                      children: data.entries.map((deviceDetailMap) {
-                        return TableRow(children: [
-                          TableCell(
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 18),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  Expanded(
-                                      child: Padding(
-                                    padding: const EdgeInsets.only(left: 15),
-                                    child: Text(deviceDetailMap.key),
-                                  )),
-                                  Expanded(
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(right: 15),
-                                      child: Text(deviceDetailMap.value),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          )
-                        ]);
-                      }).toList(),
+                    ],
+                  ),
+                ),
+                Text(checkImeiResult?.message ?? ""),
+                Container(
+                  width: double.infinity,
+                  margin: const EdgeInsets.symmetric(vertical: 5.0),
+                  decoration: BoxDecoration(
+                      border: Border.all(
+                        color: AppColors.borderColor,
+                      ),
+                      borderRadius:
+                      const BorderRadius.all(Radius.circular(8))),
+                  child: Table(
+                    border: TableBorder(
+                      horizontalInside: BorderSide(
+                          width: 1,
+                          color: AppColors.borderColor,
+                          style: BorderStyle.solid),
                     ),
-                  )
-                ],
-              ),
+                    children: data.entries.map((deviceDetailMap) {
+                      return TableRow(children: [
+                        TableCell(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 18),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Expanded(
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(left: 15),
+                                      child: Text(deviceDetailMap.key),
+                                    )),
+                                Expanded(
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(right: 15),
+                                    child: Text(deviceDetailMap.value),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        )
+                      ]);
+                    }).toList(),
+                  ),
+                )
+              ],
             ),
           ],
         ),
@@ -311,11 +301,9 @@ class _MultiImeiResultScreenState extends State<MultiImeiResultScreen> {
             ),
             Padding(
               padding: const EdgeInsets.only(top: 5.0),
-              child: Html(
-                data: checkImeiResult?.complianceStatus ?? "",
-                shrinkWrap: true,
-                style: {'html': Style(textAlign: TextAlign.center)},
-              ),
+              child:Center(child:HtmlWidget(
+                  checkImeiResult?.complianceStatus ?? ""
+              )),
             ),
             Padding(
               padding: const EdgeInsets.only(top: 20, bottom: 8),
@@ -359,12 +347,8 @@ class _MultiImeiResultScreenState extends State<MultiImeiResultScreen> {
                           style:
                               TextStyle(fontSize: 14.0, color: AppColors.black),
                         ),*/
-                        Html(
-                          data: checkImeiResult?.message ??
-                              widget.labelDetails?.imeiNotPer3gpp ??
-                              "",
-                          shrinkWrap: true,
-                          style: {'html': Style(textAlign: TextAlign.left)},
+                        HtmlWidget(
+                          checkImeiResult?.message ?? widget.labelDetails?.imeiNotPer3gpp ?? "",
                         )
                       ],
                     ),

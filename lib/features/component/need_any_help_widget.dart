@@ -25,10 +25,11 @@ class NeedAnyHelpWidget extends StatelessWidget {
         children: [
           Expanded(
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   labelDetails?.needAnyHelp ?? "",
+                  textAlign: TextAlign.start,
                   style: TextStyle(color: AppColors.black, fontSize: 14.0),
                 ),
                 (labelDetails?.emailId != null && labelDetails?.emailId != "")
@@ -36,6 +37,7 @@ class NeedAnyHelpWidget extends StatelessWidget {
                         padding: const EdgeInsets.only(top: 6),
                         child: Text(
                           labelDetails?.emailId ?? "",
+                          textAlign: TextAlign.start,
                           style:
                               TextStyle(color: AppColors.black, fontSize: 14.0),
                         ),
