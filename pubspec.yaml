@@ -56,7 +56,7 @@ dependencies:
   webview_flutter: ^4.4.1
   webview_flutter_android: ^3.12.0
   webview_flutter_wkwebview: ^3.9.0
-  flutter_widget_from_html_core: ^0.14.7
+  flutter_widget_from_html_core: ^0.14.9
 
 
   # retrofit generator is an dio client generator using source_gen and inspired by Chopper and Retrofit.
