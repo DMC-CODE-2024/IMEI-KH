@@ -10,6 +10,8 @@ const int preInitReqCode = 1;
 const int initReqCode = 2;
 const int requestTimeOut = 5 * 1000;
 const String defaultUrl = "https://appapi.eirs.gov.kh";
+//QA Server
+const String qaBaseUrl = "http://139.59.5.244:9511/";
 String baseUrl = defaultUrl;
 const String invalidStatusColor = "#eb5757";
 const String validStatusColor = "#00D100";

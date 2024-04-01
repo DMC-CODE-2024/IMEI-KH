@@ -62,8 +62,7 @@ class _ImeiResultScreenState extends State<ImeiResultScreen> {
         onWillPop: () {
           //on Back button press, you can use WillPopScope for another purpose also.
           Navigator.pop(context, isValidImei); //return data along with pop
-          return Future(
-              () => false); //onWillPop is Future<bool> so return false
+          return Future(() => false); //onWillPop is Future<bool> so return false
         },
         child: SingleChildScrollView(
           child: Padding(

@@ -8,10 +8,11 @@ import '../launcher/data/models/device_details_res.dart';
 import 'button.dart';
 
 class ErrorPage extends StatelessWidget {
-  const ErrorPage({super.key, this.labelDetails, this.callback});
+  const ErrorPage({super.key, this.labelDetails, this.callback, this.textColor});
 
   final LabelDetails? labelDetails;
   final Function? callback;
+  final Color? textColor;
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +26,9 @@ class ErrorPage extends StatelessWidget {
                 ((selectedLng == StringConstants.englishCode)
                     ? StringConstants.oops
                     : StringConstants.oopsKh),
-            style: const TextStyle(fontSize: 32.0, color: Colors.black),
+            style: TextStyle(
+                fontSize: 32.0,
+                color: (textColor == null) ? Colors.black : textColor),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 40),
@@ -35,7 +38,7 @@ class ErrorPage extends StatelessWidget {
                       ? StringConstants.errorMsg
                       : StringConstants.errorMsgKh),
               textAlign: TextAlign.center,
-              style: const TextStyle(fontSize: 16.0, color: Colors.black),
+              style: TextStyle(fontSize: 16.0, color: (textColor == null) ? Colors.black : textColor),
             ),
           ),
           AppButton(

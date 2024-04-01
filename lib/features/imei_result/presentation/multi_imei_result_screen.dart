@@ -1,10 +1,9 @@
-import 'package:eirs/features/check_multi_imei/data/models/multi_imei_res.dart';
 import 'package:eirs/features/launcher/data/models/device_details_res.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
+
 import '../../../constants/constants.dart';
 import '../../../constants/image_path.dart';
 import '../../../constants/routes.dart';
@@ -12,16 +11,19 @@ import '../../../helper/shared_pref.dart';
 import '../../../theme/colors.dart';
 import '../../../theme/hex_color.dart';
 import '../../check_imei/data/models/check_imei_res.dart';
-import '../../check_multi_imei/data/business_logic/check_multi_imei_bloc.dart';
-import '../../check_multi_imei/data/business_logic/check_multi_imei_event.dart';
-import '../../check_multi_imei/data/business_logic/check_multi_imei_state.dart';
+import '../../component/about_app_info_dialog.dart';
+import '../../component/app_bar_with_icon_only.dart';
 import '../../component/button.dart';
+import '../../component/check_ip_error_page.dart';
 import '../../component/custom_progress_indicator.dart';
 import '../../component/error_page.dart';
 import '../../component/need_any_help_widget.dart';
 import '../../component/result_app_bar.dart';
 import '../../history/data/business_logic/device_history_bloc.dart';
 import '../../history/presentation/device_history_screen.dart';
+import '../business_logic/check_multi_imei_bloc.dart';
+import '../business_logic/check_multi_imei_state.dart';
+import '../data/models/multi_imei_res.dart';
 
 class MultiImeiResultScreen extends StatefulWidget {
   const MultiImeiResultScreen(
@@ -41,60 +43,83 @@ class MultiImeiResultScreen extends StatefulWidget {
 class _MultiImeiResultScreenState extends State<MultiImeiResultScreen> {
   List<MultiImeiRes>? imeiResList;
   bool isValidImei = false;
+  bool allowBackPress = true;
 
   @override
   void initState() {
     super.initState();
-    getLocale().then((languageCode) {
-      BlocProvider.of<CheckMultiImeiBloc>(context).add(CheckMultiImeiInitEvent(
-          imeiMap: widget.imeiList,
-          languageType: languageCode,
-          requestCode: checkMultiImeiReq));
-    });
+    BlocProvider.of<CheckMultiImeiBloc>(context).checkCountryIpReq();
+  }
+
+  _showAboutAppInfoDialog() {
+    showDialog(
+        barrierColor: Colors.black26,
+        context: context,
+        builder: (context) {
+          return AboutAppInfoDialog(
+            labelDetails: widget.labelDetails,
+          );
+        });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: ResultAppBar(
-          title: widget.labelDetails?.result ?? "",
-          callback: (value) {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (_) => BlocProvider.value(
-                  value: DeviceHistoryBloc(),
-                  child: const DeviceHistoryScreen(),
-                ),
-              ),
-            );
-          }),
-      body: BlocConsumer<CheckMultiImeiBloc, CheckMultiImeiState>(
-        builder: (context, state) {
-          if (state is CheckMultiImeiLoadingState) {
-            return CustomProgressIndicator(
-                labelDetails: widget.labelDetails, textColor: Colors.black);
-          }
-          if (state is CheckMultiImeiErrorState) {
-            return Container(
-              color: Colors.white,
-              child: ErrorPage(
-                  labelDetails: widget.labelDetails,
-                  callback: (value) {
-                    _reloadPage();
-                  }),
-            );
-          }
+      appBar: allowBackPress
+          ? ResultAppBar(
+              title: widget.labelDetails?.result ?? "",
+              callback: (value) {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (_) => BlocProvider.value(
+                      value: DeviceHistoryBloc(),
+                      child: const DeviceHistoryScreen(),
+                    ),
+                  ),
+                );
+              })
+          : appBarWithIconOnly(_showAboutAppInfoDialog),
+      body: PopScope(
+          canPop: allowBackPress,
+          child: BlocConsumer<CheckMultiImeiBloc, CheckMultiImeiState>(
+            builder: (context, state) {
+              if (state is CheckMultiImeiLoadingState ||
+                  state is MultiImeiIpLoadingState) {
+                return CustomProgressIndicator(
+                    labelDetails: widget.labelDetails, textColor: Colors.black);
+              }
+              if (state is CheckMultiImeiErrorState ||
+                  state is MultiImeiIpErrorState) {
+                return Container(
+                  color: Colors.white,
+                  child: ErrorPage(
+                      labelDetails: widget.labelDetails,
+                      callback: (value) {
+                        //_reloadPage();
+                        navigateToHome();
+                      }),
+                );
+              }
+              if (state is MultiImeiIpLoadedState) {
+                if (state.checkCountryIPRes.countryCode != "KH") {
+                  return CheckIpErrorPage(
+                      labelDetails: widget.labelDetails,
+                      callback: (value) {
+                        navigateToHome();
+                      });
+                }
+              }
 
-          return (imeiResList != null && imeiResList!.isNotEmpty)
-              ? SingleChildScrollView(
-                  child: Padding(
-                    padding: const EdgeInsets.all(20),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        /* Padding(
+              return (imeiResList != null && imeiResList!.isNotEmpty)
+                  ? SingleChildScrollView(
+                      child: Padding(
+                        padding: const EdgeInsets.all(20),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            /* Padding(
                           padding: const EdgeInsets.only(top: 12.0),
                           child: Text(
                             widget.labelDetails?.imeiInfo ?? "",
@@ -102,73 +127,94 @@ class _MultiImeiResultScreenState extends State<MultiImeiResultScreen> {
                                 fontSize: 20.0, color: AppColors.secondary),
                           ),
                         ),*/
-                        ListView.builder(
-                            physics: const NeverScrollableScrollPhysics(),
-                            shrinkWrap: true,
-                            scrollDirection: Axis.vertical,
-                            itemCount: imeiResList?.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              MultiImeiRes multiImeiRes = imeiResList![index];
-                              if (multiImeiRes.checkImeiRes.result?.validImei ??
-                                  false) {
-                                return Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 10),
-                                  child: validImeiList(
-                                      multiImeiRes.checkImeiRes.result
-                                              ?.deviceDetails ??
-                                          {},
-                                      multiImeiRes.imei,
-                                      multiImeiRes.checkImeiRes.result),
-                                );
-                              } else {
-                                return Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 10),
-                                  child: invalidImeiList(multiImeiRes.imei,
-                                      multiImeiRes.checkImeiRes.result),
-                                );
-                              }
-                            }),
-                        Container(
-                          margin: const EdgeInsets.only(top: 15, bottom: 15),
-                          child: AppButton(
-                            isLoading: false,
-                            child:
-                                Text(widget.labelDetails?.checkOtherImei ?? ""),
-                            onPressed: () {
-                              widget.isSingleImeiReq
-                                  ? Navigator.pop(context, isValidImei)
-                                  : Navigator.pushNamedAndRemoveUntil(context,
-                                      Routes.IMEI_SCREEN, (route) => false);
-                            },
-                          ),
+                            ListView.builder(
+                                physics: const NeverScrollableScrollPhysics(),
+                                shrinkWrap: true,
+                                scrollDirection: Axis.vertical,
+                                itemCount: imeiResList?.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  MultiImeiRes multiImeiRes =
+                                      imeiResList![index];
+                                  if (multiImeiRes
+                                          .checkImeiRes.result?.validImei ??
+                                      false) {
+                                    return Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 10),
+                                      child: validImeiList(
+                                          multiImeiRes.checkImeiRes.result
+                                                  ?.deviceDetails ??
+                                              {},
+                                          multiImeiRes.imei,
+                                          multiImeiRes.checkImeiRes.result),
+                                    );
+                                  } else {
+                                    return Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 10),
+                                      child: invalidImeiList(multiImeiRes.imei,
+                                          multiImeiRes.checkImeiRes.result),
+                                    );
+                                  }
+                                }),
+                            Container(
+                              margin:
+                                  const EdgeInsets.only(top: 15, bottom: 15),
+                              child: AppButton(
+                                isLoading: false,
+                                child: Text(
+                                    widget.labelDetails?.checkOtherImei ?? ""),
+                                onPressed: () => navigateToHome(),
+                              ),
+                            ),
+                            _emptyWidget(),
+                            NeedAnyHelpWidget(
+                              labelDetails: widget.labelDetails,
+                            )
+                          ],
                         ),
-                        _emptyWidget(),
-                        NeedAnyHelpWidget(
-                          labelDetails: widget.labelDetails,
-                        )
-                      ],
-                    ),
-                  ),
-                )
-              : Container();
-        },
-        listener: (context, state) {
-          if (state is CheckMultiImeiLoadedState) {
-            setState(() {
-              isValidImei = state.isValidImei;
-              imeiResList = state.multiImeiResList;
-            });
-          }
-        },
-      ),
+                      ),
+                    )
+                  : Container();
+            },
+            listener: (context, state) {
+              if (state is CheckMultiImeiLoadedState) {
+                setState(() {
+                  isValidImei = state.isValidImei;
+                  imeiResList = state.multiImeiResList;
+                });
+              }
+
+              if (state is MultiImeiIpLoadedState) {
+                if (state.checkCountryIPRes.countryCode != "KH") {
+                  setState(() {
+                    allowBackPress = false;
+                  });
+                } else {
+                  navigateToCheckMultiImei();
+                }
+              }
+            },
+          )),
     );
   }
 
+  void navigateToCheckMultiImei() {
+    getLocale().then((languageCode) {
+      BlocProvider.of<CheckMultiImeiBloc>(context)
+          .checkMultiIMEIReq(languageCode, widget.imeiList);
+    });
+  }
+
+  void navigateToHome() {
+    widget.isSingleImeiReq
+        ? Navigator.pop(context, isValidImei)
+        : Navigator.pushNamedAndRemoveUntil(
+            context, Routes.IMEI_SCREEN, (route) => false);
+  }
+
   void _reloadPage() {
-    BlocProvider.of<CheckMultiImeiBloc>(context)
-        .add(CheckMultiImeiInitEvent(requestCode: pageRefresh));
+    BlocProvider.of<CheckMultiImeiBloc>(context).pageRefresh();
   }
 
   Widget _emptyWidget() {
@@ -202,10 +248,12 @@ class _MultiImeiResultScreenState extends State<MultiImeiResultScreen> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Center(child: SvgPicture.asset(ImageConstants.validIcon,
-                    color: HexColor(statusColor ?? validStatusColor),
-                    width: 70,
-                    height: 70),),
+                Center(
+                  child: SvgPicture.asset(ImageConstants.validIcon,
+                      color: HexColor(statusColor ?? validStatusColor),
+                      width: 70,
+                      height: 70),
+                ),
                 Padding(
                   padding: const EdgeInsets.only(top: 5),
                   child: HtmlWidget(checkImeiResult?.complianceStatus ?? ""),
@@ -236,8 +284,7 @@ class _MultiImeiResultScreenState extends State<MultiImeiResultScreen> {
                       border: Border.all(
                         color: AppColors.borderColor,
                       ),
-                      borderRadius:
-                      const BorderRadius.all(Radius.circular(8))),
+                      borderRadius: const BorderRadius.all(Radius.circular(8))),
                   child: Table(
                     border: TableBorder(
                       horizontalInside: BorderSide(
@@ -255,9 +302,9 @@ class _MultiImeiResultScreenState extends State<MultiImeiResultScreen> {
                               children: <Widget>[
                                 Expanded(
                                     child: Padding(
-                                      padding: const EdgeInsets.only(left: 15),
-                                      child: Text(deviceDetailMap.key),
-                                    )),
+                                  padding: const EdgeInsets.only(left: 15),
+                                  child: Text(deviceDetailMap.key),
+                                )),
                                 Expanded(
                                   child: Padding(
                                     padding: const EdgeInsets.only(right: 15),
@@ -301,9 +348,8 @@ class _MultiImeiResultScreenState extends State<MultiImeiResultScreen> {
             ),
             Padding(
               padding: const EdgeInsets.only(top: 5.0),
-              child:Center(child:HtmlWidget(
-                  checkImeiResult?.complianceStatus ?? ""
-              )),
+              child: Center(
+                  child: HtmlWidget(checkImeiResult?.complianceStatus ?? "")),
             ),
             Padding(
               padding: const EdgeInsets.only(top: 20, bottom: 8),
@@ -348,7 +394,9 @@ class _MultiImeiResultScreenState extends State<MultiImeiResultScreen> {
                               TextStyle(fontSize: 14.0, color: AppColors.black),
                         ),*/
                         HtmlWidget(
-                          checkImeiResult?.message ?? widget.labelDetails?.imeiNotPer3gpp ?? "",
+                          checkImeiResult?.message ??
+                              widget.labelDetails?.imeiNotPer3gpp ??
+                              "",
                         )
                       ],
                     ),

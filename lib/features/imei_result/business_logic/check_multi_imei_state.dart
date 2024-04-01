@@ -1,4 +1,6 @@
-import 'package:eirs/features/check_multi_imei/data/models/multi_imei_res.dart';
+
+import '../../check_imei/data/models/check_country_ip_res.dart';
+import '../data/models/multi_imei_res.dart';
 
 abstract class CheckMultiImeiState {}
 
@@ -19,4 +21,20 @@ class CheckMultiImeiErrorState extends CheckMultiImeiState {
   String e;
 
   CheckMultiImeiErrorState(this.e);
+}
+
+
+//Check country IP req
+class MultiImeiIpLoadingState extends CheckMultiImeiState {}
+
+class MultiImeiIpErrorState extends CheckMultiImeiState {
+  String e;
+
+  MultiImeiIpErrorState(this.e);
+}
+
+class MultiImeiIpLoadedState extends CheckMultiImeiState {
+  CheckCountryIPRes checkCountryIPRes;
+
+  MultiImeiIpLoadedState(this.checkCountryIPRes);
 }

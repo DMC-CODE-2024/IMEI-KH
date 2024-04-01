@@ -14,7 +14,7 @@ import '../../component/button_opacity.dart';
 import '../../component/input_borders.dart';
 import '../../imei_result/presentation/multi_imei_result_screen.dart';
 import '../../launcher/data/models/device_details_res.dart';
-import '../data/business_logic/check_multi_imei_bloc.dart';
+import '../../imei_result/business_logic/check_multi_imei_bloc.dart';
 
 class ImeiListPage extends StatefulWidget {
   ImeiListPage({

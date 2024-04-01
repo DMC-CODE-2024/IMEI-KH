@@ -123,6 +123,35 @@ class _EirsApiClient implements EirsApiClient {
     return value;
   }
 
+  @override
+  Future<CheckCountryIPRes> checkCountryIp(
+    checkCountryIPReq, {
+    contentType = 'application/json',
+  }) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{r'Content-Type': contentType};
+    _headers.removeWhere((k, v) => v == null);
+    final _data = <String, dynamic>{};
+    _data.addAll(checkCountryIPReq.toJson());
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<CheckCountryIPRes>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+      contentType: contentType,
+    )
+            .compose(
+              _dio.options,
+              '/eirs/services/checkIPCountry',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = CheckCountryIPRes.fromJson(_result.data!);
+    return value;
+  }
+
   RequestOptions _setStreamType<T>(RequestOptions requestOptions) {
     if (T != dynamic &&
         !(requestOptions.responseType == ResponseType.bytes ||

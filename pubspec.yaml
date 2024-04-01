@@ -50,13 +50,14 @@ dependencies:
   device_info_plus: ^8.1.0
   sqflite: ^2.2.2
   path_provider: ^2.0.11
-  package_info_plus: ^3.0.3
+  package_info_plus: ^5.0.1
   image_picker: ^1.0.4
   flutter_html: ^3.0.0-alpha.3
   webview_flutter: ^4.4.1
   webview_flutter_android: ^3.12.0
   webview_flutter_wkwebview: ^3.9.0
   flutter_widget_from_html_core: ^0.14.9
+  public_ip_address: ^1.1.1
 
 
   # retrofit generator is an dio client generator using source_gen and inspired by Chopper and Retrofit.
@@ -120,6 +121,7 @@ flutter:
     - assets/images/ic_about_us.png
     - assets/images/ic_pattern_down.png
     - assets/images/ic_pattern_upper.png
+    - assets/images/ic_check_ip_error.png
 
   #   - images/a_dot_ham.jpeg
 

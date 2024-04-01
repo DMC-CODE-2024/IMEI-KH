@@ -90,7 +90,9 @@ LabelDetails _$LabelDetailsFromJson(Map<String, dynamic> json) => LabelDetails()
   ..uploadBarcode = json['uploadBarcode'] as String?
   ..invalidBarcode = json['invalidBarcode'] as String?
   ..privacyPolicyLabel = json['privacyPolicyLabel'] as String?
-  ..privacyPolicyTitle = json['privacyPolicyTitle'] as String?;
+  ..privacyPolicyTitle = json['privacyPolicyTitle'] as String?
+  ..checkIpErrorMessage = json['checkIpErrorMessage'] as String?
+  ..backToHome = json['backToHome'] as String?;
 
 Map<String, dynamic> _$LabelDetailsToJson(LabelDetails instance) =>
     <String, dynamic>{
@@ -165,4 +167,6 @@ Map<String, dynamic> _$LabelDetailsToJson(LabelDetails instance) =>
       'invalidBarcode': instance.invalidBarcode,
       'privacyPolicyLabel': instance.privacyPolicyLabel,
       'privacyPolicyTitle': instance.privacyPolicyTitle,
+      'checkIpErrorMessage': instance.checkIpErrorMessage,
+      'backToHome': instance.backToHome,
     };

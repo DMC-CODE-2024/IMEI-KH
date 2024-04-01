@@ -1,12 +1,14 @@
 import '../../../launcher/data/models/device_details_res.dart';
 import '../models/check_imei_res.dart';
 
+//Check IMEI req
 abstract class CheckImeiState {}
 
 class CheckImeiInitialState extends CheckImeiState {}
 
 class CheckImeiLoadingState extends CheckImeiState {}
-class CheckImeiPageRefresh extends CheckImeiState{}
+
+class CheckImeiPageRefresh extends CheckImeiState {}
 
 class CheckImeiLoadedState extends CheckImeiState {
   CheckImeiRes checkImeiRes;
@@ -20,6 +22,7 @@ class CheckImeiErrorState extends CheckImeiState {
   CheckImeiErrorState(this.e);
 }
 
+//Language change req
 class LanguageLoadingState extends CheckImeiState {}
 
 class LanguageErrorState extends CheckImeiState {

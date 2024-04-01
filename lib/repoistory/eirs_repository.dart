@@ -1,9 +1,12 @@
 import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:eirs/constants/constants.dart';
+import 'package:eirs/features/check_imei/data/models/check_country_ip_req.dart';
 import 'package:eirs/features/launcher/data/models/device_details_req.dart';
 import 'package:eirs/network/eirs_api_client.dart';
 import 'package:intl/intl.dart';
+
 import '../features/check_imei/data/models/check_imei_req.dart';
 import '../features/check_imei/data/models/check_imei_res.dart';
 import '../main.dart';
@@ -48,6 +51,12 @@ class EirsRepository {
 
   Future<List<Map<String, dynamic>>> getDeviceHistory() async {
     return await dbHelper.getDeviceHistory();
+  }
+
+  // check country IP
+  Future<dynamic> checkCountryIP(CheckCountryIPReq checkCountryIPReq) async {
+    return await EirsApiClient(Dio(BaseOptions(baseUrl: qaBaseUrl)))
+        .checkCountryIp(checkCountryIPReq);
   }
 
   Future<void> insertDeviceDetail(

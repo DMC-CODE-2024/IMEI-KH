@@ -1,5 +1,6 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:device_info_plus/device_info_plus.dart';
+import 'package:eirs/features/check_imei/data/business_logic/home_imei_bloc.dart';
 import 'package:eirs/features/component/about_app_info_dialog.dart';
 import 'package:eirs/features/component/custom_progress_indicator.dart';
 import 'package:eirs/features/component/imei_scan_failed_dialog.dart';
@@ -14,12 +15,11 @@ import 'package:flutter_svg/svg.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
 
-import '../../../constants/constants.dart';
 import '../../../constants/image_path.dart';
 import '../../../constants/strings.dart';
 import '../../../main.dart';
 import '../../../theme/colors.dart';
-import '../../check_multi_imei/data/business_logic/check_multi_imei_bloc.dart';
+import '../../component/app_bar_with_icon_only.dart';
 import '../../component/button_opacity.dart';
 import '../../component/eirs_app_bar.dart';
 import '../../component/error_page.dart';
@@ -27,11 +27,11 @@ import '../../component/input_borders.dart';
 import '../../component/need_any_help_widget.dart';
 import '../../component/no_internet_page.dart';
 import '../../history/presentation/device_history_screen.dart';
+import '../../imei_result/business_logic/check_multi_imei_bloc.dart';
 import '../../imei_result/presentation/multi_imei_result_screen.dart';
 import '../../launcher/data/models/device_details_res.dart';
 import '../../scanner/data/business_logic/scanner_bloc.dart';
 import '../../scanner/scanner_screen.dart';
-import '../data/business_logic/check_imei_bloc.dart';
 import '../data/business_logic/check_imei_state.dart';
 
 class CheckImeiScreen extends StatefulWidget {
@@ -56,6 +56,11 @@ class _CheckImeiScreenState extends State<CheckImeiScreen> {
   LabelDetails? labelDetails;
   bool reloadPage = false;
   bool isEnglish = true;
+  bool isCoachScreenVisible = false;
+
+  // You need to save an instance of a GlobalKey in order to call ensureVisible in onOpen.
+  GlobalKey<EnsureVisibleState> ensureVisibleGlobalKey =
+      GlobalKey<EnsureVisibleState>();
 
   @override
   void initState() {
@@ -89,30 +94,7 @@ class _CheckImeiScreenState extends State<CheckImeiScreen> {
   }
 
   void _reloadPage() {
-    BlocProvider.of<CheckImeiBloc>(context)
-        .add(CheckImeiInitEvent(requestCode: pageRefresh));
-  }
-
-  PreferredSizeWidget _appBarWithTitle() {
-    return AppBar(
-      backgroundColor: Colors.white,
-      elevation: 1,
-      centerTitle: false,
-      leadingWidth: 95,
-      leading: Padding(
-        padding: const EdgeInsets.only(left: 28),
-        child: GestureDetector(
-          onTap: () => {_showAboutAppInfoDialog()},
-          child: Transform.scale(
-            scale: 1.6,
-            child: Image.asset(
-              ImageConstants.aboutUs,
-              fit: BoxFit.contain,
-            ),
-          ),
-        ),
-      ),
-    );
+    BlocProvider.of<HomeImeiBloc>(context).pageRefresh();
   }
 
   @override
@@ -129,53 +111,66 @@ class _CheckImeiScreenState extends State<CheckImeiScreen> {
                     versionName: versionName,
                     callback: (action, isEnglishLanguageSelected) {
                       _appBarActions(action, isEnglishLanguageSelected);
-                    })
-                : _appBarWithTitle(),
-            body: BlocConsumer<CheckImeiBloc, CheckImeiState>(
-              builder: (context, state) {
-                if (!hasNetwork) {
-                  return NoInternetPage(
-                      labelDetails: labelDetails,
-                      callback: (value) {
-                        _reloadPage();
-                      });
-                }
-                if (state is LanguageLoadingState) {
-                  return CustomProgressIndicator(
-                      labelDetails: labelDetails, textColor: Colors.black);
-                }
-
-                if (state is LanguageErrorState) {
-                  return ErrorPage(
-                      labelDetails: labelDetails,
-                      callback: (value) {
-                        _reloadPage();
-                      });
-                }
-
-                return _imeiPageWidget();
+                    },
+                    dismissCallback: () => _updateCoachScreenStatus(false),
+                  )
+                : appBarWithIconOnly(_showAboutAppInfoDialog),
+            body: PopScope(
+              canPop: !isCoachScreenVisible,
+              onPopInvoked: (didInvoke) {
+                if (!didInvoke) _onBackPressHandle();
               },
-              listener: (context, state) {
-                if (state is LanguageLoadedState) {
-                  selectedLng = state.deviceDetailsRes.languageType ??
-                      StringConstants.englishCode;
-                  switch (selectedLng) {
-                    case StringConstants.englishCode:
-                      isEnglish = true;
-                      break;
-                    case StringConstants.khmerCode:
-                      isEnglish = false;
-                      break;
+              child: BlocConsumer<HomeImeiBloc, CheckImeiState>(
+                builder: (context, state) {
+                  if (!hasNetwork) {
+                    return NoInternetPage(
+                        labelDetails: labelDetails,
+                        callback: (value) {
+                          _reloadPage();
+                        });
                   }
-                  Provider.of<AppStatesNotifier>(context, listen: false)
-                      .updateLanguageState(isEnglish);
-                  Provider.of<AppStatesNotifier>(context, listen: false)
-                      .updateState(state.deviceDetailsRes.labelDetails);
-                }
-              },
+                  if (state is LanguageLoadingState) {
+                    return CustomProgressIndicator(
+                        labelDetails: labelDetails, textColor: Colors.black);
+                  }
+
+                  if (state is LanguageErrorState) {
+                    return ErrorPage(
+                        labelDetails: labelDetails,
+                        callback: (value) {
+                          _reloadPage();
+                        });
+                  }
+                  return _imeiPageWidget();
+                },
+                listener: (context, state) {
+                  if (state is LanguageLoadedState) {
+                    selectedLng = state.deviceDetailsRes.languageType ??
+                        StringConstants.englishCode;
+                    switch (selectedLng) {
+                      case StringConstants.englishCode:
+                        isEnglish = true;
+                        break;
+                      case StringConstants.khmerCode:
+                        isEnglish = false;
+                        break;
+                    }
+                    Provider.of<AppStatesNotifier>(context, listen: false)
+                        .updateLanguageState(isEnglish);
+                    Provider.of<AppStatesNotifier>(context, listen: false)
+                        .updateState(state.deviceDetailsRes.labelDetails);
+                  }
+                },
+              ),
             ),
           );
         });
+  }
+
+  _onBackPressHandle() async {
+    _updateCoachScreenStatus(false);
+    if (!mounted) return;
+    FeatureDiscovery.dismissAll(context);
   }
 
   void _appBarActions(AppBarActions values, bool isEnglishLanguageSelected) {
@@ -197,6 +192,7 @@ class _CheckImeiScreenState extends State<CheckImeiScreen> {
         );
         break;
       case AppBarActions.info:
+        _updateCoachScreenStatus(true);
         WidgetsBinding.instance.addPostFrameCallback((_) {
           FeatureDiscovery.discoverFeatures(
             context,
@@ -207,7 +203,13 @@ class _CheckImeiScreenState extends State<CheckImeiScreen> {
     }
   }
 
-  void _showAboutAppInfoDialog() {
+  _updateCoachScreenStatus(bool status) {
+    setState(() {
+      isCoachScreenVisible = status;
+    });
+  }
+
+  _showAboutAppInfoDialog() {
     showDialog(
         barrierColor: Colors.black26,
         context: context,
@@ -220,11 +222,10 @@ class _CheckImeiScreenState extends State<CheckImeiScreen> {
 
   void _showLocalizationDialog(bool isEnglishLanguageSelected) {
     if (hasNetwork) {
-      BlocProvider.of<CheckImeiBloc>(context).add(CheckImeiInitEvent(
-          languageType: isEnglishLanguageSelected
+      BlocProvider.of<HomeImeiBloc>(context).changeLanguageReq(
+          isEnglishLanguageSelected
               ? StringConstants.khmerCode
-              : StringConstants.englishCode,
-          requestCode: languageReq));
+              : StringConstants.englishCode);
     }
   }
 
@@ -402,13 +403,29 @@ class _CheckImeiScreenState extends State<CheckImeiScreen> {
                         description:
                             Text(labelDetails?.canBeBarcode ?? emptyString),
                         onOpen: () async {
+                          WidgetsBinding.instance
+                              .addPostFrameCallback((Duration duration) {
+                            ensureVisibleGlobalKey.currentState
+                                ?.ensureVisible();
+                          });
+                          return true;
+                        },
+                        onComplete: () async {
+                          _updateCoachScreenStatus(false);
+                          return true;
+                        },
+                        onDismiss: () async {
+                          _updateCoachScreenStatus(false);
                           return true;
                         },
                         child: GestureDetector(
                           onTap: () => _startScanner(),
                           child: Column(
                             children: [
-                              SvgPicture.asset(ImageConstants.scanIcon),
+                              EnsureVisible(
+                                  key: ensureVisibleGlobalKey,
+                                  child: SvgPicture.asset(
+                                      ImageConstants.scanIcon)),
                               Padding(
                                 padding: const EdgeInsets.only(top: 6),
                                 child: Text(

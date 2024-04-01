@@ -99,6 +99,8 @@ class LabelDetails {
   String? invalidBarcode;
   String? privacyPolicyLabel;
   String? privacyPolicyTitle;
+  String? checkIpErrorMessage;
+  String? backToHome;
   LabelDetails();
 
   factory LabelDetails.fromJson(Map<String, dynamic> json) =>

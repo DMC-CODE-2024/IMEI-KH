@@ -21,9 +21,11 @@ class EirsAppBar extends StatefulWidget implements PreferredSizeWidget {
       this.versionName,
       this.actions,
       this.systemUiOverlayStyle = SystemUiOverlayStyle.dark,
-      required this.callback})
+      required this.callback,
+      required this.dismissCallback})
       : super(key: key);
   final Function callback;
+  final Function dismissCallback;
   final bool autoImplementLeading;
   final LabelDetails? labelDetails;
   final String? versionName;
@@ -81,6 +83,11 @@ class _EirsAppBarState extends State<EirsAppBar> {
       return true;
     }
 
+    onDismiss() async {
+      widget.dismissCallback.call();
+      return true;
+    }
+
     return AppBar(
       elevation: 1,
       centerTitle: false,
@@ -101,6 +108,7 @@ class _EirsAppBarState extends State<EirsAppBar> {
           style: const TextStyle(fontWeight: FontWeight.w700),
         ),
         overflowMode: feature1OverflowMode,
+        onDismiss: onDismiss,
         enablePulsingAnimation: feature1EnablePulsingAnimation,
         description: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -153,6 +161,7 @@ class _EirsAppBarState extends State<EirsAppBar> {
                 style: const TextStyle(fontWeight: FontWeight.w700),
               ),
               onComplete: action,
+              onDismiss: onDismiss,
               onOpen: () async {
                 return true;
               },
@@ -181,6 +190,7 @@ class _EirsAppBarState extends State<EirsAppBar> {
               ),
               description: Text(widget.labelDetails?.getList ?? emptyString),
               onComplete: action,
+              onDismiss: onDismiss,
               onOpen: () async {
                 return true;
               },
@@ -212,6 +222,7 @@ class _EirsAppBarState extends State<EirsAppBar> {
               description:
                   Text(widget.labelDetails?.changeAppLanguage ?? emptyString),
               onComplete: action,
+              onDismiss: onDismiss,
               onOpen: () async {
                 return true;
               },

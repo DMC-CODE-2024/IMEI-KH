@@ -18,9 +18,9 @@ import 'package:provider/provider.dart';
 
 import '../../constants/image_path.dart';
 import '../../helper/app_states_notifier.dart';
-import '../check_multi_imei/data/business_logic/check_multi_imei_bloc.dart';
-import '../check_multi_imei/presentation/imei_list.dart';
 import '../component/app_bar_with_title.dart';
+import '../imei_result/business_logic/check_multi_imei_bloc.dart';
+import '../multi_imei_list/presentation/imei_list.dart';
 import 'barcode_overlay.dart';
 
 class ScannerPage extends StatefulWidget {
@@ -219,13 +219,6 @@ class _ScannerPageState extends State<ScannerPage>
           icon: ValueListenableBuilder(
             valueListenable: cameraController.torchState,
             builder: (context, state, child) {
-              if (state == null) {
-                return SvgPicture.asset(
-                  ImageConstants.flashIconOff,
-                  width: 40,
-                  height: 40,
-                );
-              }
               switch (state) {
                 case TorchState.off:
                   return SvgPicture.asset(

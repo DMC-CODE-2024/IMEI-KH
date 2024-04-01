@@ -25,5 +25,6 @@ class ImageConstants {
   static const String aboutUs = "assets/images/ic_about_us.png";
   static const String patternDown = "assets/images/ic_pattern_down.png";
   static const String patternUp = "assets/images/ic_pattern_upper.png";
+  static const String checkIpError = "assets/images/ic_check_ip_error.png";
 
 }
