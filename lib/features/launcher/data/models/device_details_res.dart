@@ -1,4 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
+
+import '../../../check_imei/drawer_menu/menu_model.dart';
 part 'device_details_res.g.dart';
 
 @JsonSerializable()
@@ -101,6 +103,7 @@ class LabelDetails {
   String? privacyPolicyTitle;
   String? checkIpErrorMessage;
   String? backToHome;
+  List<MenuModel>? menuList;
   LabelDetails();
 
   factory LabelDetails.fromJson(Map<String, dynamic> json) =>

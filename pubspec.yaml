@@ -97,31 +97,7 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - assets/images/ic_time.svg
-    - assets/images/ic_info.svg
-    - assets/images/ic_transform.svg
-    - assets/images/ic_device_info.jpg
-    - assets/images/ic_cross.svg
-    - assets/images/ic_english.jpg
-    - assets/images/ic_khmer.jpg
-    - assets/images/ic_help.svg
-    - assets/images/ic_app_logo.png
-    - assets/images/ic_english.png
-    - assets/images/ic_error.svg
-    - assets/images/ic_no_internet.jpg
-    - assets/images/ic_option_a.jpg
-    - assets/images/ic_app_bar_icon.jpg
-    - assets/images/ic_khmer.png
-    - assets/images/ic_invalid.svg
-    - assets/images/ic_valid.svg
-    - assets/images/ic_upload_barcode.svg
-    - assets/images/ic_flash_icon_off.svg
-    - assets/images/ic_flash_icon_on.svg
-    - assets/images/ic_warning.svg
-    - assets/images/ic_about_us.png
-    - assets/images/ic_pattern_down.png
-    - assets/images/ic_pattern_upper.png
-    - assets/images/ic_check_ip_error.png
+    - assets/images/
 
   #   - images/a_dot_ham.jpeg
 

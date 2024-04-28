@@ -92,7 +92,10 @@ LabelDetails _$LabelDetailsFromJson(Map<String, dynamic> json) => LabelDetails()
   ..privacyPolicyLabel = json['privacyPolicyLabel'] as String?
   ..privacyPolicyTitle = json['privacyPolicyTitle'] as String?
   ..checkIpErrorMessage = json['checkIpErrorMessage'] as String?
-  ..backToHome = json['backToHome'] as String?;
+  ..backToHome = json['backToHome'] as String?
+  ..menuList = (json['menuList'] as List<dynamic>?)
+      ?.map((e) => MenuModel.fromJson(e as Map<String, dynamic>))
+      .toList();
 
 Map<String, dynamic> _$LabelDetailsToJson(LabelDetails instance) =>
     <String, dynamic>{
@@ -169,4 +172,5 @@ Map<String, dynamic> _$LabelDetailsToJson(LabelDetails instance) =>
       'privacyPolicyTitle': instance.privacyPolicyTitle,
       'checkIpErrorMessage': instance.checkIpErrorMessage,
       'backToHome': instance.backToHome,
+      'menuList': instance.menuList,
     };

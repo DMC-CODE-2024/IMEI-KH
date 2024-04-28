@@ -26,5 +26,9 @@ class ImageConstants {
   static const String patternDown = "assets/images/ic_pattern_down.png";
   static const String patternUp = "assets/images/ic_pattern_upper.png";
   static const String checkIpError = "assets/images/ic_check_ip_error.png";
+  static const String drawerMenu = "assets/images/ic_menu.svg";
+  static const String lostStolen = "assets/images/ic_lost_stolen.svg";
+  static const String pairing = "assets/images/ic_pairing.svg";
+  static const String ticket = "assets/images/ic_ticket.svg";
 
 }

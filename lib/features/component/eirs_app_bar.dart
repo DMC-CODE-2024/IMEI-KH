@@ -92,6 +92,7 @@ class _EirsAppBarState extends State<EirsAppBar> {
       elevation: 1,
       centerTitle: false,
       leadingWidth: 130,
+      automaticallyImplyLeading: false,
       leading: DescribedFeatureOverlay(
         featureId: feature1,
         tapTarget: Padding(
@@ -237,6 +238,15 @@ class _EirsAppBarState extends State<EirsAppBar> {
                     height: 24),
               ),
             ),
+            IconButton(
+              onPressed: () =>
+                  widget.callback.call(AppBarActions.menu, isEnglish),
+              icon: SvgPicture.asset(
+                ImageConstants.drawerMenu,
+                width: 24,
+                height: 24,
+              ),
+            )
           ],
         )
       ],
@@ -245,4 +255,4 @@ class _EirsAppBarState extends State<EirsAppBar> {
   }
 }
 
-enum AppBarActions { localization, history, info, appLogo }
+enum AppBarActions { localization, history, info, appLogo, menu }
