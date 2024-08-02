@@ -41,6 +41,7 @@ class HomeImeiBloc extends Cubit<CheckImeiState> {
       DeviceDetailsRes deviceDetailsRes = await eirsRepository.getLanguage(
           "CheckImei", languageType ?? StringConstants.englishCode);
       setLocale(deviceDetailsRes.languageType ?? StringConstants.englishCode);
+      deviceDetailsRes.labelDetails?.featureMenu = deviceDetailsRes.featureMenu;
       emit(LanguageLoadedState(deviceDetailsRes));
     } catch (e) {
       emit(LanguageErrorState(e.toString()));

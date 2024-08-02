@@ -7,11 +7,13 @@ part of 'sub_menu_model.dart';
 // **************************************************************************
 
 SubMenuModel _$SubMenuModelFromJson(Map<String, dynamic> json) => SubMenuModel()
-  ..title = json['title'] as String?
-  ..url = json['url'] as String?;
+  ..title = json['name'] as String?
+  ..url = json['link'] as String?
+  ..status = json['status'] as int?;
 
 Map<String, dynamic> _$SubMenuModelToJson(SubMenuModel instance) =>
     <String, dynamic>{
-      'title': instance.title,
-      'url': instance.url,
+      'name': instance.title,
+      'link': instance.url,
+      'status': instance.status,
     };

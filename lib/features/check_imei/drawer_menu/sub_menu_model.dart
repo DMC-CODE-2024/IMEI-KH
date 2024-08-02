@@ -4,8 +4,11 @@ part 'sub_menu_model.g.dart';
 
 @JsonSerializable()
 class SubMenuModel {
+  @JsonKey(name: 'name')
   String? title;
+  @JsonKey(name: 'link')
   String? url;
+  int? status;
 
   SubMenuModel();
 

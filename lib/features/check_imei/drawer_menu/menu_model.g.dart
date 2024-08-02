@@ -7,14 +7,14 @@ part of 'menu_model.dart';
 // **************************************************************************
 
 MenuModel _$MenuModelFromJson(Map<String, dynamic> json) => MenuModel()
-  ..title = json['title'] as String?
-  ..icon = json['icon'] as String?
-  ..childList = (json['child'] as List<dynamic>?)
+  ..title = json['name'] as String?
+  ..icon = json['logo'] as String?
+  ..childList = (json['featureSubmenus'] as List<dynamic>?)
       ?.map((e) => SubMenuModel.fromJson(e as Map<String, dynamic>))
       .toList();
 
 Map<String, dynamic> _$MenuModelToJson(MenuModel instance) => <String, dynamic>{
-      'title': instance.title,
-      'icon': instance.icon,
-      'child': instance.childList,
+      'name': instance.title,
+      'logo': instance.icon,
+      'featureSubmenus': instance.childList,
     };

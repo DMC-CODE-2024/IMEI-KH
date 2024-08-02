@@ -11,12 +11,16 @@ DeviceDetailsRes _$DeviceDetailsResFromJson(Map<String, dynamic> json) =>
       ..languageType = json['languageType'] as String?
       ..labelDetails = json['labelDetails'] == null
           ? null
-          : LabelDetails.fromJson(json['labelDetails'] as Map<String, dynamic>);
+          : LabelDetails.fromJson(json['labelDetails'] as Map<String, dynamic>)
+      ..featureMenu = (json['featureMenu'] as List<dynamic>?)
+          ?.map((e) => MenuModel.fromJson(e as Map<String, dynamic>))
+          .toList();
 
 Map<String, dynamic> _$DeviceDetailsResToJson(DeviceDetailsRes instance) =>
     <String, dynamic>{
       'languageType': instance.languageType,
       'labelDetails': instance.labelDetails,
+      'featureMenu': instance.featureMenu,
     };
 
 LabelDetails _$LabelDetailsFromJson(Map<String, dynamic> json) => LabelDetails()
@@ -93,7 +97,7 @@ LabelDetails _$LabelDetailsFromJson(Map<String, dynamic> json) => LabelDetails()
   ..privacyPolicyTitle = json['privacyPolicyTitle'] as String?
   ..checkIpErrorMessage = json['checkIpErrorMessage'] as String?
   ..backToHome = json['backToHome'] as String?
-  ..menuList = (json['menuList'] as List<dynamic>?)
+  ..featureMenu = (json['featureMenu'] as List<dynamic>?)
       ?.map((e) => MenuModel.fromJson(e as Map<String, dynamic>))
       .toList();
 
@@ -172,5 +176,5 @@ Map<String, dynamic> _$LabelDetailsToJson(LabelDetails instance) =>
       'privacyPolicyTitle': instance.privacyPolicyTitle,
       'checkIpErrorMessage': instance.checkIpErrorMessage,
       'backToHome': instance.backToHome,
-      'menuList': instance.menuList,
+      'featureMenu': instance.featureMenu,
     };

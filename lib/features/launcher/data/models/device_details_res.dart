@@ -7,6 +7,7 @@ part 'device_details_res.g.dart';
 class DeviceDetailsRes {
   String? languageType;
   LabelDetails? labelDetails;
+  List<MenuModel>? featureMenu;
 
   DeviceDetailsRes();
 
@@ -103,7 +104,7 @@ class LabelDetails {
   String? privacyPolicyTitle;
   String? checkIpErrorMessage;
   String? backToHome;
-  List<MenuModel>? menuList;
+  List<MenuModel>? featureMenu;
   LabelDetails();
 
   factory LabelDetails.fromJson(Map<String, dynamic> json) =>

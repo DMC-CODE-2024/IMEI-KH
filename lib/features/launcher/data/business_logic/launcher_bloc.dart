@@ -53,6 +53,8 @@ class LauncherBloc extends Bloc<LauncherEvent, LauncherState> {
           try {
             DeviceDetailsRes deviceDetailsRes =
                 await eirsRepository.deviceDetailsReq(deviceDetailsReq!);
+            deviceDetailsRes.labelDetails?.featureMenu =
+                deviceDetailsRes.featureMenu;
             emit(LauncherLoadedState(deviceDetailsRes));
           } catch (e) {
             emit(LauncherErrorState(e.toString()));

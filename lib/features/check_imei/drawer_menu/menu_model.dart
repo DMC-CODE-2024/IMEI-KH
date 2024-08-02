@@ -5,9 +5,11 @@ part 'menu_model.g.dart';
 
 @JsonSerializable()
 class MenuModel {
+  @JsonKey(name: 'name')
   String? title;
+  @JsonKey(name: 'logo')
   String? icon;
-  @JsonKey(name: 'child')
+  @JsonKey(name: 'featureSubmenus')
   List<SubMenuModel>? childList;
 
   MenuModel();

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 
 import 'menu_model.dart';
 
-Widget expendableList(List<MenuModel> menuItem, int selected, Function childCallback) {
+Widget expendableList(
+    List<MenuModel> menuItem, int selected, Function childCallback) {
   return StatefulBuilder(builder: (BuildContext context, StateSetter setState) {
     return ListView.builder(
       key: Key('builder ${selected.toString()}'),
@@ -27,14 +27,13 @@ Widget expendableList(List<MenuModel> menuItem, int selected, Function childCall
                 iconColor: Colors.black,
                 title: Row(
                   children: [
-                    isValidUrl ?
-                    Image.network(
-                      menuItem[i].icon ?? "",
-                      width: 24,
-                      height: 24,
-                    ) : SvgPicture.asset( menuItem[i].icon ?? "",
-                      width: 24,
-                      height: 24,),
+                    isValidUrl
+                        ? Image.network(menuItem[i].icon ?? "",
+                            width: 24, height: 24,
+                            errorBuilder: (context, error, stackTrace) {
+                            return const SizedBox(width: 24, height: 24,);
+                          })
+                        : Container(),
                     Container(
                       width: 10,
                     ),
