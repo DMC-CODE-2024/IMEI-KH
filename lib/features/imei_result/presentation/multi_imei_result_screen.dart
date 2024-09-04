@@ -48,7 +48,10 @@ class _MultiImeiResultScreenState extends State<MultiImeiResultScreen> {
   @override
   void initState() {
     super.initState();
-    BlocProvider.of<CheckMultiImeiBloc>(context).checkCountryIpReq();
+    //commented for testing
+    //BlocProvider.of<CheckMultiImeiBloc>(context).checkCountryIpReq();
+    //call multi check imei api
+    navigateToCheckMultiImei();
   }
 
   _showAboutAppInfoDialog() {
@@ -249,10 +252,13 @@ class _MultiImeiResultScreenState extends State<MultiImeiResultScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Center(
-                  child: SvgPicture.asset(ImageConstants.validIcon,
-                      color: HexColor(statusColor ?? validStatusColor),
-                      width: 70,
-                      height: 70),
+                  child: (statusColor == "#8B8000")
+                      ? Image.asset(ImageConstants.warning,
+                          fit: BoxFit.contain, width: 70, height: 70)
+                      : SvgPicture.asset(ImageConstants.validIcon,
+                          color: HexColor(statusColor ?? validStatusColor),
+                          width: 70,
+                          height: 70),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top: 5),
@@ -340,12 +346,17 @@ class _MultiImeiResultScreenState extends State<MultiImeiResultScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            SvgPicture.asset(
-              ImageConstants.invalidIcon,
-              color: HexColor(statusColor ?? invalidStatusColor),
-              width: 70,
-              height: 70,
-            ),
+            (statusColor == "#8B8000")
+                ? Center(
+                    child: Image.asset(ImageConstants.warning,
+                        fit: BoxFit.contain, width: 70, height: 70),
+                  )
+                : SvgPicture.asset(
+                    ImageConstants.invalidIcon,
+                    color: HexColor(statusColor ?? invalidStatusColor),
+                    width: 70,
+                    height: 70,
+                  ),
             Padding(
               padding: const EdgeInsets.only(top: 5.0),
               child: Center(

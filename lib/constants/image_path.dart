@@ -30,5 +30,6 @@ class ImageConstants {
   static const String lostStolen = "assets/images/ic_lost_stolen.svg";
   static const String pairing = "assets/images/ic_pairing.svg";
   static const String ticket = "assets/images/ic_ticket.svg";
+  static const String warning = "assets/images/ic_warning.jpg";
 
 }
