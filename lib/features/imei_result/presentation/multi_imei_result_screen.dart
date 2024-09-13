@@ -282,7 +282,7 @@ class _MultiImeiResultScreenState extends State<MultiImeiResultScreen> {
                     ],
                   ),
                 ),
-                Text(checkImeiResult?.message ?? ""),
+                HtmlWidget(checkImeiResult?.message ?? ""),
                 Container(
                   width: double.infinity,
                   margin: const EdgeInsets.symmetric(vertical: 5.0),
