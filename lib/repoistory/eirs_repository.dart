@@ -35,6 +35,7 @@ class EirsRepository {
 
   // Save device details
   Future<dynamic> deviceDetailsReq(DeviceDetailsReq deviceDetailsReq) async {
+    options.baseUrl = baseUrl;
     return await EirsApiClient(Dio(options)).deviceDetailReq(deviceDetailsReq);
   }
 
