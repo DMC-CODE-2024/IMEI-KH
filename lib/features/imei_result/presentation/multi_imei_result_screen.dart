@@ -139,16 +139,25 @@ class _MultiImeiResultScreenState extends State<MultiImeiResultScreen> {
                                 itemBuilder: (BuildContext context, int index) {
                                   MultiImeiRes multiImeiRes =
                                       imeiResList![index];
-                                  if (multiImeiRes
-                                          .checkImeiRes.result?.statusColor ==
-                                      StatusColor.red.value) {
+                                  return Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 10),
+                                    child: displayCheckImeiResult(
+                                        multiImeiRes.checkImeiRes.result
+                                                ?.deviceDetails ??
+                                            {},
+                                        multiImeiRes.imei,
+                                        multiImeiRes.checkImeiRes.result),
+                                  );
+                                  /* if (multiImeiRes.checkImeiRes.result?.statusColor == StatusColor.red.value) {
                                     return Padding(
                                       padding: const EdgeInsets.symmetric(
                                           vertical: 10),
                                       child: invalidImeiList(multiImeiRes.imei,
                                           multiImeiRes.checkImeiRes.result),
                                     );
-                                  } else {
+                                  }
+                                  else {
                                     return Padding(
                                       padding: const EdgeInsets.symmetric(
                                           vertical: 10),
@@ -159,7 +168,7 @@ class _MultiImeiResultScreenState extends State<MultiImeiResultScreen> {
                                           multiImeiRes.imei,
                                           multiImeiRes.checkImeiRes.result),
                                     );
-                                  }
+                                  }*/
                                 }),
                             Container(
                               margin:
@@ -226,9 +235,117 @@ class _MultiImeiResultScreenState extends State<MultiImeiResultScreen> {
       );
     } else {
       return Container(
-        height: 60,
+        height: 180,
       );
     }
+  }
+
+  Widget displayCheckImeiResult(Map<String, dynamic> data, String imei,
+      CheckImeiResult? checkImeiResult) {
+    var statusColor = checkImeiResult?.statusColor;
+    return Container(
+      decoration: const BoxDecoration(
+        borderRadius: BorderRadius.all(
+          Radius.circular(8.0),
+        ),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.only(top: 20.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Center(
+                  child: (statusColor == StatusColor.darYellow.value)
+                      ? Image.asset(ImageConstants.warning,
+                          fit: BoxFit.contain, width: 70, height: 70)
+                      : SvgPicture.asset(
+                          (statusColor == StatusColor.red.value)
+                              ? ImageConstants.invalidIcon
+                              : ImageConstants.validIcon,
+                          color: HexColor(statusColor ?? validStatusColor),
+                          width: 70,
+                          height: 70),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 5),
+                  child: HtmlWidget(checkImeiResult?.complianceStatus ?? ""),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 20.0, bottom: 4),
+                  child: Row(
+                    children: [
+                      Text(
+                        widget.labelDetails?.imei ?? "",
+                        style: const TextStyle(fontSize: 14.0),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                        child: Text(
+                          imei,
+                          style: const TextStyle(fontSize: 14.0),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                HtmlWidget(checkImeiResult?.message ?? ""),
+                (data.entries.isNotEmpty)
+                    ? Container(
+                        width: double.infinity,
+                        margin: const EdgeInsets.symmetric(vertical: 5.0),
+                        decoration: BoxDecoration(
+                            border: Border.all(
+                              color: AppColors.borderColor,
+                            ),
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(8))),
+                        child: Table(
+                          border: TableBorder(
+                            horizontalInside: BorderSide(
+                                width: 1,
+                                color: AppColors.borderColor,
+                                style: BorderStyle.solid),
+                          ),
+                          children: data.entries.map((deviceDetailMap) {
+                            return TableRow(children: [
+                              TableCell(
+                                child: Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 18),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: <Widget>[
+                                      Expanded(
+                                          child: Padding(
+                                        padding:
+                                            const EdgeInsets.only(left: 15),
+                                        child: Text(deviceDetailMap.key),
+                                      )),
+                                      Expanded(
+                                        child: Padding(
+                                          padding:
+                                              const EdgeInsets.only(right: 15),
+                                          child: Text(deviceDetailMap.value),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              )
+                            ]);
+                          }).toList(),
+                        ),
+                      )
+                    : Container()
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   Widget validImeiList(Map<String, dynamic> data, String imei,
@@ -250,7 +367,8 @@ class _MultiImeiResultScreenState extends State<MultiImeiResultScreen> {
               children: [
                 Center(
                   child: (statusColor == StatusColor.darYellow.value)
-                      ? Image.asset(ImageConstants.warning, fit: BoxFit.contain, width: 70, height: 70)
+                      ? Image.asset(ImageConstants.warning,
+                          fit: BoxFit.contain, width: 70, height: 70)
                       : SvgPicture.asset(ImageConstants.validIcon,
                           color: HexColor(statusColor ?? validStatusColor),
                           width: 70,
@@ -279,48 +397,54 @@ class _MultiImeiResultScreenState extends State<MultiImeiResultScreen> {
                   ),
                 ),
                 HtmlWidget(checkImeiResult?.message ?? ""),
-                (data.entries.isNotEmpty)?Container(
-                  width: double.infinity,
-                  margin: const EdgeInsets.symmetric(vertical: 5.0),
-                  decoration: BoxDecoration(
-                      border: Border.all(
-                        color: AppColors.borderColor,
-                      ),
-                      borderRadius: const BorderRadius.all(Radius.circular(8))),
-                  child: Table(
-                    border: TableBorder(
-                      horizontalInside: BorderSide(
-                          width: 1,
-                          color: AppColors.borderColor,
-                          style: BorderStyle.solid),
-                    ),
-                    children: data.entries.map((deviceDetailMap) {
-                      return TableRow(children: [
-                        TableCell(
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 18),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Expanded(
-                                    child: Padding(
-                                  padding: const EdgeInsets.only(left: 15),
-                                  child: Text(deviceDetailMap.key),
-                                )),
-                                Expanded(
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(right: 15),
-                                    child: Text(deviceDetailMap.value),
+                (data.entries.isNotEmpty)
+                    ? Container(
+                        width: double.infinity,
+                        margin: const EdgeInsets.symmetric(vertical: 5.0),
+                        decoration: BoxDecoration(
+                            border: Border.all(
+                              color: AppColors.borderColor,
+                            ),
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(8))),
+                        child: Table(
+                          border: TableBorder(
+                            horizontalInside: BorderSide(
+                                width: 1,
+                                color: AppColors.borderColor,
+                                style: BorderStyle.solid),
+                          ),
+                          children: data.entries.map((deviceDetailMap) {
+                            return TableRow(children: [
+                              TableCell(
+                                child: Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 18),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: <Widget>[
+                                      Expanded(
+                                          child: Padding(
+                                        padding:
+                                            const EdgeInsets.only(left: 15),
+                                        child: Text(deviceDetailMap.key),
+                                      )),
+                                      Expanded(
+                                        child: Padding(
+                                          padding:
+                                              const EdgeInsets.only(right: 15),
+                                          child: Text(deviceDetailMap.value),
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
-                              ],
-                            ),
-                          ),
-                        )
-                      ]);
-                    }).toList(),
-                  ),
-                ):Container()
+                              )
+                            ]);
+                          }).toList(),
+                        ),
+                      )
+                    : Container()
               ],
             ),
           ],
