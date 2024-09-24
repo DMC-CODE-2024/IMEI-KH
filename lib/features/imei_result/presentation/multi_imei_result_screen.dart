@@ -1,3 +1,4 @@
+import 'package:eirs/constants/enums.dart';
 import 'package:eirs/features/launcher/data/models/device_details_res.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -139,8 +140,15 @@ class _MultiImeiResultScreenState extends State<MultiImeiResultScreen> {
                                   MultiImeiRes multiImeiRes =
                                       imeiResList![index];
                                   if (multiImeiRes
-                                          .checkImeiRes.result?.validImei ??
-                                      false) {
+                                          .checkImeiRes.result?.statusColor ==
+                                      StatusColor.red.value) {
+                                    return Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 10),
+                                      child: invalidImeiList(multiImeiRes.imei,
+                                          multiImeiRes.checkImeiRes.result),
+                                    );
+                                  } else {
                                     return Padding(
                                       padding: const EdgeInsets.symmetric(
                                           vertical: 10),
@@ -149,13 +157,6 @@ class _MultiImeiResultScreenState extends State<MultiImeiResultScreen> {
                                                   ?.deviceDetails ??
                                               {},
                                           multiImeiRes.imei,
-                                          multiImeiRes.checkImeiRes.result),
-                                    );
-                                  } else {
-                                    return Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 10),
-                                      child: invalidImeiList(multiImeiRes.imei,
                                           multiImeiRes.checkImeiRes.result),
                                     );
                                   }
@@ -216,10 +217,6 @@ class _MultiImeiResultScreenState extends State<MultiImeiResultScreen> {
             context, Routes.IMEI_SCREEN, (route) => false);
   }
 
-  void _reloadPage() {
-    BlocProvider.of<CheckMultiImeiBloc>(context).pageRefresh();
-  }
-
   Widget _emptyWidget() {
     if (imeiResList?.length == 1) {
       bool isValidImei =
@@ -252,9 +249,8 @@ class _MultiImeiResultScreenState extends State<MultiImeiResultScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Center(
-                  child: (statusColor == "#8B8000")
-                      ? Image.asset(ImageConstants.warning,
-                          fit: BoxFit.contain, width: 70, height: 70)
+                  child: (statusColor == StatusColor.darYellow.value)
+                      ? Image.asset(ImageConstants.warning, fit: BoxFit.contain, width: 70, height: 70)
                       : SvgPicture.asset(ImageConstants.validIcon,
                           color: HexColor(statusColor ?? validStatusColor),
                           width: 70,
@@ -283,7 +279,7 @@ class _MultiImeiResultScreenState extends State<MultiImeiResultScreen> {
                   ),
                 ),
                 HtmlWidget(checkImeiResult?.message ?? ""),
-                Container(
+                (data.entries.isNotEmpty)?Container(
                   width: double.infinity,
                   margin: const EdgeInsets.symmetric(vertical: 5.0),
                   decoration: BoxDecoration(
@@ -324,7 +320,7 @@ class _MultiImeiResultScreenState extends State<MultiImeiResultScreen> {
                       ]);
                     }).toList(),
                   ),
-                )
+                ):Container()
               ],
             ),
           ],
@@ -346,17 +342,12 @@ class _MultiImeiResultScreenState extends State<MultiImeiResultScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            (statusColor == "#8B8000")
-                ? Center(
-                    child: Image.asset(ImageConstants.warning,
-                        fit: BoxFit.contain, width: 70, height: 70),
-                  )
-                : SvgPicture.asset(
-                    ImageConstants.invalidIcon,
-                    color: HexColor(statusColor ?? invalidStatusColor),
-                    width: 70,
-                    height: 70,
-                  ),
+            SvgPicture.asset(
+              ImageConstants.invalidIcon,
+              color: HexColor(statusColor ?? invalidStatusColor),
+              width: 70,
+              height: 70,
+            ),
             Padding(
               padding: const EdgeInsets.only(top: 5.0),
               child: Center(
