@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 // ignore: depend_on_referenced_packages
@@ -31,6 +32,8 @@ class _WebPageState extends State<WebPage> {
   @override
   void initState() {
     super.initState();
+    SystemChrome.setEnabledSystemUIMode(
+        SystemUiMode.manual, overlays: [SystemUiOverlay.bottom]);
     webViewController = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..setBackgroundColor(const Color(0x00000000))
@@ -137,5 +140,11 @@ class _WebPageState extends State<WebPage> {
     } else {
       navigator.pop();
     }
+  }
+
+  @override
+  void dispose() {
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: SystemUiOverlay.values);
+    super.dispose();
   }
 }
