@@ -58,6 +58,8 @@ dependencies:
   webview_flutter_wkwebview: ^3.9.0
   flutter_widget_from_html_core: ^0.14.9
   public_ip_address: ^1.1.1
+  #permission_handler: ^11.3.1
+  file_picker: ^5.3.1
 
 
   # retrofit generator is an dio client generator using source_gen and inspired by Chopper and Retrofit.
