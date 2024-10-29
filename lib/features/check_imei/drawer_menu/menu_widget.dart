@@ -31,7 +31,10 @@ Widget expendableList(
                         ? Image.network(menuItem[i].icon ?? "",
                             width: 24, height: 24,
                             errorBuilder: (context, error, stackTrace) {
-                            return const SizedBox(width: 24, height: 24,);
+                            return const SizedBox(
+                              width: 24,
+                              height: 24,
+                            );
                           })
                         : Container(),
                     Container(
@@ -70,10 +73,15 @@ Widget expendableList(
                                   childCallback.call(
                                       item?.title ?? "", item?.url ?? "");
                                 }),
-                                title: Text(item?.title ?? "",
+                                title: Padding(
+                                  padding: const EdgeInsets.only(left: 10.0),
+                                  child: Text(
+                                    item?.title ?? "",
                                     style: const TextStyle(
                                         fontSize: 14.0,
-                                        fontWeight: FontWeight.w600)),
+                                        fontWeight: FontWeight.w600),
+                                  ),
+                                ),
                                 trailing:
                                     const Icon(Icons.keyboard_arrow_right),
                                 iconColor: Colors.black,

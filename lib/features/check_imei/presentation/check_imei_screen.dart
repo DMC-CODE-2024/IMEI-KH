@@ -1,8 +1,6 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:eirs/features/check_imei/data/business_logic/home_imei_bloc.dart';
-import 'package:eirs/features/check_imei/drawer_menu/menu_model.dart';
-import 'package:eirs/features/check_imei/drawer_menu/sub_menu_model.dart';
 import 'package:eirs/features/check_imei/drawer_menu/web_page.dart';
 import 'package:eirs/features/component/about_app_info_dialog.dart';
 import 'package:eirs/features/component/custom_progress_indicator.dart';
@@ -141,10 +139,8 @@ class _CheckImeiScreenState extends State<CheckImeiScreen> {
               endDrawer: SizedBox(
                 width: MediaQuery.of(context).size.width / 1.5,
                 child: Drawer(
-                  child: expendableList(
-                      labelDetails?.featureMenu ?? [],
-                      selected,
-                      _menuChildItemCallback),
+                  child: expendableList(labelDetails?.featureMenu ?? [],
+                      selected, _menuChildItemCallback),
                 ),
               ),
               body: PopScope(
@@ -212,127 +208,6 @@ class _CheckImeiScreenState extends State<CheckImeiScreen> {
     if (!mounted) return;
     FeatureDiscovery.dismissAll(context);
   }
-
-/*
-  List<MenuModel> menuItem() {
-    SubMenuModel report = SubMenuModel();
-    report.title = "Report Lost/ Stolen Device";
-    report.url =
-        "https://lab1.goldilocks-tech.com/LOSTSTOLEN/requestStolenRecovery?type=0&lang=en";
-
-    SubMenuModel report2 = SubMenuModel();
-    report2.title = "Check Status of Request";
-    report2.url =
-        "https://lab1.goldilocks-tech.com/LOSTSTOLEN/requestStolenRecovery?type=2&lang=en";
-
-    SubMenuModel report3 = SubMenuModel();
-    report3.title = "Unblock Lost/Stolen Device";
-    report3.url =
-        "https://lab1.goldilocks-tech.com/LOSTSTOLEN/requestStolenRecovery?type=1&lang=en#!";
-
-    MenuModel menuModel = MenuModel();
-    menuModel.title = "Lost/Stolen";
-    menuModel.icon = ImageConstants.lostStolen;
-    menuModel.childList = [report, report2, report3];
-
-    SubMenuModel subMenuModel = SubMenuModel();
-    subMenuModel.title = "Pair Device";
-    subMenuModel.url =
-        "https://lab1.goldilocks-tech.com/EIRSCoreSystem/pair-device?lang=en";
-
-    SubMenuModel subMenuModel2 = SubMenuModel();
-    subMenuModel2.title = "Re-Pair Device";
-    subMenuModel2.url =
-        "https://lab1.goldilocks-tech.com/EIRSCoreSystem/repair-device?lang=en";
-
-    SubMenuModel subMenuModel3 = SubMenuModel();
-    subMenuModel3.title = "Check pair status";
-    subMenuModel3.url =
-        "https://lab1.goldilocks-tech.com/EIRSCoreSystem/check-pair-status?lang=en";
-
-    MenuModel menuModel2 = MenuModel();
-    menuModel2.title = "Pairing";
-    menuModel2.icon = ImageConstants.pairing;
-    ;
-    menuModel2.childList = [subMenuModel, subMenuModel2, subMenuModel3];
-
-    SubMenuModel ticket = SubMenuModel();
-    ticket.title = "Raise New Ticket";
-    ticket.url =
-        "https://lab1.goldilocks-tech.com/eirs/register-ticket?lang=en&header=no";
-
-    SubMenuModel ticket2 = SubMenuModel();
-    ticket2.title = "Check Ticket Status";
-    ticket2.url =
-        "https://lab1.goldilocks-tech.com/eirs/view-ticket?lang=en&header=no";
-
-    MenuModel menuModel3 = MenuModel();
-    menuModel3.title = "Ticket";
-    menuModel3.icon = ImageConstants.ticket;
-    menuModel3.childList = [ticket, ticket2];
-
-    return [menuModel, menuModel2, menuModel3];
-  }
-
-  List<MenuModel> khmerMenuItem() {
-    SubMenuModel report = SubMenuModel();
-    report.title = "រាយការណ៍ឧបករណ៍ដែលបាត់/លួច";
-    report.url =
-        "https://lab1.goldilocks-tech.com/LOSTSTOLEN/requestStolenRecovery?type=0&lang=km";
-
-    SubMenuModel report2 = SubMenuModel();
-    report2.title = "ពិនិត្យស្ថានភាពនៃការស្នើសុំ";
-    report2.url =
-        "https://lab1.goldilocks-tech.com/LOSTSTOLEN/requestStolenRecovery?type=2&lang=km";
-
-    SubMenuModel report3 = SubMenuModel();
-    report3.title = "ដោះសោឧបករណ៍ដែលបាត់/លួច";
-    report3.url =
-        "https://lab1.goldilocks-tech.com/LOSTSTOLEN/requestStolenRecovery?type=1&lang=km#!";
-
-    MenuModel menuModel = MenuModel();
-    menuModel.title = "បាត់/លួច";
-    menuModel.icon = ImageConstants.lostStolen;
-    menuModel.childList = [report, report2, report3];
-
-    SubMenuModel subMenuModel = SubMenuModel();
-    subMenuModel.title = "ផ្គូផ្គងឧបករណ៍";
-    subMenuModel.url =
-        "https://lab1.goldilocks-tech.com/EIRSCoreSystem/pair-device?lang=km";
-
-    SubMenuModel subMenuModel2 = SubMenuModel();
-    subMenuModel2.title = "ផ្គូផ្គងឧបករណ៍ឡើងវិញ";
-    subMenuModel2.url =
-        "https://lab1.goldilocks-tech.com/EIRSCoreSystem/repair-device?lang=km";
-
-    SubMenuModel subMenuModel3 = SubMenuModel();
-    subMenuModel3.title = "ពិនិត្យស្ថានភាពគូ";
-    subMenuModel3.url =
-        "https://lab1.goldilocks-tech.com/EIRSCoreSystem/check-pair-status?lang=km";
-
-    MenuModel menuModel2 = MenuModel();
-    menuModel2.title = "ផ្គូផ្គងឧបករណ៍";
-    menuModel2.icon = ImageConstants.pairing;
-    menuModel2.childList = [subMenuModel, subMenuModel2, subMenuModel3];
-
-    SubMenuModel ticket = SubMenuModel();
-    ticket.title = "ដំឡើងសំបុត្រថ្មី។";
-    ticket.url =
-        "https://lab1.goldilocks-tech.com/eirs/register-ticket?lang=km&header=no";
-
-    SubMenuModel ticket2 = SubMenuModel();
-    ticket2.title = "ពិនិត្យស្ថានភាពសំបុត្រ";
-    ticket2.url =
-        "https://lab1.goldilocks-tech.com/eirs/view-ticket?lang=km&header=no";
-
-    MenuModel menuModel3 = MenuModel();
-    menuModel3.title = "សំបុត្រ";
-    menuModel3.icon = ImageConstants.ticket;
-    menuModel3.childList = [ticket, ticket2];
-
-    return [menuModel, menuModel2, menuModel3];
-  }
-*/
 
   void _appBarActions(AppBarActions values, bool isEnglishLanguageSelected) {
     switch (values) {
