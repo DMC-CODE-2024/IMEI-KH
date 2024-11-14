@@ -142,12 +142,19 @@ class _MultiImeiResultScreenState extends State<MultiImeiResultScreen> {
                                   return Padding(
                                     padding: const EdgeInsets.symmetric(
                                         vertical: 10),
-                                    child: displayCheckImeiResult(
-                                        multiImeiRes.checkImeiRes.result
-                                                ?.deviceDetails ??
-                                            {},
-                                        multiImeiRes.imei,
-                                        multiImeiRes.checkImeiRes.result),
+                                    child: (imeiResList?.length == 1)
+                                        ? displaySingleImeiResult(
+                                            multiImeiRes.checkImeiRes.result
+                                                    ?.deviceDetails ??
+                                                {},
+                                            multiImeiRes.imei,
+                                            multiImeiRes.checkImeiRes.result)
+                                        : displayCheckImeiResult(
+                                            multiImeiRes.checkImeiRes.result
+                                                    ?.deviceDetails ??
+                                                {},
+                                            multiImeiRes.imei,
+                                            multiImeiRes.checkImeiRes.result),
                                   );
                                   /* if (multiImeiRes.checkImeiRes.result?.statusColor == StatusColor.red.value) {
                                     return Padding(
@@ -180,10 +187,14 @@ class _MultiImeiResultScreenState extends State<MultiImeiResultScreen> {
                                 onPressed: () => navigateToHome(),
                               ),
                             ),
-                            _emptyWidget(),
-                            NeedAnyHelpWidget(
-                              labelDetails: widget.labelDetails,
-                            )
+                            (imeiResList?.length == 1)
+                                ? Container()
+                                : _emptyWidget(),
+                            (imeiResList?.length == 1)
+                                ? Container()
+                                : NeedAnyHelpWidget(
+                                    labelDetails: widget.labelDetails,
+                                  )
                           ],
                         ),
                       ),
@@ -238,6 +249,120 @@ class _MultiImeiResultScreenState extends State<MultiImeiResultScreen> {
         height: 180,
       );
     }
+  }
+
+  Widget displaySingleImeiResult(Map<String, dynamic> data, String imei,
+      CheckImeiResult? checkImeiResult) {
+    var statusColor = checkImeiResult?.statusColor;
+    return Container(
+      decoration: const BoxDecoration(
+        borderRadius: BorderRadius.all(
+          Radius.circular(8.0),
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Center(
+                child: (statusColor == StatusColor.darYellow.value)
+                    ? Image.asset(ImageConstants.warning,
+                        fit: BoxFit.contain, width: 70, height: 70)
+                    : SvgPicture.asset(
+                        (statusColor == StatusColor.red.value)
+                            ? ImageConstants.invalidIcon
+                            : ImageConstants.validIcon,
+                        color: HexColor(statusColor ?? validStatusColor),
+                        width: 70,
+                        height: 70),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 5),
+                child: HtmlWidget(checkImeiResult?.complianceStatus ?? ""),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 20.0, bottom: 4),
+                child: Row(
+                  children: [
+                    Text(
+                      widget.labelDetails?.imei ?? "",
+                      style: const TextStyle(fontSize: 14.0),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                      child: Text(
+                        imei,
+                        style: const TextStyle(fontSize: 14.0),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              (data.entries.isNotEmpty)
+                  ? SizedBox(
+                      height: 60,
+                      child: Scrollbar(
+                        thumbVisibility: true,
+                        child: SingleChildScrollView(
+                          child: HtmlWidget(checkImeiResult?.message ?? ""),
+                        ),
+                      ),
+                    )
+                  : HtmlWidget(checkImeiResult?.message ?? ""),
+              (data.entries.isNotEmpty)
+                  ? Container(
+                      width: double.infinity,
+                      margin: const EdgeInsets.symmetric(vertical: 5.0),
+                      decoration: BoxDecoration(
+                          border: Border.all(
+                            color: AppColors.borderColor,
+                          ),
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(8))),
+                      child: Table(
+                        border: TableBorder(
+                          horizontalInside: BorderSide(
+                              width: 1,
+                              color: AppColors.borderColor,
+                              style: BorderStyle.solid),
+                        ),
+                        children: data.entries.map((deviceDetailMap) {
+                          return TableRow(children: [
+                            TableCell(
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 18),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    Expanded(
+                                        child: Padding(
+                                      padding: const EdgeInsets.only(left: 15),
+                                      child: Text(deviceDetailMap.key),
+                                    )),
+                                    Expanded(
+                                      child: Padding(
+                                        padding:
+                                            const EdgeInsets.only(right: 15),
+                                        child: Text(deviceDetailMap.value),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            )
+                          ]);
+                        }).toList(),
+                      ),
+                    )
+                  : Container()
+            ],
+          ),
+        ],
+      ),
+    );
   }
 
   Widget displayCheckImeiResult(Map<String, dynamic> data, String imei,
