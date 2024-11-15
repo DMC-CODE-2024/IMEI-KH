@@ -304,7 +304,6 @@ class _MultiImeiResultScreenState extends State<MultiImeiResultScreen> {
                   ? SizedBox(
                       height: 60,
                       child: Scrollbar(
-                        thumbVisibility: true,
                         child: SingleChildScrollView(
                           child: HtmlWidget(checkImeiResult?.message ?? ""),
                         ),
