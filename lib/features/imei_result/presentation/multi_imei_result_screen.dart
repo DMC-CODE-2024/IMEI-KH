@@ -117,7 +117,10 @@ class _MultiImeiResultScreenState extends State<MultiImeiResultScreen> {
               return (imeiResList != null && imeiResList!.isNotEmpty)
                   ? SingleChildScrollView(
                       child: Padding(
-                        padding: const EdgeInsets.all(20),
+                        padding: (imeiResList?.length == 1)
+                            ? const EdgeInsets.symmetric(horizontal: 20)
+                            : const EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 10),
                         child: Column(
                           mainAxisSize: MainAxisSize.max,
                           mainAxisAlignment: MainAxisAlignment.center,
