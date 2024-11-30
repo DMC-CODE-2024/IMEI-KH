@@ -1,3 +1,4 @@
+//Asset directory path for images using within the app
 class ImageConstants {
   const ImageConstants._();
 
@@ -31,5 +32,4 @@ class ImageConstants {
   static const String pairing = "assets/images/ic_pairing.svg";
   static const String ticket = "assets/images/ic_ticket.svg";
   static const String warning = "assets/images/ic_warning.jpg";
-
 }

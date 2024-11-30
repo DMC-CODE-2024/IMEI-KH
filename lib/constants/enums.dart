@@ -5,6 +5,7 @@ enum ConnectionStatus {
   offline,
 }
 
+// IP type
 enum IPType {
   ipv4("ipv4"),
   ipv6('ipv6');
@@ -14,6 +15,7 @@ enum IPType {
   final String value;
 }
 
+//Color codes for validating check imei status
 enum StatusColor {
   red("#eb5757"),
   green("#219653"),

@@ -53,6 +53,7 @@ class _LauncherScreenState extends State<LauncherScreen>
     ));
   }
 
+  // Request for pre-init api
   Future<void> _preInitApiReq() async {
     BlocProvider.of<LauncherBloc>(context).add(LauncherInitEvent(
         requestCode: preInitReqCode,
@@ -60,6 +61,7 @@ class _LauncherScreenState extends State<LauncherScreen>
         deviceDetails: deviceDetails));
   }
 
+  // Request for init api
   Future<void> _initApiReq() async {
     LauncherBloc bloc = BlocProvider.of<LauncherBloc>(context);
     bloc.add(LauncherInitEvent(
@@ -68,6 +70,7 @@ class _LauncherScreenState extends State<LauncherScreen>
         deviceDetails: deviceDetails));
   }
 
+  // Checking wifi or internet connectivity status
   void updateNetworkStatus(Map<dynamic, dynamic> source) async {
     _source = source;
     if (_source.isNotEmpty) {
@@ -115,6 +118,7 @@ class _LauncherScreenState extends State<LauncherScreen>
                   } else if (state is LauncherPreInitLoadedState) {
                     return Center(child: _splashWidget(LabelDetails()));
                   } else if (state is LauncherPreInitErrorState) {
+                    //Rendering error page in case of any error
                     return ErrorPage(
                         labelDetails: LabelDetails(),
                         callback: (value) {
@@ -143,8 +147,10 @@ class _LauncherScreenState extends State<LauncherScreen>
                   }
                   if (state is LauncherLoadedState) {
                     Future.delayed(const Duration(seconds: 2), () {
+                      //After getting label details updating current label details based on selected language
                       Provider.of<AppStatesNotifier>(context, listen: false)
                           .updateState(state.deviceDetailsRes.labelDetails);
+                      //Navigate to home screen after getting success response from init api
                       Navigator.pushNamedAndRemoveUntil(
                           context, Routes.IMEI_SCREEN, (route) => false);
                     });
@@ -156,6 +162,7 @@ class _LauncherScreenState extends State<LauncherScreen>
     );
   }
 
+  // Launcher screen view
   Widget _splashWidget(LabelDetails? labelDetails) {
     var window = MediaQuery.of(context).size;
     return Stack(
@@ -186,6 +193,7 @@ class _LauncherScreenState extends State<LauncherScreen>
     );
   }
 
+  // Upper side slide animation
   patternUp(Size window) {
     return Padding(
       padding: const EdgeInsets.only(top: 30),
@@ -204,6 +212,7 @@ class _LauncherScreenState extends State<LauncherScreen>
     );
   }
 
+  // Lower side slide animation
   patternDown(Size window) {
     return Align(
       alignment: Alignment.bottomRight,

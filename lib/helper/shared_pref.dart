@@ -1,6 +1,7 @@
 import 'package:eirs/main.dart';
 import '../constants/strings.dart';
 
+//Local storage for storing information
 Future setLocale(String languageCode) async {
   await sharedPref.setString(StringConstants.selectedLang, languageCode);
 }

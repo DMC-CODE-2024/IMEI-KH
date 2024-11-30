@@ -8,6 +8,7 @@ import '../../helper/app_states_notifier.dart';
 import '../component/app_bar_with_title.dart';
 import '../launcher/data/models/device_details_res.dart';
 
+//Error screen while scanning bar code
 class BarcodeErrorWidget extends StatefulWidget {
   const BarcodeErrorWidget({super.key});
 

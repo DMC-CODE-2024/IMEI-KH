@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'network_connectivity.dart';
 
+//Validating internet connectivity status and notifying while connecting or disconnecting
 class ConnectionStatusNotifier extends ValueNotifier<Map<dynamic, dynamic>> {
   late StreamSubscription<dynamic> _connectivitySubscription;
   final NetworkConnectivity _networkConnectivity = NetworkConnectivity.instance;

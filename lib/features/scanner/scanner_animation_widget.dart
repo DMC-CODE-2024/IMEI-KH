@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+//Overlay scanner vertical animating line
 class ScannerAnimation extends AnimatedWidget {
   final scanningHeightOffset = 0.4;
   final scanningColor = Colors.blue;

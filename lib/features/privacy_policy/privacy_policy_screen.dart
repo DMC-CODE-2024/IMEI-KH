@@ -6,6 +6,7 @@ import '../../helper/app_states_notifier.dart';
 import '../component/app_bar_with_title.dart';
 import '../launcher/data/models/device_details_res.dart';
 
+//Application privacy policy page in webview form
 class PrivacyPolicyScreen extends StatefulWidget {
   @override
   createState() => _PrivacyPolicyScreenState();

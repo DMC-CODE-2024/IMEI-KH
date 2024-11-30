@@ -2,6 +2,7 @@ import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 
+//Local database helper class for performing all local database operations
 class DatabaseHelper {
   static const _databaseName = "eirs_device_history.db";
   static const _databaseVersion = 1;

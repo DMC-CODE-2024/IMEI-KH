@@ -1,3 +1,4 @@
+// Default labels in case of not getting any data from backend service
 class StringConstants {
   const StringConstants._();
 

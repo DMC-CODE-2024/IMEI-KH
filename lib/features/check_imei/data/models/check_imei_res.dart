@@ -25,6 +25,7 @@ class CheckImeiResult {
   bool validImei = false;
   @JsonKey(name: 'symbol_color')
   String? statusColor;
+
   CheckImeiResult();
 
   factory CheckImeiResult.fromJson(Map<String, dynamic> json) =>

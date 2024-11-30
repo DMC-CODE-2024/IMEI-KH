@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 
 import '../main.dart';
 
-
+//Maintaining application security and privacy from taking screenshot while application going in pause state
 abstract class IAppScreenPrivacy {
   Future<void> enableScreenPrivacy();
 
@@ -12,8 +12,6 @@ abstract class IAppScreenPrivacy {
 }
 
 class AppScreenPrivacyService extends IAppScreenPrivacy {
-
-
   @override
   Future<void> disableScreenPrivacy() async {
     try {

@@ -12,6 +12,7 @@ import 'eirs_apis.dart';
 
 part 'eirs_api_client.g.dart';
 
+//Api client for network call
 @RestApi()
 abstract class EirsApiClient {
   factory EirsApiClient(Dio dio) = _EirsApiClient;

@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 
+//Scanner overlay with four round arcs inside barcode detecting and marking
 class ScannerOverlay extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {

@@ -12,6 +12,8 @@ import '../features/check_imei/data/models/check_imei_res.dart';
 import '../main.dart';
 import '../persistent/database_helper.dart';
 
+//Repository layer architecture for maintaining all data source at single place like the data is coming from
+// remote or local
 class EirsRepository {
   static final EirsRepository _singletonUserRepository =
       EirsRepository._internal();
@@ -33,7 +35,7 @@ class EirsRepository {
     return await EirsApiClient(Dio(options)).preInit(deviceId);
   }
 
-  // Save device details
+  // Save device details or init api
   Future<dynamic> deviceDetailsReq(DeviceDetailsReq deviceDetailsReq) async {
     options.baseUrl = baseUrl;
     return await EirsApiClient(Dio(options)).deviceDetailReq(deviceDetailsReq);
@@ -50,16 +52,18 @@ class EirsRepository {
         .languageRetriever(featureName, language);
   }
 
+  //Get stored IMEI result from local database for displaying in history screen
   Future<List<Map<String, dynamic>>> getDeviceHistory() async {
     return await dbHelper.getDeviceHistory();
   }
 
-  // check country IP
+  // check country IP status
   Future<dynamic> checkCountryIP(CheckCountryIPReq checkCountryIPReq) async {
     return await EirsApiClient(Dio(BaseOptions(baseUrl: qaBaseUrl)))
         .checkCountryIp(checkCountryIPReq);
   }
 
+  //Inserting and updating check imei details in local database for further use is history screen
   Future<void> insertDeviceDetail(
       String imei, CheckImeiRes checkImeiRes) async {
     bool isRecordExist = await dbHelper.isImeiExists(imei);

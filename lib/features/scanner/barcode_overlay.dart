@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
+//Overlay while detecting and marking barcode with square border
 class BarcodeOverlay extends CustomPainter {
   BarcodeOverlay(
       {required this.barcode,

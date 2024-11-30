@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../features/launcher/data/models/device_details_res.dart';
 
+//Maintaining the state of selected language and notifying to observer screen
 class AppStatesNotifier extends ChangeNotifier {
   LabelDetails? _value;
   bool _isEnglish = true;

@@ -23,6 +23,7 @@ import '../imei_result/business_logic/check_multi_imei_bloc.dart';
 import '../multi_imei_list/presentation/imei_list.dart';
 import 'barcode_overlay.dart';
 
+//Scanner home screen for displaying camera and all other UI
 class ScannerPage extends StatefulWidget {
   const ScannerPage({super.key});
 

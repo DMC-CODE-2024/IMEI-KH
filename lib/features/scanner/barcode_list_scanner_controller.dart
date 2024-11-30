@@ -2,6 +2,7 @@ import 'package:eirs/features/scanner/scanner_error_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
+//Barcode scanner screen controller for button flash, camera etc..
 class BarcodeListScannerWithController extends StatefulWidget {
   const BarcodeListScannerWithController({Key? key}) : super(key: key);
 

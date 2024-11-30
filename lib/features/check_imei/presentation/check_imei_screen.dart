@@ -70,6 +70,7 @@ class _CheckImeiScreenState extends State<CheckImeiScreen> {
   @override
   void initState() {
     super.initState();
+    //Getting selected language from shared pref
     getLocale().then((languageCode) {
       switch (languageCode) {
         case StringConstants.englishCode:
@@ -92,9 +93,11 @@ class _CheckImeiScreenState extends State<CheckImeiScreen> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+    //Updating screen content based on selecting language
     labelDetails = Provider.of<AppStatesNotifier>(context).value;
   }
 
+  //Checking network status
   void updateNetworkStatus(Map<dynamic, dynamic> source) async {
     _source = source;
     if (_source.isNotEmpty) {
@@ -112,6 +115,7 @@ class _CheckImeiScreenState extends State<CheckImeiScreen> {
     }
   }
 
+  // Updating the content of screen
   void _reloadPage() {
     BlocProvider.of<HomeImeiBloc>(context).pageRefresh();
   }
@@ -169,7 +173,7 @@ class _CheckImeiScreenState extends State<CheckImeiScreen> {
                             _reloadPage();
                           });
                     }
-                    return _imeiPageWidget();
+                    return _initView();
                   },
                   listener: (context, state) {
                     if (state is LanguageLoadedState) {
@@ -183,6 +187,7 @@ class _CheckImeiScreenState extends State<CheckImeiScreen> {
                           isEnglish = false;
                           break;
                       }
+                      //Update label details on changing language
                       Provider.of<AppStatesNotifier>(context, listen: false)
                           .updateLanguageState(isEnglish);
                       Provider.of<AppStatesNotifier>(context, listen: false)
@@ -196,6 +201,7 @@ class _CheckImeiScreenState extends State<CheckImeiScreen> {
         });
   }
 
+  //On menu item selection open web page on web view container
   _menuChildItemCallback(String title, String? clickUrl) {
     if (clickUrl != null && clickUrl.isNotEmpty) {
       Navigator.of(context).push(MaterialPageRoute(
@@ -203,12 +209,14 @@ class _CheckImeiScreenState extends State<CheckImeiScreen> {
     }
   }
 
+  // Close coach mark screen while pressing back button and then perform back
   _onBackPressHandle() async {
     _updateCoachScreenStatus(false);
     if (!mounted) return;
     FeatureDiscovery.dismissAll(context);
   }
 
+  //Appbar items(info, history, language etc) handling
   void _appBarActions(AppBarActions values, bool isEnglishLanguageSelected) {
     switch (values) {
       case AppBarActions.menu:
@@ -221,7 +229,7 @@ class _CheckImeiScreenState extends State<CheckImeiScreen> {
         _showAboutAppInfoDialog();
         break;
       case AppBarActions.localization:
-        _showLocalizationDialog(isEnglishLanguageSelected);
+        _changeLanguageReq(isEnglishLanguageSelected);
         break;
       case AppBarActions.history:
         Navigator.of(context).push(
@@ -245,12 +253,14 @@ class _CheckImeiScreenState extends State<CheckImeiScreen> {
     }
   }
 
+  //Updating the status of coach screen is open or not
   _updateCoachScreenStatus(bool status) {
     setState(() {
       isCoachScreenVisible = status;
     });
   }
 
+  //About app info dialog
   _showAboutAppInfoDialog() {
     showDialog(
         barrierColor: Colors.black26,
@@ -262,7 +272,8 @@ class _CheckImeiScreenState extends State<CheckImeiScreen> {
         });
   }
 
-  void _showLocalizationDialog(bool isEnglishLanguageSelected) {
+  //Initiate network call request for updating language
+  void _changeLanguageReq(bool isEnglishLanguageSelected) {
     if (hasNetwork) {
       BlocProvider.of<HomeImeiBloc>(context).changeLanguageReq(
           isEnglishLanguageSelected
@@ -284,6 +295,7 @@ class _CheckImeiScreenState extends State<CheckImeiScreen> {
         });
   }
 
+  // Handling of check imei button
   void _checkImei(BuildContext context) {
     String inputImei = imeiController.text;
     if (inputImei.isEmpty) {
@@ -316,6 +328,7 @@ class _CheckImeiScreenState extends State<CheckImeiScreen> {
     });
   }
 
+  // Display error message in bottom snack bar
   void _showErrorMsg(String errorMsg) {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: Text(
@@ -325,6 +338,7 @@ class _CheckImeiScreenState extends State<CheckImeiScreen> {
     ));
   }
 
+  //Navigate to scanner screen for scanning multiple IMEI
   Future<void> _startScanner() async {
     await Navigator.push(
         context,
@@ -342,7 +356,8 @@ class _CheckImeiScreenState extends State<CheckImeiScreen> {
     });
   }
 
-  Widget _imeiPageWidget() {
+  // Inflate the UI of home screen
+  Widget _initView() {
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.all(25),

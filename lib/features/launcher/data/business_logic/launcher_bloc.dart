@@ -42,7 +42,9 @@ class LauncherBloc extends Bloc<LauncherEvent, LauncherState> {
         if (event.requestCode == preInitReqCode) {
           emit(LauncherPreInitLoadingState());
           try {
+            //Network request for pre-init api
             PreInitRes preInitRes = await eirsRepository.preInitReq(deviceId);
+            //update base url for further apis request
             baseUrl = preInitRes.baseUrl ?? defaultUrl;
             emit(LauncherPreInitLoadedState());
           } catch (e) {
@@ -51,6 +53,7 @@ class LauncherBloc extends Bloc<LauncherEvent, LauncherState> {
         } else {
           emit(LauncherLoadingState());
           try {
+            //Invoke init api request with device details payload and getting label details in response
             DeviceDetailsRes deviceDetailsRes =
                 await eirsRepository.deviceDetailsReq(deviceDetailsReq!);
             deviceDetailsRes.labelDetails?.featureMenu =
@@ -64,6 +67,7 @@ class LauncherBloc extends Bloc<LauncherEvent, LauncherState> {
     }
   }
 
+  //Getting android device basic details
   DeviceDetailsReq _readAndroidBuildData(
       String languageType, AndroidDeviceInfo androidDeviceInfo) {
     return DeviceDetailsReq(
@@ -79,6 +83,7 @@ class LauncherBloc extends Bloc<LauncherEvent, LauncherState> {
     );
   }
 
+  //Getting iOS device details
   DeviceDetailsReq _readIosBuildData(
       String languageType, IosDeviceInfo iosDeviceInfo) {
     return DeviceDetailsReq(

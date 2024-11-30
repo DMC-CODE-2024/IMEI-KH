@@ -12,8 +12,10 @@ class AppButton extends StatelessWidget {
       required this.child,
       required this.onPressed,
       this.isLoading = false,
-      this.width = double.infinity})
+      this.width = double.infinity,
+      this.height = 45})
       : super(key: key);
+  final double? height;
   final double? width;
   final Widget? child;
   final VoidCallback? onPressed;
@@ -35,7 +37,7 @@ class AppButton extends StatelessWidget {
           child: Container(
             width: width ?? double.infinity,
             padding: const EdgeInsets.all(AppSpacings.m),
-            height: 45,
+            height: height,
             constraints: const BoxConstraints(minWidth: 40),
             decoration: BoxDecoration(
               color: AppColors.buttonColor,

@@ -16,6 +16,7 @@ import '../../imei_result/presentation/multi_imei_result_screen.dart';
 import '../../launcher/data/models/device_details_res.dart';
 import '../../imei_result/business_logic/check_multi_imei_bloc.dart';
 
+//Screen for displaying scanner IMEI list where user can edit or remove any IMEI from the list
 class ImeiListPage extends StatefulWidget {
   ImeiListPage({
     Key? key,
@@ -242,6 +243,7 @@ class _ImeiListPageState extends State<ImeiListPage> {
       return _showErrorMsg(labelDetails?.noImeiSelected ?? emptyString);
     }
 
+    //Navigate to result screen for selected IMEI
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (_) => BlocProvider.value(
